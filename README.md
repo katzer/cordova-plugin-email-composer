@@ -23,7 +23,7 @@ cordova plugin add https://github.com/katzer/cordova-plugin-email-composer.git
 The plugin creates the object ```window.plugin.email``` with two methods:
 
 ### isServiceAvailable() ###
-Email service is only available on devices capable which are able to send emails. You can use this function to hide email functionality from users who will be unable to use it. Function takes a callback function, passed to which is a boolean property.
+Email service is only available on devices capable which are able to send emails. You can use this function to hide email functionality from users who will be unable to use it. Function takes a callback function, passed to which is a boolean property. Optionally the callback scope can be assigned as a second parameter.
 ```javascript
 /*
  * Find out if the sending of emails is available. Use this for showing/hiding email buttons.
@@ -36,3 +36,27 @@ window.plugin.email.isServiceAvailable(
 ```
 
 ### open() ###
+```javascript
+/*
+ * Opened the email composer view controller pre-filled with the passed properties.
+ */
+window.plugin.email.open({
+    subject: 'subject', // represents the subject of the email
+    body: 'body',       // represents the email body (could be HTML code, in this case set isHtml to true)
+    isHtml: true,       // indicats if the body is HTML or plain text
+    recipients: [],     // contains all the email addresses for TO field
+    ccRecipients: [],   // contains all the email addresses for CC field
+    bccRecipients: [],  // contains all the email addresses for BCC field
+    attachments: [],    // contains all full paths to the files you want to attach
+    
+    callback: function (code) {
+        switch (code) {
+            case 0: // email composition cancelled (cancel button pressed and draft not saved)
+            case 1: // email saved (cancel button pressed but draft saved)
+            case 2: // email sent
+            case 3: // send failed
+            case 4: // email not sent (something wrong happened e.g. service is not available)
+        }
+    }
+});
+```
