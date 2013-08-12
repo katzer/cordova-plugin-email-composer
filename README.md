@@ -1,7 +1,7 @@
 Cordova EmailComposer-Plugin
 ====================
 
-A bunch of email compositions for Cordova 3.x.x
+A bunch of email composition plugins for Cordova 3.x.x
 
 by Sebastián Katzer ([github.com/katzer](https://github.com/katzer))
 
@@ -24,6 +24,7 @@ The plugin creates the object ```window.plugin.email``` with two methods:
 
 ### isServiceAvailable() ###
 Email service is only available on devices capable which are able to send emails. You can use this function to hide email functionality from users who will be unable to use it. Function takes a callback function, passed to which is a boolean property. Optionally the callback scope can be assigned as a second parameter.
+
 ```javascript
 /*
  * Find out if the sending of emails is available. Use this for showing/hiding email buttons.
@@ -36,6 +37,10 @@ window.plugin.email.isServiceAvailable(
 ```
 
 ### open() ###
+You can use this function to show the email view pre-filled with all kind of properties (see example below). The function takes a hash where each property is optional. If a callback function is given, it will be called with a result code about the user action.
+
+**Note:** You can attach only PDF and images (the latter will be convertend in PNG format).
+
 ```javascript
 /*
  * Opened the email composer view controller pre-filled with the passed properties.
@@ -51,12 +56,13 @@ window.plugin.email.open({
     
     callback: function (code) {
         switch (code) {
-            case 0: // email composition cancelled (cancel button pressed and draft not saved)
-            case 1: // email saved (cancel button pressed but draft saved)
-            case 2: // email sent
-            case 3: // send failed
-            case 4: // email not sent (something wrong happened e.g. service is not available)
+            case 0:     // email composition cancelled (cancel button pressed and draft not saved)
+            case 1:     // email saved (cancel button pressed but draft saved)
+            case 2:     // email sent
+            case 3:     // send failed
+            case 4:     // email not sent (something wrong happened e.g. service is not available)
         }
-    }
+    },
+    scope: this         // execution scope of the callback function (default: window)
 });
 ```
