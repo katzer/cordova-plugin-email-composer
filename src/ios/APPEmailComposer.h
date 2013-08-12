@@ -1,6 +1,6 @@
 /**
  *  APPEmailComposer.h
- *  Cordova Email Composer Plugin
+ *  Cordova Email Composition Plugin
  *
  *  Created by Sebastian Katzer (github.com/katzer) on 10/08/2013.
  *  Copyright 2013 Sebastian Katzer. All rights reserved.
