@@ -17,5 +17,7 @@
 
 // Öffnet den Email-Kontroller mit vorausgefüllten Daten
 - (void) open:(CDVInvokedUrlCommand*)command;
+// Überprüft, ob Emails versendet werden können
+- (void) isServiceAvailable:(CDVInvokedUrlCommand*)command;
 
 @end

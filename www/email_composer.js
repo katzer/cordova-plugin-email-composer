@@ -14,6 +14,8 @@ var EmailComposer = function () {
 EmailComposer.prototype = {
     /**
      * Öffnet den Email-Kontroller mit vorausgefüllten Daten.
+     *
+     * @param {Object} options
      */
     open: function (options) {
       var callbackFn = null;
@@ -25,7 +27,22 @@ EmailComposer.prototype = {
       	};
 
         cordova.exec(callbackFn, null, 'EmailComposer', 'open', [options]);
+    },
+
+    /**
+     * Gibt an, ob Emails versendet werden können.
+     *
+     * @param {Function} callback
+     * @param {Object?}  scope (default: window)
+     */
+    isServiceAvailable: function (callback, scope) {
+		var callbackFn = function () {
+			callback.apply(scope || window, arguments);
+		};
+
+    	cordova.exec(callbackFn, null, 'EmailComposer', 'isServiceAvailable', []);
     }
+
 };
 
 var plugin = new EmailComposer();

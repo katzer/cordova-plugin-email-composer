@@ -38,6 +38,20 @@
 @implementation APPEmailComposer
 
 /**
+ * Überprüft, ob Emails versendet werden können
+ */
+- (void) isServiceAvailable:(CDVInvokedUrlCommand*)command
+{
+    CDVPluginResult* pluginResult = nil;
+    bool             canSendMail  = [MFMailComposeViewController canSendMail];
+
+    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
+                                    messageAsBool:canSendMail];
+
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
+/**
  * Öffnet den Email-Kontroller mit vorausgefüllten Daten
  */
 - (void) open:(CDVInvokedUrlCommand *)command
