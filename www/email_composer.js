@@ -16,7 +16,7 @@ EmailComposer.prototype = {
      * Öffnet den Email-Kontroller mit vorausgefüllten Daten.
      */
     open: function (options) {
-      var callbackFn = nil;
+      var callbackFn = null;
 
       	if (typeof options['callback'] == 'function'){
       		callbackFn = function (code) {
