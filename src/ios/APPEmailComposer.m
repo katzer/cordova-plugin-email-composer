@@ -72,7 +72,7 @@
  */
 - (void) openViewControllerForEmail: (MFMailComposeViewController *)mail
 {
-    [self.viewController presentModalViewController:mail animated:YES];
+    [self.viewController presentViewController:mail animated:YES completion:NULL];
 }
 
 /**
