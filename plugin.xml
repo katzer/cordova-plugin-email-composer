@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
+        id="de.appplant.cordova.plugin.email-composer"
+        version="0.0.1">
+
+    <name>EmailComposer</name>
+
+    <description>A bunch of email composition plugins for Cordova 3.x.x</description>
+    <keywords>email, mail, email composer, ios</keywords>
+    <license>GPL v2 License</license>
+
+    <author>Sebastián Katzer (github.com/katzer)</author>
+
+    <engines>
+        <engine name="cordova" version=">=3.0.0" />
+    </engines>
+
+    <!-- ios -->
+    <platform name="ios">
+
+        <config-file target="config.xml" parent="/*">
+		<feature name="EmailComposer">
+			<param name="ios-package" value="APPEmailComposer"/>
+		</feature>
+        </config-file>
+
+        <js-module src="www/email_composer.js" name="EmailComposer">
+            <clobbers target="plugin.email" />
+        </js-module>
+
+	<header-file src="src/ios/APPEmailComposer.h" />
+	<source-file src="src/ios/APPEmailComposer.m" />
+
+    <framework src="MessageUI.framework" weak="true" />
+
+    </platform>
+
+</plugin>
