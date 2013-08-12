@@ -16,6 +16,6 @@
 }
 
 // Öffnet den Email-Kontroller mit vorausgefüllten Daten
-- (void) send:(CDVInvokedUrlCommand*)command;
+- (void) open:(CDVInvokedUrlCommand*)command;
 
 @end

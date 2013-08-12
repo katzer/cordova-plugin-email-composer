@@ -20,7 +20,16 @@
 
 @interface APPEmailComposer (Private)
 
-- (void) send:(CDVInvokedUrlCommand *)command;
+- (MFMailComposeViewController *) getEmailWwithProperties:(NSDictionary *)properties;
+- (void) openViewControllerForEmail: (MFMailComposeViewController *)mail;
+- (void) setSubjectOfEmail:(MFMailComposeViewController *)mail subject:(NSString *)subject;
+- (void) setBodyOfMail:(MFMailComposeViewController *)mail body:(NSString *)body isHTML:(BOOL)isHTML;
+- (void) setRecipientsOfEmail:(MFMailComposeViewController *)mail recipients:(NSArray *)recipients;
+- (void) setCcRecipientsOfEmail:(MFMailComposeViewController *)mail ccRecipients:(NSArray *)ccRecipients;
+- (void) setBccRecipientsOfEmail:(MFMailComposeViewController *)mail bccRecipients:(NSArray *)bccRecipients;
+- (void) setAttachmentsOfEmail:(MFMailComposeViewController *)mail attatchments:(NSArray *)attatchments;
+- (void) mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error;
+- (void) callbackWithCode:(int)code andCallbackId:(NSString *)callbackId;
 - (NSString *) getMimeTypeFromFileExtension:(NSString *)extension;
 
 @end
@@ -31,10 +40,18 @@
 /**
  * Öffnet den Email-Kontroller mit vorausgefüllten Daten
  */
-- (void) send:(CDVInvokedUrlCommand *)command
+- (void) open:(CDVInvokedUrlCommand *)command
 {
     NSDictionary*                properties = [command.arguments objectAtIndex:0];
     MFMailComposeViewController* mail       = [self getEmailWwithProperties:properties];
+
+    if (!mail)
+    {
+        [self callbackWithCode:APP_EMAIL_NOTSENT andCallbackId:command.callbackId];
+    }
+
+    // Hack, um später den Callback aufrufen zu können
+    mail.title = command.callbackId;
 
     [self openViewControllerForEmail:mail];
 }
@@ -47,6 +64,12 @@
  */
 - (MFMailComposeViewController *) getEmailWwithProperties:(NSDictionary *)properties
 {
+    // Falls das Gerät kein Email Interface unterstützt
+    if (![MFMailComposeViewController canSendMail])
+    {
+        return NULL;
+    }
+
     MFMailComposeViewController* mail = [[MFMailComposeViewController alloc] init];
 
     mail.mailComposeDelegate = self;
@@ -136,37 +159,46 @@
 }
 
 
-// Dismisses the email composition interface when users tap Cancel or Send.
-// Proceeds to update the message field with the result of the operation.
-- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error {
-    // Notifies users about errors associated with the interface
-    int webviewResult = 0;
+/**
+ * @delegate
+ */
+- (void) mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error
+{
+    NSString* callbackId = controller.title;
 
-    switch (result) {
+    [controller dismissViewControllerAnimated:YES completion:nil];
+
+    switch (result)
+    {
         case MFMailComposeResultCancelled:
-            webviewResult = APP_EMAIL_CANCELLED;
+            [self callbackWithCode:APP_EMAIL_CANCELLED andCallbackId:callbackId];
             break;
         case MFMailComposeResultSaved:
-            webviewResult = APP_EMAIL_SAVED;
+            [self callbackWithCode:APP_EMAIL_SAVED andCallbackId:callbackId];
             break;
         case MFMailComposeResultSent:
-            webviewResult =APP_EMAIL_SENT;
+            [self callbackWithCode:APP_EMAIL_SENT andCallbackId:callbackId];
             break;
         case MFMailComposeResultFailed:
-            webviewResult = APP_EMAIL_FAILED;
+            [self callbackWithCode:APP_EMAIL_FAILED andCallbackId:callbackId];
             break;
         default:
-            webviewResult = APP_EMAIL_NOTSENT;
+            [self callbackWithCode:APP_EMAIL_NOTSENT andCallbackId:callbackId];
             break;
     }
-
-    [controller dismissModalViewControllerAnimated:YES];
-    [self returnWithCode:webviewResult];
 }
 
-// Call the callback with the specified code
-- (void) returnWithCode:(int)code {
-    [self writeJavascript:[NSString stringWithFormat:@"window.plugins.emailComposer._didFinishWithResult(%d);", code]];
+/**
+ * Calls the callback with the specified code.
+ */
+- (void) callbackWithCode:(int)code andCallbackId:(NSString *)callbackId
+{
+    CDVPluginResult* pluginResult;
+
+    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
+                                    messageAsString:[@(code) stringValue]];
+
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:callbackId];
 }
 
 /**

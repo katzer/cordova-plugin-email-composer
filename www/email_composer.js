@@ -15,8 +15,16 @@ EmailComposer.prototype = {
     /**
      * Öffnet den Email-Kontroller mit vorausgefüllten Daten.
      */
-    send: function (options) {
-        cordova.exec(null, null, 'EmailComposer', 'send', [options]);
+    open: function (options) {
+      var callbackFn = nil;
+
+      	if (typeof options['callback'] == 'function'){
+      		callbackFn = function (code) {
+      			options.callback.call(options.scope || window, code);
+      		};
+      	};
+
+        cordova.exec(callbackFn, null, 'EmailComposer', 'open', [options]);
     }
 };
 
