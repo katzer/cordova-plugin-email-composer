@@ -6,7 +6,8 @@ A bunch of email composition plugins for Cordova 3.x.x
 by Sebastián Katzer ([github.com/katzer](https://github.com/katzer))
 
 ## Supported Platforms ##
-- **iOS**
+- **iOS**<br>
+See [MFMailComposeViewController Class Reference](http://developer.apple.com/library/ios/documentation/MessageUI/Reference/MFMailComposeViewController_class/Reference/Reference.html) for detailed informations and screenshots.
 
 ## Adding the Plugin to your project ##
 Through the [Command-line Interface](http://cordova.apache.org/docs/en/3.0.0/guide_cli_index.md.html#The%20Command-line%20Interface):
