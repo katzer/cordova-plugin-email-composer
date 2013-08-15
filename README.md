@@ -17,7 +17,7 @@ cordova plugin add https://github.com/katzer/cordova-plugin-email-composer.git
 
 ## Release Notes ##
 #### Version 0.2.1 (15.08.2013) ####
-- [bugfix]: Email will send in HTML format, if the `isHtml` flag is set.
+- [bugfix]: Email was not send in HTML format, if the `isHtml` flag was set.
 - [bugfix]: `email.open()` without a parameter throw an error.
 
 #### Version 0.2.0 (13.08.2013) ####
