@@ -16,6 +16,10 @@ cordova plugin add https://github.com/katzer/cordova-plugin-email-composer.git
 ```
 
 ## Release Notes ##
+#### Version 0.2.1 (15.08.2013) ####
+- [bugfix]: Email will send in HTML format, if the `isHtml` flag is set.
+- [bugfix]: `email.open()` without a parameter throw an error.
+
 #### Version 0.2.0 (13.08.2013) ####
 - Added iOS support<br>
   *Based on the EmailComposer(WithAttachments) iOS plugin made by* ***Randy McMillan*** *and* ***guidosabatini***
@@ -44,7 +48,7 @@ You can use this function to show the email view pre-filled with all kind of pro
 
 ```javascript
 /*
- * Opened the email composer view controller pre-filled with the passed properties.
+ * Opens the email view controller pre-filled with the passed properties.
  */
 window.plugin.email.open({
     subject: 'subject', // represents the subject of the email
@@ -66,4 +70,11 @@ window.plugin.email.open({
     },
     scope: this         // execution scope of the callback function (default: window)
 });
+```
+
+```javascript
+/*
+ * Opens the blank email view controller.
+ */
+window.plugin.email.open();
 ```
