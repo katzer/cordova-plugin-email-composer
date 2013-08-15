@@ -11,9 +11,7 @@
 #import <MessageUI/MFMailComposeViewController.h>
 #import <Cordova/CDVPlugin.h>
 
-@interface APPEmailComposer : CDVPlugin <MFMailComposeViewControllerDelegate> {
-
-}
+@interface APPEmailComposer : CDVPlugin <MFMailComposeViewControllerDelegate>
 
 // Öffnet den Email-Kontroller mit vorausgefüllten Daten
 - (void) open:(CDVInvokedUrlCommand*)command;
