@@ -91,7 +91,7 @@
     // Subject
     [self setSubjectOfEmail:mail subject:[properties objectForKey:@"subject"]];
     // Body (as HTML)
-    [self setBodyOfMail:mail body:[properties objectForKey:@"body"] isHTML:[[properties objectForKey:@"bIsHTML"] boolValue]];
+    [self setBodyOfMail:mail body:[properties objectForKey:@"body"] isHTML:[[properties objectForKey:@"isHtml"] boolValue]];
     // Recipients
     [self setRecipientsOfEmail:mail recipients:[properties objectForKey:@"recipients"]];
     // CC Recipients
