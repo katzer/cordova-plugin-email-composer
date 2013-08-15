@@ -15,10 +15,11 @@ EmailComposer.prototype = {
     /**
      * Öffnet den Email-Kontroller mit vorausgefüllten Daten.
      *
-     * @param {Object} options
+     * @param {Object?} options
      */
     open: function (options) {
-      var callbackFn = null;
+        var callbackFn = null,
+            options    = options || {};
 
       	if (typeof options['callback'] == 'function'){
       		callbackFn = function (code) {
