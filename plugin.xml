@@ -7,7 +7,7 @@
     <name>EmailComposer</name>
 
     <description>A bunch of email composition plugins for Cordova 3.x.x</description>
-    <keywords>email, mail, email composer, ios</keywords>
+    <keywords>email, email intent, email composer, ios, android</keywords>
     <license>GPL v2 License</license>
 
     <author>Sebastián Katzer (github.com/katzer)</author>
