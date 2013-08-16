@@ -36,4 +36,16 @@
 
     </platform>
 
+    <!-- android -->
+    <platform name="android">
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="EmailComposer">
+                <param name="android-package" value="de.appplant.cordova.plugin.EmailComposer"/>
+            </feature>
+        </config-file>
+
+        <source-file src="src/android/EmailComposer.java" target-dir="src/de/appplant/cordova/plugin" />
+
+    </platform>
+
 </plugin>
