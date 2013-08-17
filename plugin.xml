@@ -16,6 +16,11 @@
         <engine name="cordova" version=">=3.0.0" />
     </engines>
 
+    <!-- interface -->
+    <js-module src="www/email_composer.js" name="EmailComposer">
+        <clobbers target="plugin.email" />
+    </js-module>
+
     <!-- ios -->
     <platform name="ios">
 
@@ -24,10 +29,6 @@
 			<param name="ios-package" value="APPEmailComposer"/>
 		</feature>
         </config-file>
-
-        <js-module src="www/email_composer.js" name="EmailComposer">
-            <clobbers target="plugin.email" />
-        </js-module>
 
 	<header-file src="src/ios/APPEmailComposer.h" />
 	<source-file src="src/ios/APPEmailComposer.m" />
