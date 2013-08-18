@@ -25,6 +25,8 @@ import org.apache.cordova.CallbackContext;
 
 public class EmailComposer extends CordovaPlugin {
 
+	private CallbackContext ctx;
+
 	@Override
 	public boolean execute (String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
 		// Eine E-Mail soll versendet werden
@@ -48,23 +50,21 @@ public class EmailComposer extends CordovaPlugin {
 	/**
 	 * Überprüft, ob Emails versendet werden können.
 	 */
-	private void isServiceAvailable (CallbackContext callbackContext) {
-		Intent  intent    = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto","abc@gmail.com", null));
-		Boolean available = cordova.getActivity().getPackageManager().queryIntentActivities(intent, 0).size() > 1;
+	private void isServiceAvailable (CallbackContext ctx) {
+		Boolean available = this.isEmailAccountConfigured();
 
-		callbackContext.success(available ? "true" : "false");
+		ctx.success(available ? "true" : "false");
 	}
 
 	/**
 	 * Öffnet den Email-Kontroller mit vorausgefüllten Daten.
 	 */
-	private void open (JSONArray args, CallbackContext callbackContext) throws JSONException {
+	private void open (JSONArray args, CallbackContext ctx) throws JSONException {
 		JSONObject properties = args.getJSONObject(0);
 		Intent     draft      = this.getDraftWithProperties(properties);
 
+		this.ctx = ctx;
 		this.openDraft(draft);
-
-		callbackContext.success();
 	}
 
 	/**
@@ -177,9 +177,24 @@ public class EmailComposer extends CordovaPlugin {
 		draft.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris);
 	}
 
+	/**
+	 * Gibt an, ob es eine Anwendung gibt, welche E-Mails versenden kann.
+	 */
+	private Boolean isEmailAccountConfigured () {
+		Intent  intent    = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto","max@mustermann.com", null));
+		Boolean available = cordova.getActivity().getPackageManager().queryIntentActivities(intent, 0).size() > 1;
+
+		return available;
+	}
+
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-	 	// TODO handle callback
 	 	super.onActivityResult(requestCode, resultCode, intent);
+
+	 	if (this.isEmailAccountConfigured()) {
+	 		this.ctx.success();
+	 	} else {
+	 		this.ctx.success(4);
+	 	}
 	}
 }
