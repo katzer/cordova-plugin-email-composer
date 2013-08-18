@@ -20,149 +20,166 @@ import android.content.Intent;
 import android.net.Uri;
 import android.text.Html;
 
-import org.apache.cordova.api.CallbackContext;
-import org.apache.cordova.api.CordovaPlugin;
-import org.apache.cordova.api.LOG;
+import org.apache.cordova.CordovaPlugin;
+import org.apache.cordova.CallbackContext;
 
 public class EmailComposer extends CordovaPlugin {
 
 	@Override
-	public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
-		// if ("showEmailComposer".equals(action)) {
+	public boolean execute (String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
+		// Eine E-Mail soll versendet werden
+		if ("open".equals(action)) {
+			open(args, callbackContext);
 
-		// 	try {
-		// 		JSONObject parameters = args.getJSONObject(0);
-		// 		if (parameters != null) {
-		// 			sendEmail(parameters);
-		// 		}
-		// 	} catch (Exception e) {
+			return true;
+		}
 
-		// 	}
-		// 	callbackContext.success();
-		// 	return true;
-		// }
-		return false;  // Returning false results in a "MethodNotFound" error.
+		// Es soll überprüft werden, ob ein Dienst zum Versenden der E-Mail zur Verfügung steht
+		if ("isServiceAvailable".equals(action)) {
+			isServiceAvailable(callbackContext);
+
+			return true;
+		}
+
+		// Returning false results in a "MethodNotFound" error.
+		return false;
 	}
 
-	// private void sendEmail(JSONObject parameters) {
+	/**
+	 * Überprüft, ob Emails versendet werden können.
+	 */
+	private void isServiceAvailable (CallbackContext callbackContext) {
+		Intent  intent    = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto","abc@gmail.com", null));
+		Boolean available = cordova.getActivity().getPackageManager().queryIntentActivities(intent, 0).size() > 1;
 
-	// 	final Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND_MULTIPLE);
+		callbackContext.success(available ? "true" : "false");
+	}
 
-	// 	//String callback = parameters.getString("callback");
+	/**
+	 * Öffnet den Email-Kontroller mit vorausgefüllten Daten.
+	 */
+	private void open (JSONArray args, CallbackContext callbackContext) throws JSONException {
+		JSONObject properties = args.getJSONObject(0);
+		Intent     draft      = this.getDraftWithProperties(properties);
 
-	// 	boolean isHTML = false;
-	// 	try {
-	// 		isHTML = parameters.getBoolean("bIsHTML");
-	// 	} catch (Exception e) {
-	// 		LOG.e("EmailComposer", "Error handling isHTML param: " + e.toString());
-	// 	}
+		this.openDraft(draft);
 
-	// 	if (isHTML) {
-	// 		emailIntent.setType("text/html");
-	// 	} else {
-	// 		emailIntent.setType("text/plain");
-	// 	}
+		callbackContext.success();
+	}
 
-	// 	// setting subject
-	// 	try {
-	// 		String subject = parameters.getString("subject");
-	// 		if (subject != null && subject.length() > 0) {
-	// 			emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, subject);
-	// 		}
-	// 	} catch (Exception e) {
-	// 		LOG.e("EmailComposer", "Error handling subject param: " + e.toString());
-	// 	}
+	/**
+	 * Erstellt den ViewController für Mails und fügt die übergebenen Eigenschaften ein.
+	 *
+	 * @param {JSONObject} params (Subject, Body, Recipients, ...)
+	 */
+	private Intent getDraftWithProperties (JSONObject params) throws JSONException {
+		Intent mail = new Intent(android.content.Intent.ACTION_SEND);
 
-	// 	// setting body
-	// 	try {
-	// 		String body = parameters.getString("body");
-	// 		if (body != null && body.length() > 0) {
-	// 			if (isHTML) {
-	// 				emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, Html.fromHtml(body));
-	// 			} else {
-	// 				emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, body);
-	// 			}
-	// 		}
-	// 	} catch (Exception e) {
-	// 		LOG.e("EmailComposer", "Error handling body param: " + e.toString());
-	// 	}
+		if (params.has("subject"))
+			this.setSubject(params.getString("subject"), mail);
+		if (params.has("body"))
+			this.setBody(params.getString("body"), params.optBoolean("isHtml"), mail);
+		if (params.has("recipients"))
+			this.setRecipients(params.getJSONArray("recipients"), mail);
+		if (params.has("ccRecipients"))
+			this.setCcRecipients(params.getJSONArray("ccRecipients"), mail);
+		if (params.has("bccRecipients"))
+			this.setBccRecipients(params.getJSONArray("bccRecipients"), mail);
+		if (params.has("attachments"))
+			this.setAttachments(params.getJSONArray("attachments"), mail);
 
-	// 	// setting TO recipients
-	// 	try {
-	// 		JSONArray toRecipients = parameters.getJSONArray("toRecipients");
-	// 		if (toRecipients != null && toRecipients.length() > 0) {
-	// 			String[] to = new String[toRecipients.length()];
-	// 			for (int i=0; i<toRecipients.length(); i++) {
-	// 				to[i] = toRecipients.getString(i);
-	// 			}
-	// 			emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, to);
-	// 		}
-	// 	} catch (Exception e) {
-	// 		LOG.e("EmailComposer", "Error handling toRecipients param: " + e.toString());
-	// 	}
+		return mail;
+	}
 
-	// 	// setting CC recipients
-	// 	try {
-	// 		JSONArray ccRecipients = parameters.getJSONArray("ccRecipients");
-	// 		if (ccRecipients != null && ccRecipients.length() > 0) {
-	// 			String[] cc = new String[ccRecipients.length()];
-	// 			for (int i=0; i<ccRecipients.length(); i++) {
-	// 				cc[i] = ccRecipients.getString(i);
-	// 			}
-	// 			emailIntent.putExtra(android.content.Intent.EXTRA_CC, cc);
-	// 		}
-	// 	} catch (Exception e) {
-	// 		LOG.e("EmailComposer", "Error handling ccRecipients param: " + e.toString());
-	// 	}
+	/**
+	 * Zeigt den ViewController zum Versenden/Bearbeiten der Mail an.
+	 */
+	private void openDraft (Intent draft) {
+		this.cordova.startActivityForResult(this, Intent.createChooser(draft, "Select Email app"), 0);
+	}
 
-	// 	// setting BCC recipients
-	// 	try {
-	// 		JSONArray bccRecipients = parameters.getJSONArray("bccRecipients");
-	// 		if (bccRecipients != null && bccRecipients.length() > 0) {
-	// 			String[] bcc = new String[bccRecipients.length()];
-	// 			for (int i=0; i<bccRecipients.length(); i++) {
-	// 				bcc[i] = bccRecipients.getString(i);
-	// 			}
-	// 			emailIntent.putExtra(android.content.Intent.EXTRA_BCC, bcc);
-	// 		}
-	// 	} catch (Exception e) {
-	// 		LOG.e("EmailComposer", "Error handling bccRecipients param: " + e.toString());
-	// 	}
+	/**
+	 * Setzt den Subject der Mail.
+	 */
+	private void setSubject (String subject, Intent draft) {
+		draft.putExtra(android.content.Intent.EXTRA_SUBJECT, subject);
+	}
 
-	// 	// setting attachments
-	// 	try {
-	// 		JSONArray attachments = parameters.getJSONArray("attachments");
-	// 		if (attachments != null && attachments.length() > 0) {
-	// 			ArrayList<Uri> uris = new ArrayList<Uri>();
-	// 			//convert from paths to Android friendly Parcelable Uri's
-	// 			for (int i=0; i<attachments.length(); i++) {
-	// 				try {
-	// 					File file = new File(attachments.getString(i));
-	// 					if (file.exists()) {
-	// 						Uri uri = Uri.fromFile(file);
-	// 						uris.add(uri);
-	// 					}
-	// 				} catch (Exception e) {
-	// 					LOG.e("EmailComposer", "Error adding an attachment: " + e.toString());
-	// 				}
-	// 			}
-	// 			if (uris.size() > 0) {
-	// 				emailIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris);
-	// 			}
-	// 		}
-	// 	} catch (Exception e) {
-	// 		LOG.e("EmailComposer", "Error handling attachments param: " + e.toString());
-	// 	}
+	/**
+	 * Setzt den Body der Mail.
+	 */
+	private void setBody (String body, Boolean isHTML, Intent draft) {
+		if (isHTML) {
+			draft.putExtra(android.content.Intent.EXTRA_TEXT, Html.fromHtml(body));
+			draft.setType("text/html");
+		} else {
+			draft.putExtra(android.content.Intent.EXTRA_TEXT, body);
+			draft.setType("text/plain");
+		}
+	}
 
-	// 	this.cordova.startActivityForResult(this, emailIntent, 0);
-	// }
+	/**
+	 * Setzt die Empfänger der Mail.
+	 */
+	private void setRecipients (JSONArray recipients, Intent draft) throws JSONException {
+		String[] receivers = new String[recipients.length()];
 
-	// @Override
-	// public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-	// 	// TODO handle callback
-	// 	super.onActivityResult(requestCode, resultCode, intent);
-	// 	LOG.e("EmailComposer", "ResultCode: " + resultCode);
-	// 	// IT DOESN'T SEEM TO HANDLE RESULT CODES
-	// }
+		for (int i = 0; i < recipients.length(); i++) {
+			receivers[i] = recipients.getString(i);
+		}
 
+		draft.putExtra(android.content.Intent.EXTRA_EMAIL, receivers);
+	}
+
+	/**
+	 * Setzt die CC-Empfänger der Mail.
+	 */
+	private void setCcRecipients (JSONArray ccRecipients, Intent draft) throws JSONException {
+		String[] receivers = new String[ccRecipients.length()];
+
+		for (int i = 0; i < ccRecipients.length(); i++) {
+			receivers[i] = ccRecipients.getString(i);
+		}
+
+		draft.putExtra(android.content.Intent.EXTRA_CC, receivers);
+	}
+
+	/**
+	 * Setzt die BCC-Empfänger der Mail.
+	 */
+	private void setBccRecipients (JSONArray bccRecipients, Intent draft) throws JSONException {
+		String[] receivers = new String[bccRecipients.length()];
+
+		for (int i = 0; i < bccRecipients.length(); i++) {
+			receivers[i] = bccRecipients.getString(i);
+		}
+
+		draft.putExtra(android.content.Intent.EXTRA_BCC, receivers);
+	}
+
+	/**
+	 * Fügt die Anhände zur Mail hinzu.
+	 * Convert from paths to Android friendly Parcelable Uri's
+	 */
+	private void setAttachments (JSONArray attachments, Intent draft) throws JSONException {
+		ArrayList<Uri> uris = new ArrayList<Uri>();
+
+		for (int i = 0; i < attachments.length(); i++) {
+			File file = new File(attachments.getString(i));
+
+			if (file.exists()) {
+				Uri uri = Uri.fromFile(file);
+
+				uris.add(uri);
+			}
+		}
+
+		draft.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris);
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+	 	// TODO handle callback
+	 	super.onActivityResult(requestCode, resultCode, intent);
+	}
 }
