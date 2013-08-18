@@ -22,12 +22,12 @@
 
 - (MFMailComposeViewController *) getViewControllerWithProperties:(NSDictionary *)properties;
 - (void) openViewController: (MFMailComposeViewController *)mail;
-- (void) setSubjectOfEmail:(MFMailComposeViewController *)mail subject:(NSString *)subject;
-- (void) setBodyOfMail:(MFMailComposeViewController *)mail body:(NSString *)body isHTML:(BOOL)isHTML;
-- (void) setRecipientsOfEmail:(MFMailComposeViewController *)mail recipients:(NSArray *)recipients;
-- (void) setCcRecipientsOfEmail:(MFMailComposeViewController *)mail ccRecipients:(NSArray *)ccRecipients;
-- (void) setBccRecipientsOfEmail:(MFMailComposeViewController *)mail bccRecipients:(NSArray *)bccRecipients;
-- (void) setAttachmentsOfEmail:(MFMailComposeViewController *)mail attatchments:(NSArray *)attatchments;
+- (void) setSubject:(NSString *)subject ofMail:(MFMailComposeViewController *)mail;
+- (void) setBody:(NSString *)body ofMail:(MFMailComposeViewController *)mail isHTML:(BOOL)isHTML;
+- (void) setRecipients:(NSArray *)recipients ofMail:(MFMailComposeViewController *)mail;
+- (void) setCcRecipients:(NSArray *)ccRecipients ofMail:(MFMailComposeViewController *)mail;
+- (void) setBccRecipients:(NSArray *)bccRecipients ofMail:(MFMailComposeViewController *)mail;
+- (void) addAttachments:(NSArray *)attatchments ofMail:(MFMailComposeViewController *)mail;
 - (void) mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error;
 - (void) callbackWithCode:(int)code andCallbackId:(NSString *)callbackId;
 - (NSString *) getMimeTypeFromFileExtension:(NSString *)extension;
@@ -46,7 +46,7 @@
     bool             canSendMail  = [MFMailComposeViewController canSendMail];
 
     pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
-                                    messageAsBool:canSendMail];
+                                       messageAsBool:canSendMail];
 
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
@@ -89,17 +89,17 @@
     mail.mailComposeDelegate = self;
 
     // Subject
-    [self setSubjectOfEmail:mail subject:[properties objectForKey:@"subject"]];
+    [self setSubject:[properties objectForKey:@"subject"] ofMail:mail];
     // Body (as HTML)
-    [self setBodyOfMail:mail body:[properties objectForKey:@"body"] isHTML:[[properties objectForKey:@"isHtml"] boolValue]];
+    [self setBody:[properties objectForKey:@"body"] ofMail:mail isHTML:[[properties objectForKey:@"isHtml"] boolValue]];
     // Recipients
-    [self setRecipientsOfEmail:mail recipients:[properties objectForKey:@"recipients"]];
+    [self setRecipients:[properties objectForKey:@"recipients"] ofMail:mail];
     // CC Recipients
-    [self setCcRecipientsOfEmail:mail ccRecipients:[properties objectForKey:@"ccRecipients"]];
+    [self setCcRecipients:[properties objectForKey:@"ccRecipients"] ofMail:mail];
     // BCC Recipients
-    [self setBccRecipientsOfEmail:mail bccRecipients:[properties objectForKey:@"bccRecipients"]];
+    [self setBccRecipients:[properties objectForKey:@"bccRecipients"] ofMail:mail];
     // Attachments
-    [self setAttachmentsOfEmail:mail attatchments:[properties objectForKey:@"attachments"]];
+    [self addAttachments:[properties objectForKey:@"attachments"] ofMail:mail];
 
     return mail;
 }
@@ -115,7 +115,7 @@
 /**
  * Setzt den Subject der Mail.
  */
-- (void) setSubjectOfEmail:(MFMailComposeViewController *)mail subject:(NSString *)subject
+- (void) setSubject:(NSString *)subject ofMail:(MFMailComposeViewController *)mail
 {
     [mail setSubject:subject];
 }
@@ -123,7 +123,7 @@
 /**
  * Setzt den Body der Mail.
  */
-- (void) setBodyOfMail:(MFMailComposeViewController *)mail body:(NSString *)body isHTML:(BOOL)isHTML
+- (void) setBody:(NSString *)body ofMail:(MFMailComposeViewController *)mail isHTML:(BOOL)isHTML
 {
     [mail setMessageBody:body isHTML:isHTML];
 }
@@ -131,7 +131,7 @@
 /**
  * Setzt die Empfänger der Mail.
  */
-- (void) setRecipientsOfEmail:(MFMailComposeViewController *)mail recipients:(NSArray *)recipients
+- (void) setRecipients:(NSArray *)recipients ofMail:(MFMailComposeViewController *)mail
 {
     [mail setToRecipients:recipients];
 }
@@ -139,7 +139,7 @@
 /**
  * Setzt die CC-Empfänger der Mail.
  */
-- (void) setCcRecipientsOfEmail:(MFMailComposeViewController *)mail ccRecipients:(NSArray *)ccRecipients
+- (void) setCcRecipients:(NSArray *)ccRecipients ofMail:(MFMailComposeViewController *)mail
 {
     [mail setCcRecipients:ccRecipients];
 }
@@ -147,7 +147,7 @@
 /**
  * Setzt die BCC-Empfänger der Mail.
  */
-- (void) setBccRecipientsOfEmail:(MFMailComposeViewController *)mail bccRecipients:(NSArray *)bccRecipients
+- (void) setBccRecipients:(NSArray *)bccRecipients ofMail:(MFMailComposeViewController *)mail
 {
     [mail setBccRecipients:bccRecipients];
 }
@@ -155,7 +155,7 @@
 /**
  * Fügt die Anhände zur Mail hinzu.
  */
-- (void) setAttachmentsOfEmail:(MFMailComposeViewController *)mail attatchments:(NSArray *)attatchments
+- (void) addAttachments:(NSArray *)attatchments ofMail:(MFMailComposeViewController *)mail
 {
     if (attatchments)
     {
@@ -210,7 +210,7 @@
     CDVPluginResult* pluginResult;
 
     pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
-                                    messageAsString:[@(code) stringValue]];
+                                     messageAsString:[@(code) stringValue]];
 
     [self.commandDelegate sendPluginResult:pluginResult callbackId:callbackId];
 }
