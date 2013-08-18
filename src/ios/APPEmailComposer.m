@@ -20,7 +20,7 @@
 
 @interface APPEmailComposer (Private)
 
-- (MFMailComposeViewController *) getEmailWwithProperties:(NSDictionary *)properties;
+- (MFMailComposeViewController *) getEmailWithProperties:(NSDictionary *)properties;
 - (void) openViewControllerForEmail: (MFMailComposeViewController *)mail;
 - (void) setSubjectOfEmail:(MFMailComposeViewController *)mail subject:(NSString *)subject;
 - (void) setBodyOfMail:(MFMailComposeViewController *)mail body:(NSString *)body isHTML:(BOOL)isHTML;
@@ -57,7 +57,7 @@
 - (void) open:(CDVInvokedUrlCommand *)command
 {
     NSDictionary*                properties = [command.arguments objectAtIndex:0];
-    MFMailComposeViewController* mail       = [self getEmailWwithProperties:properties];
+    MFMailComposeViewController* mail       = [self getEmailWithProperties:properties];
 
     if (!mail)
     {
@@ -76,7 +76,7 @@
  * @param {NSDictionary*} properties
  * @return {MFMailComposeViewController*}
  */
-- (MFMailComposeViewController *) getEmailWwithProperties:(NSDictionary *)properties
+- (MFMailComposeViewController *) getEmailWithProperties:(NSDictionary *)properties
 {
     // Falls das Gerät kein Email Interface unterstützt
     if (![MFMailComposeViewController canSendMail])
