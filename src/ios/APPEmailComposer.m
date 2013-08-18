@@ -20,8 +20,8 @@
 
 @interface APPEmailComposer (Private)
 
-- (MFMailComposeViewController *) getEmailWithProperties:(NSDictionary *)properties;
-- (void) openViewControllerForEmail: (MFMailComposeViewController *)mail;
+- (MFMailComposeViewController *) getViewControllerWithProperties:(NSDictionary *)properties;
+- (void) openViewController: (MFMailComposeViewController *)mail;
 - (void) setSubjectOfEmail:(MFMailComposeViewController *)mail subject:(NSString *)subject;
 - (void) setBodyOfMail:(MFMailComposeViewController *)mail body:(NSString *)body isHTML:(BOOL)isHTML;
 - (void) setRecipientsOfEmail:(MFMailComposeViewController *)mail recipients:(NSArray *)recipients;
@@ -52,22 +52,22 @@
 }
 
 /**
- * Öffnet den Email-Kontroller mit vorausgefüllten Daten
+ * Öffnet den Email-Kontroller mit vorausgefüllten Daten.
  */
 - (void) open:(CDVInvokedUrlCommand *)command
 {
     NSDictionary*                properties = [command.arguments objectAtIndex:0];
-    MFMailComposeViewController* mail       = [self getEmailWithProperties:properties];
+    MFMailComposeViewController* controller = [self getViewControllerWithProperties:properties];
 
-    if (!mail)
+    if (!controller)
     {
         [self callbackWithCode:APP_EMAIL_NOTSENT andCallbackId:command.callbackId];
     }
 
     // Hack, um später den Callback aufrufen zu können
-    mail.title = command.callbackId;
+    controller.title = command.callbackId;
 
-    [self openViewControllerForEmail:mail];
+    [self openViewController:controller];
 }
 
 /**
@@ -76,7 +76,7 @@
  * @param {NSDictionary*} properties
  * @return {MFMailComposeViewController*}
  */
-- (MFMailComposeViewController *) getEmailWithProperties:(NSDictionary *)properties
+- (MFMailComposeViewController *) getViewControllerWithProperties:(NSDictionary *)properties
 {
     // Falls das Gerät kein Email Interface unterstützt
     if (![MFMailComposeViewController canSendMail])
@@ -107,7 +107,7 @@
 /**
  * Zeigt den ViewController zum Versenden/Bearbeiten der Mail an.
  */
-- (void) openViewControllerForEmail: (MFMailComposeViewController *)mail
+- (void) openViewController: (MFMailComposeViewController *)mail
 {
     [self.viewController presentViewController:mail animated:YES completion:NULL];
 }
