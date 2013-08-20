@@ -10,20 +10,20 @@ by Sebastián Katzer ([github.com/katzer](https://github.com/katzer))
 *See [MFMailComposeViewController Class Reference](http://developer.apple.com/library/ios/documentation/MessageUI/Reference/MFMailComposeViewController_class/Reference/Reference.html) for detailed informations and screenshots.*
 - **Android**
 
-## Adding the Plugin to your project 
+## Adding the Plugin to your project
 Through the [Command-line Interface](http://cordova.apache.org/docs/en/3.0.0/guide_cli_index.md.html#The%20Command-line%20Interface):
 ```
 cordova plugin add https://github.com/katzer/cordova-plugin-email-composer.git
 ```
 
-## Removing the Plugin from your project 
+## Removing the Plugin from your project
 Through the [Command-line Interface](http://cordova.apache.org/docs/en/3.0.0/guide_cli_index.md.html#The%20Command-line%20Interface):
 ```
 cordova plugin rm de.appplant.cordova.plugin.email-composer
 ```
 
 ## Release Notes
-#### Version 0.4.0.pre (18.08.2013)
+#### Version 0.4.0 (20.08.2013)
 - Added Android support<br>
   *Based on the EmailComposerWithAttachments Android plugin made by* ***guidosabatini***
 
@@ -74,7 +74,7 @@ window.plugin.email.open({
     ccRecipients: [],   // contains all the email addresses for CC field
     bccRecipients: [],  // contains all the email addresses for BCC field
     attachments: [],    // contains all full paths to the files you want to attach
-    
+
     callback: function (code) {
         switch (code) {
             case 0:     // email composition cancelled (cancel button pressed and draft not saved)
