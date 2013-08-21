@@ -22,6 +22,7 @@ import android.text.Html;
 
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CallbackContext;
+import org.apache.cordova.PluginResult;
 
 public class EmailComposer extends CordovaPlugin {
 
@@ -51,9 +52,10 @@ public class EmailComposer extends CordovaPlugin {
 	 * Überprüft, ob Emails versendet werden können.
 	 */
 	private void isServiceAvailable (CallbackContext ctx) {
-		Boolean available = this.isEmailAccountConfigured();
+		Boolean available   = this.isEmailAccountConfigured();
+		PluginResult result = new PluginResult(PluginResult.Status.OK, available);
 
-		ctx.success(available ? "true" : "false");
+		ctx.sendPluginResult(result);
 	}
 
 	/**
