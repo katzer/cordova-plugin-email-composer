@@ -23,6 +23,9 @@ cordova plugin rm de.appplant.cordova.plugin.email-composer
 ```
 
 ## Release Notes
+#### Version 0.4.1 (not yet released)
+- [bugfix]: On Android, the `isServiceAvailable()` interface has returned string values instead of boolean values.
+
 #### Version 0.4.0 (20.08.2013)
 - Added Android support<br>
   *Based on the EmailComposerWithAttachments Android plugin made by* ***guidosabatini***
