@@ -98,7 +98,9 @@ window.plugin.email.open({
 window.plugin.email.open();
 ```
 
-#### Testing in the Android Simulator
+## Quirks
+
+### Testing in the Android Simulator
 If you are using an emulator, you’ll need to configure the email client. If the email client is not configured, it will not respond to the Intent we’ll be discussing. If you want to see the chooser in action, you’ll need to configure a device using multiple messaging applications, such as the Gmail application and the Email application.
 
 **Note:** Google APIs will give you access to adding accounts.
