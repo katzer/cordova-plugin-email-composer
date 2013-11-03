@@ -90,6 +90,8 @@ public class EmailComposer extends CordovaPlugin {
 		if (params.has("attachments"))
 			this.setAttachments(params.getJSONArray("attachments"), mail);
 
+		mail.setType("application/octet-stream");
+
 		return mail;
 	}
 
