@@ -8,6 +8,7 @@ by Sebastián Katzer ([github.com/katzer](https://github.com/katzer))
 ## Supported Platforms
 - **iOS**<br>
 *See [MFMailComposeViewController Class Reference](http://developer.apple.com/library/ios/documentation/MessageUI/Reference/MFMailComposeViewController_class/Reference/Reference.html) for detailed informations and screenshots.*
+
 - **Android**
 
 ## Adding the Plugin to your project
