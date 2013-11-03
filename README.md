@@ -25,6 +25,7 @@ cordova plugin rm de.appplant.cordova.plugin.email-composer
 ## Release Notes
 #### Version 0.4.1 (not yet released)
 - [bugfix]: On Android, the `isServiceAvailable()` interface has returned string values instead of boolean values.
+- [bugfix]: Sometimes the device said that no email app is available because of the missing mime type.
 
 #### Version 0.4.0 (20.08.2013)
 - Added Android support<br>
@@ -101,6 +102,6 @@ window.plugin.email.open();
 ## Quirks
 
 ### Testing in the Android Simulator
-If you are using an emulator, you’ll need to configure the email client. If the email client is not configured, it will not respond to the Intent we’ll be discussing. If you want to see the chooser in action, you’ll need to configure a device using multiple messaging applications, such as the Gmail application and the Email application.
+If you are using an emulator, you’ll need to configure the email client. If the email client is not configured, it will not respond to the Intent we are discussing. If you want to see the chooser in action, you’ll need to configure a device using multiple messaging applications, such as the Gmail application and the Email application.
 
 **Note:** Google APIs will give you access to adding accounts.

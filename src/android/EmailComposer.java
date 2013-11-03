@@ -7,7 +7,7 @@
  *  GPL v2 licensed
  */
 
-package de.appplant.cordova.plugin;
+package de.appplant.cordova.plugin.emailcomposer;
 
 import java.io.File;
 import java.util.ArrayList;
