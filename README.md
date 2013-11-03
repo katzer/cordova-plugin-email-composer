@@ -24,7 +24,7 @@ cordova plugin rm de.appplant.cordova.plugin.email-composer
 ```
 
 ## Release Notes
-#### Version 0.4.1 (not yet released)
+#### Version 0.4.1 (03.11.2013)
 - [bugfix]: On Android, the `isServiceAvailable()` interface has returned string values instead of boolean values.
 - [bugfix]: Sometimes the device said that no email app is available because of the missing mime type.
 
