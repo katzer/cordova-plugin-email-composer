@@ -23,18 +23,16 @@
 
     <!-- ios -->
     <platform name="ios">
-
         <config-file target="config.xml" parent="/*">
 		<feature name="EmailComposer">
 			<param name="ios-package" value="APPEmailComposer"/>
 		</feature>
         </config-file>
 
-	<header-file src="src/ios/APPEmailComposer.h" />
-	<source-file src="src/ios/APPEmailComposer.m" />
+    	<header-file src="src/ios/APPEmailComposer.h" />
+    	<source-file src="src/ios/APPEmailComposer.m" />
 
-    <framework src="MessageUI.framework" weak="true" />
-
+        <framework src="MessageUI.framework" weak="true" />
     </platform>
 
     <!-- android -->
@@ -46,7 +44,6 @@
         </config-file>
 
         <source-file src="src/android/EmailComposer.java" target-dir="src/de/appplant/cordova/plugin" />
-
     </platform>
 
 </plugin>
