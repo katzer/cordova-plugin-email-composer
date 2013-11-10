@@ -100,6 +100,23 @@ window.plugin.email.open({
 window.plugin.email.open();
 ```
 
+## Example
+```html
+<!DOCTYPE html>
+<html>
+    <head>
+        <script type="text/javascript">
+            function openDraft () {
+                window.plugin.email.open({ subject: 'Hello World' });
+            }
+        </script>
+    </head>
+    <body>
+        <a href="#" onClick="openDraft()">Send Me</a>
+    </body>
+</html>
+```
+
 ## Quirks
 
 ### Testing in the Android Simulator
