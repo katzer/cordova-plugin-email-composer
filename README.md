@@ -105,6 +105,7 @@ window.plugin.email.open();
 <!DOCTYPE html>
 <html>
     <head>
+        <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript">
             function openDraft () {
                 window.plugin.email.open({ subject: 'Hello World' });
