@@ -166,19 +166,13 @@ public class EmailComposer extends CordovaPlugin {
 	 * Convert from paths to Android friendly Parcelable Uri's
 	 */
 	private void setAttachments (JSONArray attachments, Intent draft) throws JSONException {
-		ArrayList<Uri> uris = new ArrayList<Uri>();
-
 		for (int i = 0; i < attachments.length(); i++) {
-			File file = new File(attachments.getString(i));
-
+			Uri attachmentUri = Uri.parse(attachments.getString(i));
+			File file = new File(attachmentUri.getPath());
 			if (file.exists()) {
-				Uri uri = Uri.fromFile(file);
-
-				uris.add(uri);
+				draft.putExtra(Intent.EXTRA_STREAM, attachmentUri);
 			}
 		}
-
-		draft.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris);
 	}
 
 	/**
