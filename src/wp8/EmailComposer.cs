@@ -124,7 +124,7 @@ namespace Cordova.Extension.Commands
         /// </summary>
         private void SetAttachments(string[] attachments, EmailComposeTask draft)
         {
-            // Not supported yet :(
+            // Not yet supported :(
         }
     }
 }
