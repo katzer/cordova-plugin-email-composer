@@ -8,7 +8,7 @@
     <name>EmailComposer</name>
 
     <description>A bunch of email composition plugins for Cordova 3.x.x</description>
-    <keywords>email, email intent, email composer, ios, android</keywords>
+    <keywords>email, email intent, email composer, ios, android, windows phone, wp8</keywords>
     <license>GPL v2 License</license>
 
     <author>Sebastián Katzer (github.com/katzer)</author>
@@ -47,4 +47,14 @@
         <source-file src="src/android/EmailComposer.java" target-dir="src/de/appplant/cordova/plugin/emailcomposer" />
     </platform>
 
+    <!-- wp8 -->
+    <platform name="wp8">
+        <config-file target="config.xml" parent="/*">
+            <feature name="EmailComposer">
+                <param name="wp-package" value="EmailComposer"/>
+            </feature>
+        </config-file>
+
+        <source-file src="src/wp8/EmailComposer.cs" />
+    </platform>
 </plugin>

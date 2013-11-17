@@ -11,6 +11,9 @@ by Sebastián Katzer ([github.com/katzer](https://github.com/katzer))
 
 - **Android**
 
+- **WP8**
+*See [How to use the email compose task for Windows Phone](http://msdn.microsoft.com/en-us/library/windowsphone/develop/hh394003.aspx) for detailed informations.*
+
 ## Adding the Plugin to your project
 Through the [Command-line Interface](http://cordova.apache.org/docs/en/3.0.0/guide_cli_index.md.html#The%20Command-line%20Interface):
 ```
@@ -24,6 +27,9 @@ cordova plugin rm de.appplant.cordova.plugin.email-composer
 ```
 
 ## Release Notes
+#### Version 0.6.0 (not yet released)
+- Added WP8 support
+
 #### Version 0.4.2 (17.11.2013)
 - [feature:] Added alias `openDraft` to the `open` interface.
 
