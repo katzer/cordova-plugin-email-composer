@@ -21,13 +21,23 @@ EmailComposer.prototype = {
         var callbackFn = null,
             options    = options || {};
 
-        if (device.platform == 'iOS' && typeof options['callback'] == 'function'){
-            callbackFn = function (code) {
-                options.callback.call(options.scope || window, code);
-            };
-        };
+        var defaults = {
+            subject:     null,
+            body:        null,
+            to:          null,
+            cc:          null,
+            bcc:         null,
+            attachments: null,
+            isHtml:      true
+        }
 
-        cordova.exec(callbackFn, null, 'EmailComposer', 'open', [options]);
+        for (var key in defaults) {
+            if (options[key] !== undefined) {
+                defaults[key] = options[key];
+            }
+        }
+
+        cordova.exec(null, null, 'EmailComposer', 'open', [options]);
     },
 
     /**
