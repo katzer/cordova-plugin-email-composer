@@ -7,12 +7,6 @@
  *  GPL v2 licensed
  */
 
-#define APP_EMAIL_CANCELLED 0  // Email composition cancelled (cancel button pressed and draft not saved)
-#define APP_EMAIL_SAVED     1  // Email saved (cancel button pressed but draft saved)
-#define APP_EMAIL_SENT      2  // Email sent
-#define APP_EMAIL_FAILED    3  // Send failed
-#define APP_EMAIL_NOTSENT   4  // Email not sent (something wrong happened)
-
 
 #import "APPEmailComposer.h"
 #import <MobileCoreServices/MobileCoreServices.h>
@@ -24,12 +18,11 @@
 - (void) openDraft: (MFMailComposeViewController *)draft;
 - (void) setSubject:(NSString *)subject ofDraft:(MFMailComposeViewController *)draft;
 - (void) setBody:(NSString *)body ofDraft:(MFMailComposeViewController *)draft isHTML:(BOOL)isHTML;
-- (void) setRecipients:(NSArray *)recipients ofDraft:(MFMailComposeViewController *)draft;
+- (void) setToRecipients:(NSArray *)recipients ofDraft:(MFMailComposeViewController *)draft;
 - (void) setCcRecipients:(NSArray *)ccRecipients ofDraft:(MFMailComposeViewController *)draft;
 - (void) setBccRecipients:(NSArray *)bccRecipients ofDraft:(MFMailComposeViewController *)draft;
 - (void) setAttachments:(NSArray *)attatchments ofDraft:(MFMailComposeViewController *)draft;
 - (void) mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error;
-- (void) callbackWithCode:(int)code andCallbackId:(NSString *)callbackId;
 - (NSString *) getMimeTypeFromFileExtension:(NSString *)extension;
 
 @end
@@ -46,7 +39,7 @@
     bool             canSendMail  = [MFMailComposeViewController canSendMail];
 
     pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
-                                       messageAsBool:canSendMail];
+                                    messageAsBool:canSendMail];
 
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
@@ -61,13 +54,11 @@
 
     if (!controller)
     {
-        [self callbackWithCode:APP_EMAIL_NOTSENT andCallbackId:command.callbackId];
+        return;
     }
 
-    // Hack, um später den Callback aufrufen zu können
-    controller.title = command.callbackId;
-
     [self openDraft:controller];
+    [self commandDelegate];
 }
 
 /**
@@ -90,11 +81,11 @@
     // Body (as HTML)
     [self setBody:[properties objectForKey:@"body"] ofDraft:draft isHTML:[[properties objectForKey:@"isHtml"] boolValue]];
     // Recipients
-    [self setRecipients:[properties objectForKey:@"recipients"] ofDraft:draft];
+    [self setToRecipients:[properties objectForKey:@"to"] ofDraft:draft];
     // CC Recipients
-    [self setCcRecipients:[properties objectForKey:@"ccRecipients"] ofDraft:draft];
+    [self setCcRecipients:[properties objectForKey:@"cc"] ofDraft:draft];
     // BCC Recipients
-    [self setBccRecipients:[properties objectForKey:@"bccRecipients"] ofDraft:draft];
+    [self setBccRecipients:[properties objectForKey:@"bcc"] ofDraft:draft];
     // Attachments
     [self setAttachments:[properties objectForKey:@"attachments"] ofDraft:draft];
 
@@ -128,7 +119,7 @@
 /**
  * Setzt die Empfänger der Mail.
  */
-- (void) setRecipients:(NSArray *)recipients ofDraft:(MFMailComposeViewController *)draft
+- (void) setToRecipients:(NSArray *)recipients ofDraft:(MFMailComposeViewController *)draft
 {
     [draft setToRecipients:recipients];
 }
@@ -169,47 +160,12 @@
     }
 }
 
-
 /**
- * @delegate
- */
+  * @delegate
+  */
 - (void) mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error
 {
-    NSString* callbackId = controller.title;
-
     [controller dismissViewControllerAnimated:YES completion:nil];
-
-    switch (result)
-    {
-        case MFMailComposeResultCancelled:
-            [self callbackWithCode:APP_EMAIL_CANCELLED andCallbackId:callbackId];
-            break;
-        case MFMailComposeResultSaved:
-            [self callbackWithCode:APP_EMAIL_SAVED andCallbackId:callbackId];
-            break;
-        case MFMailComposeResultSent:
-            [self callbackWithCode:APP_EMAIL_SENT andCallbackId:callbackId];
-            break;
-        case MFMailComposeResultFailed:
-            [self callbackWithCode:APP_EMAIL_FAILED andCallbackId:callbackId];
-            break;
-        default:
-            [self callbackWithCode:APP_EMAIL_NOTSENT andCallbackId:callbackId];
-            break;
-    }
-}
-
-/**
- * Calls the callback with the specified code.
- */
-- (void) callbackWithCode:(int)code andCallbackId:(NSString *)callbackId
-{
-    CDVPluginResult* pluginResult;
-
-    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
-                                     messageAsString:[@(code) stringValue]];
-
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:callbackId];
 }
 
 /**
