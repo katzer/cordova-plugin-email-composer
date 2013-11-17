@@ -79,8 +79,7 @@ window.plugin.email.isServiceAvailable(
 You can use this function to show the email view pre-filled with all kind of properties (see example below).<br>
 The function takes a hash where each property is optional. If a callback function is given, it will be called with a result code about the user action.
 
-**iOS:** You can attach only PDF and images (the latter will be convertend in PNG format).<br>
-**Android:** Result codes for the callback function are not support.
+**iOS:** You can attach only PDF and images (the latter will be converted in PNG format).
 
 ```javascript
 /*
