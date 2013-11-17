@@ -30,6 +30,7 @@ cordova plugin rm de.appplant.cordova.plugin.email-composer
 #### Version 0.7.0 (not yet released)
 - [***change:***] Removed the `callback` property from the `open` interface.
 - [***change:***] Renamed the properties `recipients`, `ccRecipients`, `bccRecipients`.
+- [bugfix:] Plugin under WP8 throws an error, if recipients were given as arrays.
 
 #### Version 0.6.0 (17.11.2013)
 - Added WP8 support
