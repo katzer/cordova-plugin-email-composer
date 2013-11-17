@@ -1,3 +1,12 @@
+/// </summary>
+///  EmailComposerOptions.cs
+///  Cordova EmailComposer Plugin
+///
+///  Created by Sebastian Katzer (github.com/katzer) on 07/10/2013.
+///  Copyright 2013 Sebastian Katzer. All rights reserved.
+///  GPL v2 licensed
+/// </summary>
+
 using System;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -32,19 +41,19 @@ namespace De.APPPlant.Cordova.Plugin.EmailComposer
         /// Contains all the email addresses for TO field
         /// </summary>
         [DataMember(IsRequired = false, Name = "to")]
-        public string To { get; set; }
+        public string[] To { get; set; }
 
         /// <summary>
         /// Contains all the email addresses for CC field
         /// </summary>
         [DataMember(IsRequired = false, Name = "cc")]
-        public string Cc { get; set; }
+        public string[] Cc { get; set; }
 
         /// <summary>
         /// Contains all the email addresses for BCC field
         /// </summary>
         [DataMember(IsRequired = false, Name = "bcc")]
-        public string Bcc { get; set; }
+        public string[] Bcc { get; set; }
 
         /// <summary>
         /// Contains all full paths to the files you want to attach
