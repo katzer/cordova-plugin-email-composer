@@ -27,6 +27,10 @@ cordova plugin rm de.appplant.cordova.plugin.email-composer
 ```
 
 ## Release Notes
+#### Version 0.7.0 (not yet released)
+- [***change:***] Removed the `callback` property from the `open` interface.
+- [***change:***] Renamed the properties `recipients`, `ccRecipients`, `bccRecipients`.
+
 #### Version 0.6.0 (17.11.2013)
 - Added WP8 support
 - [***deprecated:***] The `callback` property will be removed with v0.7.0.
@@ -85,21 +89,10 @@ window.plugin.email.open({
     subject: 'subject', // represents the subject of the email
     body: 'body',       // represents the email body (could be HTML code, in this case set isHtml to true)
     isHtml: true,       // indicats if the body is HTML or plain text
-    recipients: [],     // contains all the email addresses for TO field
-    ccRecipients: [],   // contains all the email addresses for CC field
-    bccRecipients: [],  // contains all the email addresses for BCC field
+    to: [],             // contains all the email addresses for TO field
+    cc: [],             // contains all the email addresses for CC field
+    bcc: [],            // contains all the email addresses for BCC field
     attachments: [],    // contains all full paths to the files you want to attach
-
-    callback: function (code) {
-        switch (code) {
-            case 0:     // email composition cancelled (cancel button pressed and draft not saved)
-            case 1:     // email saved (cancel button pressed but draft saved)
-            case 2:     // email sent
-            case 3:     // send failed
-            case 4:     // email not sent (something wrong happened e.g. service is not available)
-        }
-    },
-    scope: this         // execution scope of the callback function (default: window)
 });
 ```
 
@@ -111,21 +104,8 @@ window.plugin.email.open();
 ```
 
 ## Example
-```html
-<!DOCTYPE html>
-<html>
-    <head>
-        <script type="text/javascript" src="cordova.js"></script>
-        <script type="text/javascript">
-            function openDraft () {
-                window.plugin.email.open({ subject: 'Hello World' });
-            }
-        </script>
-    </head>
-    <body>
-        <a href="#" onClick="openDraft()">Send Me</a>
-    </body>
-</html>
+```javascript
+// TODO
 ```
 
 ## Quirks
