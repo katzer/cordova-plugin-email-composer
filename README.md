@@ -11,7 +11,7 @@ by Sebastián Katzer ([github.com/katzer](https://github.com/katzer))
 
 - **Android**
 
-- **WP8**
+- **WP8**<br>
 *See [How to use the email compose task for Windows Phone](http://msdn.microsoft.com/en-us/library/windowsphone/develop/hh394003.aspx) for detailed informations.*
 
 ## Adding the Plugin to your project
