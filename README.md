@@ -70,7 +70,7 @@ Function takes a callback function, passed to which is a boolean property. Optio
  */
 window.plugin.email.isServiceAvailable(
     function (isAvailable) {
-        alert(isavailable ? 'Service is available' : 'Service NOT available');
+        alert(isAvailable ? 'Service is available' : 'Service NOT available');
     }
 );
 ```
