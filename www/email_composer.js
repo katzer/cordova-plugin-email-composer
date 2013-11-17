@@ -35,7 +35,7 @@ EmailComposer.prototype = {
      */
     openDraft: function () {
         this.open.apply(this, arguments);
-    }
+    },
 
     /**
      * Gibt an, ob Emails versendet werden können.
