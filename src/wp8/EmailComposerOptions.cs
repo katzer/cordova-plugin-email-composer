@@ -31,20 +31,20 @@ namespace De.APPPlant.Cordova.Plugin.EmailComposer
         /// <summary>
         /// Contains all the email addresses for TO field
         /// </summary>
-        [DataMember(IsRequired = false, Name = "recipients")]
-        public string Recipients { get; set; }
+        [DataMember(IsRequired = false, Name = "to")]
+        public string To { get; set; }
 
         /// <summary>
         /// Contains all the email addresses for CC field
         /// </summary>
-        [DataMember(IsRequired = false, Name = "ccRecipients")]
-        public string CcRecipients { get; set; }
+        [DataMember(IsRequired = false, Name = "cc")]
+        public string Cc { get; set; }
 
         /// <summary>
         /// Contains all the email addresses for BCC field
         /// </summary>
-        [DataMember(IsRequired = false, Name = "bccRecipients")]
-        public string BccRecipients { get; set; }
+        [DataMember(IsRequired = false, Name = "bcc")]
+        public string Bcc { get; set; }
 
         /// <summary>
         /// Contains all full paths to the files you want to attach

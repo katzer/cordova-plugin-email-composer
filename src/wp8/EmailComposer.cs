@@ -42,9 +42,9 @@ namespace Cordova.Extension.Commands
 
             draft.Subject = options.Subject;
             draft.Body    = options.Body;
-            draft.To      = options.Recipients;
-            draft.Cc      = options.CcRecipients;
-            draft.Bcc     = options.BccRecipients;
+            draft.To      = options.To;
+            draft.Cc      = options.Cc;
+            draft.Bcc     = options.Bcc;
 
             draft.Show();
 
