@@ -27,7 +27,7 @@ cordova plugin rm de.appplant.cordova.plugin.email-composer
 ```
 
 ## Release Notes
-#### Version 0.6.0 (not yet released)
+#### Version 0.6.0 (17.11.2013)
 - Added WP8 support
 - [***deprecated:***] The `callback` property will be removed with v0.7.0.
 
