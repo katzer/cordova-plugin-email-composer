@@ -21,11 +21,11 @@ EmailComposer.prototype = {
         var callbackFn = null,
             options    = options || {};
 
-      	if (typeof options['callback'] == 'function'){
-      		callbackFn = function (code) {
-      			options.callback.call(options.scope || window, code);
-      		};
-      	};
+        if (device.platform == 'iOS' && typeof options['callback'] == 'function'){
+            callbackFn = function (code) {
+                options.callback.call(options.scope || window, code);
+            };
+        };
 
         cordova.exec(callbackFn, null, 'EmailComposer', 'open', [options]);
     },
@@ -44,11 +44,11 @@ EmailComposer.prototype = {
      * @param {Object?}  scope (default: window)
      */
     isServiceAvailable: function (callback, scope) {
-		var callbackFn = function () {
-			callback.apply(scope || window, arguments);
-		};
+        var callbackFn = function () {
+            callback.apply(scope || window, arguments);
+        };
 
-    	cordova.exec(callbackFn, null, 'EmailComposer', 'isServiceAvailable', []);
+        cordova.exec(callbackFn, null, 'EmailComposer', 'isServiceAvailable', []);
     }
 
 };
