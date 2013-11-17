@@ -7,9 +7,10 @@
  *  GPL v2 licensed
  */
 
+using De.APPPlant.Cordova.Plugin.EmailComposer;
+using Microsoft.Phone.Tasks;
 using System;
 using System.Linq;
-
 using WPCordovaClassLib.Cordova;
 using WPCordovaClassLib.Cordova.Commands;
 using WPCordovaClassLib.Cordova.JSON;
@@ -27,7 +28,7 @@ namespace Cordova.Extension.Commands
         /// </summary>
         public void isServiceAvailable (string jsonArgs)
         {
-            DispatchCommandResult();
+            DispatchCommandResult(new PluginResult(PluginResult.Status.OK, true));
         }
 
         /// <summary>
@@ -35,6 +36,18 @@ namespace Cordova.Extension.Commands
         /// </summary>
         public void open (string jsonArgs)
         {
+            string[] args                = JsonHelper.Deserialize<string[]>(jsonArgs);
+            EmailComposerOptions options = JsonHelper.Deserialize<EmailComposerOptions>(args[0]);
+            EmailComposeTask draft       = new EmailComposeTask();
+
+            draft.Subject = options.Subject;
+            draft.Body    = options.Body;
+            draft.To      = options.Recipients;
+            draft.Cc      = options.CcRecipients;
+            draft.Bcc     = options.BccRecipients;
+
+            draft.Show();
+
             DispatchCommandResult();
         }
     }

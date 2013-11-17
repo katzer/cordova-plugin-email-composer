@@ -56,5 +56,6 @@
         </config-file>
 
         <source-file src="src/wp8/EmailComposer.cs" />
+        <source-file src="src/wp8/EmailComposerOptions.cs" />
     </platform>
 </plugin>
