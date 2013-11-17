@@ -24,6 +24,9 @@ cordova plugin rm de.appplant.cordova.plugin.email-composer
 ```
 
 ## Release Notes
+#### Version 0.4.2 (17.11.2013)
+- [feature:] Added alias `openDraft` to the `open` interface.
+
 #### Version 0.4.1 (03.11.2013)
 - [bugfix]: On Android, the `isServiceAvailable()` interface has returned string values instead of boolean values.
 - [bugfix]: Sometimes the device said that no email app is available because of the missing mime type.
@@ -60,7 +63,7 @@ window.plugin.email.isServiceAvailable(
 );
 ```
 
-### open()
+### open() / openDraft()
 You can use this function to show the email view pre-filled with all kind of properties (see example below).<br>
 The function takes a hash where each property is optional. If a callback function is given, it will be called with a result code about the user action.
 
