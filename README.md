@@ -86,13 +86,13 @@ The function takes a hash where each property is optional. If a callback functio
  * Opens an email draft pre-filled with the passed properties.
  */
 window.plugin.email.open({
-    subject: 'subject', // represents the subject of the email
-    body: 'body',       // represents the email body (could be HTML code, in this case set isHtml to true)
-    isHtml: true,       // indicats if the body is HTML or plain text
-    to: [],             // contains all the email addresses for TO field
-    cc: [],             // contains all the email addresses for CC field
-    bcc: [],            // contains all the email addresses for BCC field
-    attachments: [],    // contains all full paths to the files you want to attach
+    to:          Array, // contains all the email addresses for TO field
+    cc:          Array, // contains all the email addresses for CC field
+    bcc:         Array, // contains all the email addresses for BCC field
+    attachments: Array, // contains all full paths to the files you want to attach
+    subject:    String, // represents the subject of the email
+    body:       String, // represents the email body (could be HTML code, in this case set isHtml to true)
+    isHtml:    Boolean, // indicats if the body is HTML or plain text
 });
 ```
 
