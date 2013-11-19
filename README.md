@@ -119,7 +119,7 @@ window.plugin.email.open({
 
 ### Email composer under Android and Windows Phone
 An configured email account is required to send emails.<br>
-***WP8:*** If an email account is not set up on the phone, the application prompts the user to set up an account.
+**WP8:** If an email account is not set up on the phone, the application prompts the user to set up an account.
 
 ### Limited support for Windows Phone 8
 Adding attachments and HTML formatted body are not supported.
