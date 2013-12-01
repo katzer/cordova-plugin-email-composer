@@ -123,3 +123,15 @@ An configured email account is required to send emails.<br>
 
 ### Limited support for Windows Phone 8
 Adding attachments and HTML formatted body are not supported.
+
+### TypeError: Cannot read property 'currentVersion' of null
+Along with Cordova 3.2 and Windows Phone 8 the `version.bat` script has to be renamed to `version`.
+
+On Mac or Linux
+```
+mv platforms/wp8/cordova/version.bat platforms/wp8/cordova/version
+```
+On Windows
+```
+ren platforms\wp8\cordova\version.bat platforms\wp8\cordova\version
+```
