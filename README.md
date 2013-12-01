@@ -28,6 +28,7 @@ cordova plugin rm de.appplant.cordova.plugin.email-composer
 
 ## Release Notes
 #### Version 0.7.0 (not yet released)
+- Release under the LGPL 2.1 lisence.
 - [***change:***] Removed the `callback` property from the `open` interface.
 - [***change:***] Renamed the properties `recipients`, `ccRecipients`, `bccRecipients`.
 - [bugfix:] Plugin under WP8 throws an error, if recipients were given as arrays.
@@ -143,3 +144,7 @@ ren platforms\wp8\cordova\version.bat platforms\wp8\cordova\version
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
+
+## License
+
+This software is released under the [LGPL 2.1 License](http://opensource.org/licenses/LGPL-2.1).
