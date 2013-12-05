@@ -26,16 +26,26 @@
 
 @interface APPEmailComposer (Private)
 
-- (MFMailComposeViewController *) getDraftWithProperties:(NSDictionary *)properties;
-- (void) openDraft: (MFMailComposeViewController *)draft;
-- (void) setSubject:(NSString *)subject ofDraft:(MFMailComposeViewController *)draft;
-- (void) setBody:(NSString *)body ofDraft:(MFMailComposeViewController *)draft isHTML:(BOOL)isHTML;
-- (void) setToRecipients:(NSArray *)recipients ofDraft:(MFMailComposeViewController *)draft;
-- (void) setCcRecipients:(NSArray *)ccRecipients ofDraft:(MFMailComposeViewController *)draft;
-- (void) setBccRecipients:(NSArray *)bccRecipients ofDraft:(MFMailComposeViewController *)draft;
-- (void) setAttachments:(NSArray *)attatchments ofDraft:(MFMailComposeViewController *)draft;
+// Erstellt den ViewController für Mails und fügt die übergebenen Eigenschaften ein
+- (MFMailComposeViewController*) getDraftWithProperties:(NSDictionary*)properties;
+// Zeigt den ViewController zum Versenden/Bearbeiten der Mail an
+- (void) openDraft: (MFMailComposeViewController*)draft;
+// Setzt den Betreff der Mail
+- (void) setSubject:(NSString*)subject ofDraft:(MFMailComposeViewController*)draft;
+// Setzt den Text der Mail
+- (void) setBody:(NSString*)body ofDraft:(MFMailComposeViewController*)draft isHTML:(BOOL)isHTML;
+// Setzt die Empfänger der Mail
+- (void) setToRecipients:(NSArray*)recipients ofDraft:(MFMailComposeViewController*)draft;
+// Setzt die CC-Empfänger der Mail
+- (void) setCcRecipients:(NSArray*)ccRecipients ofDraft:(MFMailComposeViewController*)draft;
+// Setzt die BCC-Empfänger der Mail
+- (void) setBccRecipients:(NSArray*)bccRecipients ofDraft:(MFMailComposeViewController*)draft;
+// Fügt Anhänge zur Mail inhzu
+- (void) setAttachments:(NSArray*)attatchments ofDraft:(MFMailComposeViewController*)draft;
+// Wird aufgerufen, nachdem der Composer View beendet wurde
 - (void) mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error;
-- (NSString *) getMimeTypeFromFileExtension:(NSString *)extension;
+// Retrieves the mime type from the file extension
+- (NSString*) getMimeTypeFromFileExtension:(NSString*)extension;
 
 @end
 
@@ -59,7 +69,7 @@
 /**
  * Öffnet den Email-Kontroller mit vorausgefüllten Daten.
  */
-- (void) open:(CDVInvokedUrlCommand *)command
+- (void) open:(CDVInvokedUrlCommand*)command
 {
     NSDictionary*                properties = [command.arguments objectAtIndex:0];
     MFMailComposeViewController* controller = [self getDraftWithProperties:properties];
@@ -76,7 +86,7 @@
 /**
  * Erstellt den ViewController für Mails und fügt die übergebenen Eigenschaften ein.
  */
-- (MFMailComposeViewController *) getDraftWithProperties:(NSDictionary *)properties
+- (MFMailComposeViewController*) getDraftWithProperties:(NSDictionary*)properties
 {
     // Falls das Gerät kein Email Interface unterstützt
     if (![MFMailComposeViewController canSendMail])
@@ -107,23 +117,23 @@
 /**
  * Zeigt den ViewController zum Versenden/Bearbeiten der Mail an.
  */
-- (void) openDraft: (MFMailComposeViewController *)draft
+- (void) openDraft: (MFMailComposeViewController*)draft
 {
     [self.viewController presentViewController:draft animated:YES completion:NULL];
 }
 
 /**
- * Setzt den Subject der Mail.
+ * Setzt den Betreff der Mail.
  */
-- (void) setSubject:(NSString *)subject ofDraft:(MFMailComposeViewController *)draft
+- (void) setSubject:(NSString*)subject ofDraft:(MFMailComposeViewController*)draft
 {
     [draft setSubject:subject];
 }
 
 /**
- * Setzt den Body der Mail.
+ * Setzt den Text der Mail.
  */
-- (void) setBody:(NSString *)body ofDraft:(MFMailComposeViewController *)draft isHTML:(BOOL)isHTML
+- (void) setBody:(NSString*)body ofDraft:(MFMailComposeViewController*)draft isHTML:(BOOL)isHTML
 {
     [draft setMessageBody:body isHTML:isHTML];
 }
@@ -131,7 +141,7 @@
 /**
  * Setzt die Empfänger der Mail.
  */
-- (void) setToRecipients:(NSArray *)recipients ofDraft:(MFMailComposeViewController *)draft
+- (void) setToRecipients:(NSArray*)recipients ofDraft:(MFMailComposeViewController*)draft
 {
     [draft setToRecipients:recipients];
 }
@@ -139,7 +149,7 @@
 /**
  * Setzt die CC-Empfänger der Mail.
  */
-- (void) setCcRecipients:(NSArray *)ccRecipients ofDraft:(MFMailComposeViewController *)draft
+- (void) setCcRecipients:(NSArray*)ccRecipients ofDraft:(MFMailComposeViewController*)draft
 {
     [draft setCcRecipients:ccRecipients];
 }
@@ -147,7 +157,7 @@
 /**
  * Setzt die BCC-Empfänger der Mail.
  */
-- (void) setBccRecipients:(NSArray *)bccRecipients ofDraft:(MFMailComposeViewController *)draft
+- (void) setBccRecipients:(NSArray*)bccRecipients ofDraft:(MFMailComposeViewController*)draft
 {
     [draft setBccRecipients:bccRecipients];
 }
@@ -155,7 +165,7 @@
 /**
  * Fügt die Anhände zur Mail hinzu.
  */
-- (void) setAttachments:(NSArray *)attatchments ofDraft:(MFMailComposeViewController *)draft
+- (void) setAttachments:(NSArray*)attatchments ofDraft:(MFMailComposeViewController*)draft
 {
     if (attatchments)
     {
@@ -174,6 +184,8 @@
 
 /**
   * @delegate
+  *
+  * Wird aufgerufen, nachdem der Composer View beendet wurde
   */
 - (void) mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error
 {
@@ -183,17 +195,19 @@
 /**
  * Retrieves the mime type from the file extension.
  */
-- (NSString *) getMimeTypeFromFileExtension:(NSString *)extension
+- (NSString*) getMimeTypeFromFileExtension:(NSString*)extension
 {
     if (!extension)
+    {
         return nil;
+    }
 
     // Get the UTI from the file's extension
     CFStringRef pathExtension = (CFStringRef)CFBridgingRetain(extension);
     CFStringRef type          = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, pathExtension, NULL);
 
     // Converting UTI to a mime type
-    return (NSString *)CFBridgingRelease(UTTypeCopyPreferredTagWithClass(type, kUTTagClassMIMEType));
+    return (NSString*)CFBridgingRelease(UTTypeCopyPreferredTagWithClass(type, kUTTagClassMIMEType));
 }
 
 @end
