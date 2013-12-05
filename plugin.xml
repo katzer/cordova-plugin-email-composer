@@ -8,10 +8,11 @@
     <name>EmailComposer</name>
 
     <description>A bunch of email composition plugins for Cordova 3.x.x</description>
+    <repo>https://github.com/katzer/cordova-plugin-email-composer.git</repo>
     <keywords>email, email intent, email composer, ios, android, windows phone, wp8</keywords>
-    <license>LGPL v2.1 License</license>
+    <license>Apache 2.0</license>
 
-    <author>Sebastián Katzer (github.com/katzer)</author>
+    <author>Sebastián Katzer</author>
 
     <engines>
         <engine name="cordova" version=">=3.0.0" />
