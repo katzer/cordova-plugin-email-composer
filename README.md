@@ -27,13 +27,12 @@ cordova plugin rm de.appplant.cordova.plugin.email-composer
 ```
 
 ## Release Notes
-#### Version 0.7.0 (not yet released)
+#### Version 0.7.0 (05.12.2013)
 - Release under the Apache 2.0 license.
 - [***change:***] Removed the `callback` property from the `open` interface.
 - [***change:***] Renamed the properties `recipients`, `ccRecipients`, `bccRecipients`.
 - [bugfix:] Plugin under WP8 throws an error, if recipients were given as arrays.
-- [enhancement:] `open` does not block the ui thread on iOS anymore.
-- [enhancement:] `open` does not block the ui thread on Android anymore.
+- [enhancement:] `open` does not block the ui thread on iOS & Android anymore.
 
 #### Version 0.6.0 (17.11.2013)
 - Added WP8 support
