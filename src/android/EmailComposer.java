@@ -22,7 +22,6 @@
 package de.appplant.cordova.plugin.emailcomposer;
 
 import java.io.File;
-import java.util.ArrayList;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -37,8 +36,6 @@ import org.apache.cordova.CallbackContext;
 import org.apache.cordova.PluginResult;
 
 public class EmailComposer extends CordovaPlugin {
-
-    private CallbackContext ctx;
 
     @Override
     public boolean execute (String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
@@ -77,7 +74,6 @@ public class EmailComposer extends CordovaPlugin {
         JSONObject properties = args.getJSONObject(0);
         Intent     draft      = this.getDraftWithProperties(properties);
 
-        this.ctx = ctx;
         this.openDraft(draft);
     }
 
