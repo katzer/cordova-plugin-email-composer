@@ -106,8 +106,14 @@ public class EmailComposer extends CordovaPlugin {
     /**
      * Zeigt den ViewController zum Versenden/Bearbeiten der Mail an.
      */
-    private void openDraft (Intent draft) {
-        cordova.startActivityForResult(this, Intent.createChooser(draft, "Select Email App"), 0);
+    private void openDraft (final Intent draft) {
+        final EmailComposer plugin = this;
+
+        cordova.getActivity().runOnUiThread(new Runnable() {
+            public void run() {
+                cordova.startActivityForResult(plugin, Intent.createChooser(draft, "Select Email App"), 0);
+            }
+        });
     }
 
     /**
