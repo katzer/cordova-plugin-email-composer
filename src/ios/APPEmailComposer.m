@@ -119,7 +119,9 @@
  */
 - (void) openDraft: (MFMailComposeViewController*)draft
 {
-    [self.viewController presentViewController:draft animated:YES completion:NULL];
+    [self.commandDelegate runInBackground:^{
+        [self.viewController presentViewController:draft animated:YES completion:NULL];
+    }];
 }
 
 /**
