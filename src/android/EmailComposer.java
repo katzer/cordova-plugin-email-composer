@@ -61,7 +61,7 @@ public class EmailComposer extends CordovaPlugin {
      * Überprüft, ob Emails versendet werden können.
      */
     private void isServiceAvailable (CallbackContext ctx) {
-        Boolean available   = this.isEmailAccountConfigured();
+        Boolean available   = isEmailAccountConfigured();
         PluginResult result = new PluginResult(PluginResult.Status.OK, available);
 
         ctx.sendPluginResult(result);
@@ -72,9 +72,9 @@ public class EmailComposer extends CordovaPlugin {
      */
     private void open (JSONArray args, CallbackContext ctx) throws JSONException {
         JSONObject properties = args.getJSONObject(0);
-        Intent     draft      = this.getDraftWithProperties(properties);
+        Intent     draft      = getDraftWithProperties(properties);
 
-        this.openDraft(draft);
+        openDraft(draft);
     }
 
     /**
@@ -86,17 +86,17 @@ public class EmailComposer extends CordovaPlugin {
         Intent mail = new Intent(android.content.Intent.ACTION_SEND);
 
         if (params.has("subject"))
-            this.setSubject(params.getString("subject"), mail);
+            setSubject(params.getString("subject"), mail);
         if (params.has("body"))
-            this.setBody(params.getString("body"), params.optBoolean("isHtml"), mail);
+            setBody(params.getString("body"), params.optBoolean("isHtml"), mail);
         if (params.has("to"))
-            this.setRecipients(params.getJSONArray("to"), mail);
+            setRecipients(params.getJSONArray("to"), mail);
         if (params.has("cc"))
-            this.setCcRecipients(params.getJSONArray("cc"), mail);
+            setCcRecipients(params.getJSONArray("cc"), mail);
         if (params.has("bcc"))
-            this.setBccRecipients(params.getJSONArray("bcc"), mail);
+            setBccRecipients(params.getJSONArray("bcc"), mail);
         if (params.has("attachments"))
-            this.setAttachments(params.getJSONArray("attachments"), mail);
+            setAttachments(params.getJSONArray("attachments"), mail);
 
         mail.setType("application/octet-stream");
 
@@ -107,7 +107,7 @@ public class EmailComposer extends CordovaPlugin {
      * Zeigt den ViewController zum Versenden/Bearbeiten der Mail an.
      */
     private void openDraft (Intent draft) {
-        this.cordova.startActivityForResult(this, Intent.createChooser(draft, "Select Email App"), 0);
+        cordova.startActivityForResult(this, Intent.createChooser(draft, "Select Email App"), 0);
     }
 
     /**
