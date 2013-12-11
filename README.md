@@ -26,6 +26,17 @@ Through the [Command-line Interface](http://cordova.apache.org/docs/en/3.0.0/gui
 cordova plugin rm de.appplant.cordova.plugin.email-composer
 ```
 
+## PhoneGap Build
+Add the following xml to your config.xml to always use the latest version of this plugin:
+```
+<gap:plugin name="de.appplant.cordova.plugin.email-composer" />
+```
+or to use this exact version: 
+```
+<gap:plugin name="de.appplant.cordova.plugin.email-composer" version="0.7.0" />
+```
+More informations can be found [here](https://build.phonegap.com/plugins/333).
+
 ## Release Notes
 #### Version 0.7.0 (05.12.2013)
 - Release under the Apache 2.0 license.
