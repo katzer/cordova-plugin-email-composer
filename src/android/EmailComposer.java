@@ -179,14 +179,18 @@ public class EmailComposer extends CordovaPlugin {
      * Fügt die Anhände zur Mail hinzu.
      */
     private void setAttachments (JSONArray attachments, Intent draft) throws JSONException {
+        ArrayList<Uri> attachmentUris = new ArrayList<Uri>();
+
         for (int i = 0; i < attachments.length(); i++) {
             Uri attachmentUri = Uri.parse(attachments.getString(i));
             File file         = new File(attachmentUri.getPath());
 
             if (file.exists()) {
-                draft.putExtra(Intent.EXTRA_STREAM, attachmentUri);
+                attachmentUris.add(attachmentUri);
             }
         }
+
+        draft.putExtra(Intent.EXTRA_STREAM, attachmentUris);
     }
 
     /**

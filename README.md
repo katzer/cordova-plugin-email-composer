@@ -31,13 +31,16 @@ Add the following xml to your config.xml to always use the latest version of thi
 ```
 <gap:plugin name="de.appplant.cordova.plugin.email-composer" />
 ```
-or to use this exact version: 
+or to use this exact version:
 ```
 <gap:plugin name="de.appplant.cordova.plugin.email-composer" version="0.7.0" />
 ```
 More informations can be found [here](https://build.phonegap.com/plugins/333).
 
 ## Release Notes
+#### Version 0.7.1 (not yet released)
+- [bugfix:] Only the last attachment was added to the email composer on android.
+
 #### Version 0.7.0 (05.12.2013)
 - Release under the Apache 2.0 license.
 - [***change:***] Removed the `callback` property from the `open` interface.
