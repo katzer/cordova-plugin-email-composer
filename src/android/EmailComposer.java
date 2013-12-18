@@ -22,6 +22,7 @@
 package de.appplant.cordova.plugin.emailcomposer;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -83,7 +84,7 @@ public class EmailComposer extends CordovaPlugin {
      * @param {JSONObject} params (Subject, Body, Recipients, ...)
      */
     private Intent getDraftWithProperties (JSONObject params) throws JSONException {
-        Intent mail = new Intent(android.content.Intent.ACTION_SEND);
+        Intent mail = new Intent(android.content.Intent.ACTION_SEND_MULTIPLE);
 
         if (params.has("subject"))
             setSubject(params.getString("subject"), mail);
@@ -190,7 +191,7 @@ public class EmailComposer extends CordovaPlugin {
             }
         }
 
-        draft.putExtra(Intent.EXTRA_STREAM, attachmentUris);
+        draft.putParcelableArrayListExtra(Intent.EXTRA_STREAM, attachmentUris);
     }
 
     /**
