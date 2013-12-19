@@ -48,9 +48,9 @@ namespace Cordova.Extension.Commands
         /// </summary>
         public void open(string jsonArgs)
         {
-            string[] args                = JsonHelper.Deserialize<string[]>(jsonArgs);
-            EmailComposerOptions options = JsonHelper.Deserialize<EmailComposerOptions>(args[0]);
-            EmailComposeTask draft       = GetDraftWithProperties(options);
+            string[] args          = JsonHelper.Deserialize<string[]>(jsonArgs);
+            Options options        = JsonHelper.Deserialize<Options>(args[0]);
+            EmailComposeTask draft = GetDraftWithProperties(options);
 
             OpenDraft(draft);
 
@@ -60,7 +60,7 @@ namespace Cordova.Extension.Commands
         /// </summary>
         /// Erstellt den Email-Composer und fügt die übergebenen Eigenschaften ein.
         /// </summary>
-        private EmailComposeTask GetDraftWithProperties(EmailComposerOptions options)
+        private EmailComposeTask GetDraftWithProperties(Options options)
         {
             EmailComposeTask draft = new EmailComposeTask();
 

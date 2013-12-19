@@ -29,7 +29,7 @@ namespace De.APPPlant.Cordova.Plugin.EmailComposer
     /// Represents email composer task options
     /// </summary>
     [DataContract]
-    class EmailComposerOptions
+    class Options
     {
         /// <summary>
         /// Represents the subject of the email
