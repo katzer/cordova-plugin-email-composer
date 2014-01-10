@@ -171,15 +171,15 @@
 {
     if (attatchments)
     {
-        int counter = 1;
-
         for (NSString* path in attatchments)
         {
             NSData* data = [[NSFileManager defaultManager] contentsAtPath:path];
 
-            [draft addAttachmentData:data mimeType:[self getMimeTypeFromFileExtension:[path pathExtension]] fileName:[NSString stringWithFormat:@"attachment%d.%@", counter, [path pathExtension]]];
+            NSString* pathExt  = [path pathExtension];
+            NSString* fileName = [path pathComponents].lastObject;
+            NSString* mimeType = [self getMimeTypeFromFileExtension:pathExt];
 
-            counter++;
+            [draft addAttachmentData:data mimeType:mimeType fileName:fileName];
         }
     }
 }

@@ -38,6 +38,9 @@ or to use this exact version:
 More informations can be found [here](https://build.phonegap.com/plugins/333).
 
 ## Release Notes
+#### Version 0.7.2 (not yet released)
+- [enhancement:] Attachments are added with their real name.
+
 #### Version 0.7.1 (17.12.2013)
 - [bugfix:] Only the last attachment was added to the email composer on android.
 
