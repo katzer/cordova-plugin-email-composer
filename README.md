@@ -154,6 +154,7 @@ On Windows
 ```
 ren platforms\wp8\cordova\version.bat platforms\wp8\cordova\version
 ```
+
 ### Compile error on iOS
 The error indicates, that the `MessageUI.framework` is not linked to your project. The framework is linked automatically when the plugin was installed, but may removed later.
 ```
