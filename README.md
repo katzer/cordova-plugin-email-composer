@@ -125,12 +125,13 @@ window.plugin.email.open();
 ## Example
 ```javascript
 window.plugin.email.open({
-    to:      ['max.mustermann@appplant.de'],
-    cc:      ['erika.mustermann@appplant.de'],
-    bcc:     ['john.doe@appplant.com', 'jane.doe@appplant.com'],
-    subject: 'Hello World!',
-    body:    '<h3>TEST</h3><h2>TEST</h2><h1>TEST</h1>',
-    isHtml:  true
+    to:          ['max.mustermann@appplant.de'],
+    cc:          ['erika.mustermann@appplant.de'],
+    bcc:         ['john.doe@appplant.com', 'jane.doe@appplant.com'],
+    attachments: ['file:///storage/sdcard0/xxx/filename.xls','file:///storage/sdcard0/xxx/filename.pdf'],
+    subject:     'Hello World!',
+    body:        '<h3>TEST</h3><h2>TEST</h2><h1>TEST</h1>',
+    isHtml:      true
 });
 ```
 
