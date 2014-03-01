@@ -150,6 +150,7 @@ window.plugin.email.open({
 
 ## Platform specifics
 ### Attachment paths on Android
+Attachment paths can either be defined absolute or relative. A relative path must be point to a file from the res folder of the application.
 ```javascript
 window.plugin.email.open({
     attachments: [
@@ -160,6 +161,7 @@ window.plugin.email.open({
 ```
 
 ### Attachment paths on iOS
+Attachment paths can either be defined absolute or relative. A relative path must be point to a file from the root folder of the application.
 ```javascript
 window.plugin.email.open({
     attachments: [
