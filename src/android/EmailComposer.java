@@ -22,6 +22,9 @@
 package de.appplant.cordova.plugin.emailcomposer;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import org.json.JSONArray;
@@ -29,7 +32,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Environment;
 import android.text.Html;
 
 import org.apache.cordova.CordovaPlugin;
@@ -183,12 +190,9 @@ public class EmailComposer extends CordovaPlugin {
         ArrayList<Uri> attachmentUris = new ArrayList<Uri>();
 
         for (int i = 0; i < attachments.length(); i++) {
-            Uri attachmentUri = Uri.parse(attachments.getString(i));
-            File file         = new File(attachmentUri.getPath());
+            Uri attachmentUri = getUriForPath(attachments.getString(i));
 
-            if (file.exists()) {
-                attachmentUris.add(attachmentUri);
-            }
+            attachmentUris.add(attachmentUri);
         }
 
         draft.putParcelableArrayListExtra(Intent.EXTRA_STREAM, attachmentUris);
@@ -202,5 +206,59 @@ public class EmailComposer extends CordovaPlugin {
         Boolean available = cordova.getActivity().getPackageManager().queryIntentActivities(intent, 0).size() > 1;
 
         return available;
+    }
+
+    /**
+     * Retrieves the URI for a given path.
+     */
+    private Uri getUriForPath (String path) {
+        if (path.startsWith("relative://")) {
+            String resPath = path.replaceFirst("relative://", "");
+            String resName = resPath.substring(resPath.lastIndexOf('.') + 1);
+
+            Resources res  = cordova.getActivity().getResources();
+            int resId      = getResId(resPath);
+            Bitmap bmp     = BitmapFactory.decodeResource(res, resId);
+            String storage = Environment.getExternalStorageDirectory().toString() + "/email_composer/";
+            File file      = new File(storage, resName + ".png");
+
+            new File(storage).mkdir();
+
+            try {
+                FileOutputStream outStream = new FileOutputStream(file);
+
+                bmp.compress(Bitmap.CompressFormat.PNG, 100, outStream);
+                outStream.flush();
+                outStream.close();
+
+                return Uri.fromFile(file);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else if (path.startsWith("absolute://")) {
+            return Uri.parse(path.replaceFirst("absolute://", ""));
+        }
+
+        return Uri.parse(path);
+    }
+
+    /**
+     * @return The resource ID for the given resource.
+     */
+    private int getResId (String resPath) {
+        String pkgName = cordova.getActivity().getPackageName();
+        String clsName = resPath.substring(0, resPath.lastIndexOf("."));
+        String resName = resPath.substring(resPath.lastIndexOf('.') + 1);
+        int resId      = 0;
+
+        try {
+            Class<?> klass  = Class.forName(pkgName + ".R$" + clsName);
+
+            resId = (Integer) klass.getDeclaredField(resName).get(Integer.class);
+        } catch (Exception e) {}
+
+        return resId;
     }
 }
