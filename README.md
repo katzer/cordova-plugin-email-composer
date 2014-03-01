@@ -5,6 +5,7 @@ A bunch of email composition plugins for Cordova 3.x.x
 
 by Sebastián Katzer ([github.com/katzer](https://github.com/katzer))
 
+
 ## Supported Platforms
 - **iOS**<br>
 *See [MFMailComposeViewController Class Reference](http://developer.apple.com/library/ios/documentation/MessageUI/Reference/MFMailComposeViewController_class/Reference/Reference.html) for detailed informations and screenshots.*
@@ -14,17 +15,26 @@ by Sebastián Katzer ([github.com/katzer](https://github.com/katzer))
 - **WP8**<br>
 *See [How to use the email compose task for Windows Phone](http://msdn.microsoft.com/en-us/library/windowsphone/develop/hh394003.aspx) for detailed informations.*
 
+
 ## Adding the Plugin to your project
 Through the [Command-line Interface](http://cordova.apache.org/docs/en/3.0.0/guide_cli_index.md.html#The%20Command-line%20Interface):
-```
+```bash
+# from master:
 cordova plugin add https://github.com/katzer/cordova-plugin-email-composer.git
+cordova build
+
+# last version:
+cordova plugin add de.appplant.cordova.plugin.email-composer
+cordova build
 ```
+
 
 ## Removing the Plugin from your project
 Through the [Command-line Interface](http://cordova.apache.org/docs/en/3.0.0/guide_cli_index.md.html#The%20Command-line%20Interface):
 ```
 cordova plugin rm de.appplant.cordova.plugin.email-composer
 ```
+
 
 ## PhoneGap Build
 Add the following xml to your config.xml to always use the latest version of this plugin:
