@@ -238,7 +238,10 @@ public class EmailComposer extends CordovaPlugin {
                 e.printStackTrace();
             }
         } else if (path.startsWith("absolute://")) {
-            return Uri.parse(path.replaceFirst("absolute://", ""));
+            String absPath = path.replaceFirst("absolute://", "/");
+            File file      = new File(absPath);
+
+            return Uri.fromFile(file);
         }
 
         return Uri.parse(path);
