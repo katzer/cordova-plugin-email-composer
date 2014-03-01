@@ -43,12 +43,12 @@ Add the following xml to your config.xml to always use the latest version of thi
 ```
 or to use this exact version:
 ```
-<gap:plugin name="de.appplant.cordova.plugin.email-composer" version="0.7.0" />
+<gap:plugin name="de.appplant.cordova.plugin.email-composer" version="0.7.1" />
 ```
-More informations can be found [here](https://build.phonegap.com/plugins/333).
+More informations can be found [here](https://build.phonegap.com/plugins/369).
 
 ## Release Notes
-#### Version 0.7.2 (not yet released)
+#### Version 0.7.2 (01.03.2014)
 - [enhancement:] Attachments are added with their real name.
 
 #### Version 0.7.1 (17.12.2013)
