@@ -224,7 +224,7 @@
 
     if ([path hasPrefix:@"absolute://"])
     {
-        absolutePath = [path stringByReplacingOccurrencesOfString:@"absolute://" withString:@""];
+        absolutePath = [path stringByReplacingOccurrencesOfString:@"absolute://" withString:@"/"];
     }
     else if ([path hasPrefix:@"relative://"])
     {
