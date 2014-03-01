@@ -9,9 +9,7 @@ by Sebastián Katzer ([github.com/katzer](https://github.com/katzer))
 ## Supported Platforms
 - **iOS**<br>
 *See [MFMailComposeViewController Class Reference](http://developer.apple.com/library/ios/documentation/MessageUI/Reference/MFMailComposeViewController_class/Reference/Reference.html) for detailed informations and screenshots.*
-
 - **Android**
-
 - **WP8**<br>
 *See [How to use the email compose task for Windows Phone](http://msdn.microsoft.com/en-us/library/windowsphone/develop/hh394003.aspx) for detailed informations.*
 
@@ -47,7 +45,11 @@ or to use this exact version:
 ```
 More informations can be found [here](https://build.phonegap.com/plugins/369).
 
+
 ## Release Notes
+#### Version 0.8.0 (not yet released)
+- [feature:] New `absolute://` and `relative://` attachment prefixes.
+
 #### Version 0.7.2 (01.03.2014)
 - [enhancement:] Attachments are added with their real name.
 
@@ -84,6 +86,7 @@ More informations can be found [here](https://build.phonegap.com/plugins/369).
 - Added iOS support<br>
   *Based on the EmailComposer(WithAttachments) iOS plugin made by* ***Randy McMillan*** *and* ***guidosabatini***
 
+
 ## Using the plugin
 The plugin creates the object ```window.plugin.email``` with two methods:
 
@@ -118,7 +121,7 @@ window.plugin.email.open({
     to:          Array, // contains all the email addresses for TO field
     cc:          Array, // contains all the email addresses for CC field
     bcc:         Array, // contains all the email addresses for BCC field
-    attachments: Array, // contains all full paths to the files you want to attach
+    attachments: Array, // contains all paths to the files you want to attach
     subject:    String, // represents the subject of the email
     body:       String, // represents the email body (could be HTML code, in this case set isHtml to true)
     isHtml:    Boolean, // indicats if the body is HTML or plain text
@@ -132,18 +135,40 @@ window.plugin.email.open({
 window.plugin.email.open();
 ```
 
+
 ## Example
 ```javascript
 window.plugin.email.open({
     to:          ['max.mustermann@appplant.de'],
     cc:          ['erika.mustermann@appplant.de'],
     bcc:         ['john.doe@appplant.com', 'jane.doe@appplant.com'],
-    attachments: ['file:///storage/sdcard0/xxx/filename.xls','file:///storage/sdcard0/xxx/filename.pdf'],
     subject:     'Hello World!',
     body:        '<h3>TEST</h3><h2>TEST</h2><h1>TEST</h1>',
     isHtml:      true
 });
 ```
+
+## Platform specifics
+### Attachment paths on Android
+```javascript
+window.plugin.email.open({
+    attachments: [
+        'absolute://storage/sdcard/icon.jpg',
+        'relative://drawable/icon'
+    ]
+});
+```
+
+### Attachment paths on iOS
+```javascript
+window.plugin.email.open({
+    attachments: [
+        'absolute://Users/sebastian/Library/Application Support/iPhone Simulator/7.0.3/Applications/E7981856-801F-4355-8687-EAACDF8B2A54/HelloCordova.app/../Documents/icon.jpg"'
+        'relative://resources/icons/icon.jpg'
+    ]
+});
+```
+
 
 ## Quirks
 
@@ -166,6 +191,7 @@ On Windows
 ren platforms\wp8\cordova\version.bat platforms\wp8\cordova\version
 ```
 
+
 ### Compile error on iOS
 The error indicates, that the `MessageUI.framework` is not linked to your project. The framework is linked automatically when the plugin was installed, but may removed later.
 ```
@@ -175,6 +201,7 @@ Undefined symbols for architecture i386:
 ld: symbol(s) not found for architecture i386
 clang: error: linker command failed with exit code 1 (use -v to see invocation)
 ```
+
 
 ## Contributing
 
