@@ -46,6 +46,8 @@
 - (void) mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error;
 // Retrieves the mime type from the file extension
 - (NSString*) getMimeTypeFromFileExtension:(NSString*)extension;
+// Retrieves the absolute path for a given (relative) path.
+- (NSString*) getAbsolutePathFor:(NSString*)path;
 
 @end
 
@@ -173,7 +175,8 @@
     {
         for (NSString* path in attatchments)
         {
-            NSData* data = [[NSFileManager defaultManager] contentsAtPath:path];
+            NSString* fullPath = [self getAbsolutePathFor:path];
+            NSData* data       = [[NSFileManager defaultManager] contentsAtPath:fullPath];
 
             NSString* pathExt  = [path pathExtension];
             NSString* fileName = [path pathComponents].lastObject;
@@ -210,6 +213,28 @@
 
     // Converting UTI to a mime type
     return (NSString*)CFBridgingRelease(UTTypeCopyPreferredTagWithClass(type, kUTTagClassMIMEType));
+}
+
+/**
+ * Retrieves the absolute path for a given (relative) path.
+ */
+- (NSString*) getAbsolutePathFor:(NSString*)path
+{
+    NSString* absolutePath = [path copy];
+
+    if ([path hasPrefix:@"absolute://"])
+    {
+        absolutePath = [path stringByReplacingOccurrencesOfString:@"absolute://" withString:@""];
+    }
+    else if ([path hasPrefix:@"relative://"])
+    {
+        NSString* bundlePath = [[[NSBundle mainBundle] bundlePath] stringByAppendingString:@"/"];
+
+        absolutePath = [path stringByReplacingOccurrencesOfString:@"relative://" withString:@""];
+        absolutePath = [bundlePath stringByAppendingString:absolutePath];
+    }
+
+    return absolutePath;
 }
 
 @end
