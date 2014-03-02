@@ -48,7 +48,8 @@ More informations can be found [here](https://build.phonegap.com/plugins/369).
 
 ## Release Notes
 #### Version 0.8.0 (not yet released)
-- [feature:] New `absolute://` and `relative://` attachment prefixes.
+- [enhancement:] New `absolute://` and `relative://` attachment prefixes.
+- [feature:] New `base64://` prefix to attach base64 encoded data streams.
 
 #### Version 0.7.2 (01.03.2014)
 - [enhancement:] Attachments are added with their real name.
@@ -121,7 +122,7 @@ window.plugin.email.open({
     to:          Array, // contains all the email addresses for TO field
     cc:          Array, // contains all the email addresses for CC field
     bcc:         Array, // contains all the email addresses for BCC field
-    attachments: Array, // contains all paths to the files you want to attach
+    attachments: Array, // contains all paths to the files you want to attach or base64 encoded data streams
     subject:    String, // represents the subject of the email
     body:       String, // represents the email body (could be HTML code, in this case set isHtml to true)
     isHtml:    Boolean, // indicats if the body is HTML or plain text
@@ -142,6 +143,7 @@ window.plugin.email.open({
     to:          ['max.mustermann@appplant.de'],
     cc:          ['erika.mustermann@appplant.de'],
     bcc:         ['john.doe@appplant.com', 'jane.doe@appplant.com'],
+    attachments: ['base64:icon.png//iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAYAAAA6/...'],
     subject:     'Hello World!',
     body:        '<h3>TEST</h3><h2>TEST</h2><h1>TEST</h1>',
     isHtml:      true
@@ -149,8 +151,8 @@ window.plugin.email.open({
 ```
 
 ## Platform specifics
-### Attachment paths on Android
-Attachment paths can either be defined absolute or relative. A relative path must be point to a file from the res folder of the application.
+### File attachment on Android
+File attachment paths can either be defined absolute or relative. A relative path must be point to a file from the res folder of the application.
 ```javascript
 window.plugin.email.open({
     attachments: [
@@ -160,8 +162,8 @@ window.plugin.email.open({
 });
 ```
 
-### Attachment paths on iOS
-Attachment paths can either be defined absolute or relative. A relative path must be point to a file from the root folder of the application.
+### File attachment on iOS
+File attachment paths can either be defined absolute or relative. A relative path must be point to a file from the root folder of the application.
 ```javascript
 window.plugin.email.open({
     attachments: [
