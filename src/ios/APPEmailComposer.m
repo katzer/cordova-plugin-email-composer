@@ -21,6 +21,7 @@
 
 
 #import "APPEmailComposer.h"
+#import "NSData+Base64.h"
 #import <MobileCoreServices/MobileCoreServices.h>
 
 
@@ -46,8 +47,10 @@
 - (void) mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error;
 // Retrieves the mime type from the file extension
 - (NSString*) getMimeTypeFromFileExtension:(NSString*)extension;
-// Retrieves the absolute path for a given (relative) path.
-- (NSString*) getAbsolutePathFor:(NSString*)path;
+// Returns the data for a given (relative) attachments path
+- (NSData*) getDataForAttachmentPath:(NSString*)path;
+// Retrieves the attachments basename.
+- (NSString*) getBasenameFromAttachmentPath:(NSString*)path;
 
 @end
 
@@ -175,11 +178,11 @@
     {
         for (NSString* path in attatchments)
         {
-            NSString* fullPath = [self getAbsolutePathFor:path];
-            NSData* data       = [[NSFileManager defaultManager] contentsAtPath:fullPath];
+            NSData* data       = [self getDataForAttachmentPath:path];
 
-            NSString* pathExt  = [path pathExtension];
-            NSString* fileName = [path pathComponents].lastObject;
+            NSString* basename = [self getBasenameFromAttachmentPath:path];
+            NSString* pathExt  = [basename pathExtension];
+            NSString* fileName = [basename pathComponents].lastObject;
             NSString* mimeType = [self getMimeTypeFromFileExtension:pathExt];
 
             [draft addAttachmentData:data mimeType:mimeType fileName:fileName];
@@ -216,25 +219,52 @@
 }
 
 /**
- * Retrieves the absolute path for a given (relative) path.
+ * Retrieves the attachments basename.
  */
-- (NSString*) getAbsolutePathFor:(NSString*)path
+- (NSString*) getBasenameFromAttachmentPath:(NSString*)path
 {
-    NSString* absolutePath = [path copy];
+    if ([path hasPrefix:@"base64:"])
+    {
+        NSString* pathWithoutPrefix = [path stringByReplacingOccurrencesOfString:@"base64:" withString:@""];
+
+        return [pathWithoutPrefix substringToIndex:[pathWithoutPrefix rangeOfString:@"//"].location];
+    }
+
+    return path;
+
+}
+
+/**
+ * Returns the data for a given (relative) attachments path.
+ */
+- (NSData*) getDataForAttachmentPath:(NSString*)path
+{
+    NSFileManager* fileManager = [NSFileManager defaultManager];
 
     if ([path hasPrefix:@"absolute://"])
     {
-        absolutePath = [path stringByReplacingOccurrencesOfString:@"absolute://" withString:@"/"];
+        NSString* absolutePath = [path stringByReplacingOccurrencesOfString:@"absolute://" withString:@"/"];
+
+        return [fileManager contentsAtPath:absolutePath];
     }
     else if ([path hasPrefix:@"relative://"])
     {
-        NSString* bundlePath = [[[NSBundle mainBundle] bundlePath] stringByAppendingString:@"/"];
+        NSString* bundlePath   = [[[NSBundle mainBundle] bundlePath] stringByAppendingString:@"/"];
+        NSString* absolutePath = [path stringByReplacingOccurrencesOfString:@"relative://" withString:@""];
 
-        absolutePath = [path stringByReplacingOccurrencesOfString:@"relative://" withString:@""];
         absolutePath = [bundlePath stringByAppendingString:absolutePath];
+
+        return [fileManager contentsAtPath:absolutePath];
+    }
+    else if ([path hasPrefix:@"base64:"])
+    {
+        NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"^base64:[^/]+.." options:NSRegularExpressionCaseInsensitive error:Nil];
+        NSString *dataString = [regex stringByReplacingMatchesInString:path options:0 range:NSMakeRange(0, [path length]) withTemplate:@""];
+
+        return [NSData dataFromBase64String:dataString];
     }
 
-    return absolutePath;
+    return [fileManager contentsAtPath:path];
 }
 
 @end
