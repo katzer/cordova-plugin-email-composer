@@ -47,7 +47,7 @@ More informations can be found [here](https://build.phonegap.com/plugins/369).
 
 
 ## Release Notes
-#### Version 0.8.0 (not yet released)
+#### Version 0.8.0 (02.03.2014)
 - [enhancement:] New `absolute://` and `relative://` attachment prefixes.
 - [feature:] New `base64://` prefix to attach base64 encoded data streams.
 
