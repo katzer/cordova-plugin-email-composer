@@ -38,6 +38,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Environment;
 import android.text.Html;
+import android.util.Base64;
 
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CallbackContext;
@@ -219,7 +220,7 @@ public class EmailComposer extends CordovaPlugin {
             Resources res  = cordova.getActivity().getResources();
             int resId      = getResId(resPath);
             Bitmap bmp     = BitmapFactory.decodeResource(res, resId);
-            String storage = Environment.getExternalStorageDirectory().toString() + "/email_composer/";
+            String storage = Environment.getExternalStorageDirectory().toString() + "/email_composer";
             File file      = new File(storage, resName + ".png");
 
             new File(storage).mkdir();
@@ -242,6 +243,29 @@ public class EmailComposer extends CordovaPlugin {
             File file      = new File(absPath);
 
             return Uri.fromFile(file);
+        } else if (path.startsWith("base64:")) {
+            String resName = path.substring(path.indexOf(":") + 1, path.indexOf("//"));
+            String resData = path.substring(path.indexOf("//") +2);
+
+            byte[] bytes   = Base64.decode(resData, 0);
+            String storage = this.cordova.getActivity().getCacheDir() + "/email_composer";
+            File file      = new File(storage, resName);
+
+            new File(storage).mkdir();
+
+            try {
+                FileOutputStream os = new FileOutputStream(file, true);
+
+                os.write(bytes);
+                os.flush();
+                os.close();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return Uri.parse("content://" + AttachmentProvider.AUTHORITY + "/" + resName);
         }
 
         return Uri.parse(path);
