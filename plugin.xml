@@ -26,13 +26,13 @@
     <!-- ios -->
     <platform name="ios">
         <config-file target="config.xml" parent="/*">
-		<feature name="EmailComposer">
-			<param name="ios-package" value="APPEmailComposer"/>
-		</feature>
+            <feature name="EmailComposer">
+                <param name="ios-package" value="APPEmailComposer"/>
+            </feature>
         </config-file>
 
-    	<header-file src="src/ios/APPEmailComposer.h" />
-    	<source-file src="src/ios/APPEmailComposer.m" />
+        <header-file src="src/ios/APPEmailComposer.h" />
+        <source-file src="src/ios/APPEmailComposer.m" />
         <header-file src="src/ios/NSData+Base64.h" />
         <source-file src="src/ios/NSData+Base64.m" />
 
