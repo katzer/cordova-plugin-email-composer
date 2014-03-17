@@ -21,7 +21,7 @@
 
 
 #import "APPEmailComposer.h"
-#import "NSData+Base64.h"
+#import "Cordova/NSData+Base64.h"
 #import <MobileCoreServices/MobileCoreServices.h>
 
 

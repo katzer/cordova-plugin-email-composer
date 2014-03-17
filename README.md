@@ -47,6 +47,9 @@ More informations can be found [here](https://build.phonegap.com/plugins/369).
 
 
 ## Release Notes
+#### Version 0.8.1 (not yet released)
+- Make use Cordovas NSData+Base64 extension.
+
 #### Version 0.8.0 (02.03.2014)
 - [enhancement:] New `absolute://` and `relative://` attachment prefixes.
 - [feature:] New `base64://` prefix to attach base64 encoded data streams.

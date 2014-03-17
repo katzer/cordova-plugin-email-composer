@@ -33,8 +33,6 @@
 
         <header-file src="src/ios/APPEmailComposer.h" />
         <source-file src="src/ios/APPEmailComposer.m" />
-        <header-file src="src/ios/NSData+Base64.h" />
-        <source-file src="src/ios/NSData+Base64.m" />
 
         <framework src="MessageUI.framework" weak="true" />
     </platform>
