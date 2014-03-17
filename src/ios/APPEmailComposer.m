@@ -19,68 +19,79 @@
  under the License.
  */
 
-
 #import "APPEmailComposer.h"
 #import "Cordova/NSData+Base64.h"
 #import <MobileCoreServices/MobileCoreServices.h>
 
-
 @interface APPEmailComposer (Private)
 
-// Erstellt den ViewController für Mails und fügt die übergebenen Eigenschaften ein
+// Instantiates an email composer view
 - (MFMailComposeViewController*) getDraftWithProperties:(NSDictionary*)properties;
-// Zeigt den ViewController zum Versenden/Bearbeiten der Mail an
+// Displays the email draft
 - (void) openDraft: (MFMailComposeViewController*)draft;
-// Setzt den Betreff der Mail
+// Sets the subject of the email draft
 - (void) setSubject:(NSString*)subject ofDraft:(MFMailComposeViewController*)draft;
-// Setzt den Text der Mail
+// Sets the body of the email draft
 - (void) setBody:(NSString*)body ofDraft:(MFMailComposeViewController*)draft isHTML:(BOOL)isHTML;
-// Setzt die Empfänger der Mail
+// Sets the recipients of the email draft
 - (void) setToRecipients:(NSArray*)recipients ofDraft:(MFMailComposeViewController*)draft;
-// Setzt die CC-Empfänger der Mail
+// Sets the CC recipients of the email draft
 - (void) setCcRecipients:(NSArray*)ccRecipients ofDraft:(MFMailComposeViewController*)draft;
-// Setzt die BCC-Empfänger der Mail
+// Sets the BCC recipients of the email draft
 - (void) setBccRecipients:(NSArray*)bccRecipients ofDraft:(MFMailComposeViewController*)draft;
-// Fügt Anhänge zur Mail inhzu
+// Sets the attachments of the email draft
 - (void) setAttachments:(NSArray*)attatchments ofDraft:(MFMailComposeViewController*)draft;
-// Wird aufgerufen, nachdem der Composer View beendet wurde
-- (void) mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error;
+// Delegate will be called after the mail composer did finish an action to dismiss the view
+- (void) mailComposeController:(MFMailComposeViewController*)controller
+           didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error;
 // Retrieves the mime type from the file extension
 - (NSString*) getMimeTypeFromFileExtension:(NSString*)extension;
 // Returns the data for a given (relative) attachments path
 - (NSData*) getDataForAttachmentPath:(NSString*)path;
 // Retrieves the attachments basename.
 - (NSString*) getBasenameFromAttachmentPath:(NSString*)path;
+// Retrieves the data for an absolute attachment path
+- (NSData*) dataForAbsolutePath:(NSString*)path;
+// Retrieves the data for a relative attachment path
+- (NSData*) dataForRelativePath:(NSString*)path;
+// Retrieves the data for a base64 encoded string
+- (NSData*) dataFromBase64String:(NSString*)base64String;
 
 @end
-
 
 @implementation APPEmailComposer
 
 /**
- * Überprüft, ob Emails versendet werden können.
+ * Checks if the mail composer is able to send mails.
+ *
+ * @param callbackId
+ *      The ID of the JS function to be called with the result
  */
 - (void) isServiceAvailable:(CDVInvokedUrlCommand*)command
 {
-    CDVPluginResult* pluginResult = nil;
-    bool             canSendMail  = [MFMailComposeViewController canSendMail];
+    bool canSendMail = [MFMailComposeViewController canSendMail];
+    CDVPluginResult* pluginResult;
 
     pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
-                                    messageAsBool:canSendMail];
+                                       messageAsBool:canSendMail];
 
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+    [self.commandDelegate sendPluginResult:pluginResult
+                                callbackId:command.callbackId];
 }
 
 /**
- * Öffnet den Email-Kontroller mit vorausgefüllten Daten.
+ * Shows the email composer view with pre-filled data.
+ *
+ * @param {NSDictionary} properties
+ *      The email properties like subject, body, attachments
  */
 - (void) open:(CDVInvokedUrlCommand*)command
 {
-    NSDictionary*                properties = [command.arguments objectAtIndex:0];
-    MFMailComposeViewController* controller = [self getDraftWithProperties:properties];
+    NSDictionary* properties = [command.arguments objectAtIndex:0];
+    MFMailComposeViewController* controller = [self getDraftWithProperties:
+                                               properties];
 
-    if (!controller)
-    {
+    if (!controller) {
         return;
     }
 
@@ -89,24 +100,31 @@
 }
 
 /**
- * Erstellt den ViewController für Mails und fügt die übergebenen Eigenschaften ein.
+ * Instantiates an email composer view.
+ *
+ * @param {NSDictionary} properties
+ *      The email properties like subject, body, attachments
+ *
+ * @return {MFMailComposeViewController}
  */
 - (MFMailComposeViewController*) getDraftWithProperties:(NSDictionary*)properties
 {
     // Falls das Gerät kein Email Interface unterstützt
-    if (![MFMailComposeViewController canSendMail])
-    {
+    if (![MFMailComposeViewController canSendMail]) {
         return NULL;
     }
 
-    MFMailComposeViewController* draft = [[MFMailComposeViewController alloc] init];
+    BOOL isHTML = [[properties objectForKey:@"isHtml"] boolValue];
+
+    MFMailComposeViewController* draft = [[MFMailComposeViewController alloc]
+                                          init];
 
     draft.mailComposeDelegate = self;
 
     // Subject
     [self setSubject:[properties objectForKey:@"subject"] ofDraft:draft];
     // Body (as HTML)
-    [self setBody:[properties objectForKey:@"body"] ofDraft:draft isHTML:[[properties objectForKey:@"isHtml"] boolValue]];
+    [self setBody:[properties objectForKey:@"body"] ofDraft:draft isHTML:isHTML];
     // Recipients
     [self setToRecipients:[properties objectForKey:@"to"] ofDraft:draft];
     // CC Recipients
@@ -120,65 +138,107 @@
 }
 
 /**
- * Zeigt den ViewController zum Versenden/Bearbeiten der Mail an.
+ * Displays the email draft.
+ *
+ * @param {MFMailComposeViewController} draft
+ *      The email composer view
  */
-- (void) openDraft: (MFMailComposeViewController*)draft
+- (void) openDraft:(MFMailComposeViewController*)draft
 {
     [self.commandDelegate runInBackground:^{
-        [self.viewController presentViewController:draft animated:YES completion:NULL];
+        [self.viewController presentViewController:draft
+                                          animated:YES completion:NULL];
     }];
 }
 
 /**
- * Setzt den Betreff der Mail.
+ * Sets the subject of the email draft.
+ *
+ * @param {NSString} subject
+ *      The subject of the email
+ * @param {MFMailComposeViewController} draft
+ *      The email composer view
  */
-- (void) setSubject:(NSString*)subject ofDraft:(MFMailComposeViewController*)draft
+- (void) setSubject:(NSString*)subject
+            ofDraft:(MFMailComposeViewController*)draft
 {
     [draft setSubject:subject];
 }
 
 /**
- * Setzt den Text der Mail.
+ * Sets the body of the email draft.
+ *
+ * @param {NSString} body
+ *      The body of the email
+ * @param {BOOL} isHTML
+ *      Indicates if the body is an HTML encoded string
+ * @param {MFMailComposeViewController} draft
+ *      The email composer view
  */
-- (void) setBody:(NSString*)body ofDraft:(MFMailComposeViewController*)draft isHTML:(BOOL)isHTML
+- (void) setBody:(NSString*)body ofDraft:(MFMailComposeViewController*)draft
+          isHTML:(BOOL)isHTML
 {
     [draft setMessageBody:body isHTML:isHTML];
 }
 
 /**
- * Setzt die Empfänger der Mail.
+ * Sets the recipients of the email draft.
+ *
+ * @param {NSArray} recipients
+ *      The recipients of the email
+ * @param {MFMailComposeViewController} draft
+ *      The email composer view
  */
-- (void) setToRecipients:(NSArray*)recipients ofDraft:(MFMailComposeViewController*)draft
+- (void) setToRecipients:(NSArray*)recipients
+                 ofDraft:(MFMailComposeViewController*)draft
 {
     [draft setToRecipients:recipients];
 }
 
 /**
- * Setzt die CC-Empfänger der Mail.
+ * Sets the CC recipients of the email draft.
+ *
+ * @param {NSArray} ccRecipients
+ *      The CC recipients of the email
+ * @param {MFMailComposeViewController} draft
+ *      The email composer view
  */
-- (void) setCcRecipients:(NSArray*)ccRecipients ofDraft:(MFMailComposeViewController*)draft
+- (void) setCcRecipients:(NSArray*)ccRecipients
+                 ofDraft:(MFMailComposeViewController*)draft
 {
     [draft setCcRecipients:ccRecipients];
 }
 
 /**
- * Setzt die BCC-Empfänger der Mail.
+ * Sets the BCC recipients of the email draft.
+ *
+ * @param {NSArray} bccRecipients
+ *      The BCC recipients of the email
+ * @param {MFMailComposeViewController} draft
+ *      The email composer view
  */
-- (void) setBccRecipients:(NSArray*)bccRecipients ofDraft:(MFMailComposeViewController*)draft
+- (void) setBccRecipients:(NSArray*)bccRecipients
+                  ofDraft:(MFMailComposeViewController*)draft
 {
     [draft setBccRecipients:bccRecipients];
 }
 
 /**
- * Fügt die Anhände zur Mail hinzu.
+ * Sets the attachments of the email draft.
+ *
+ * @param {NSArray} attachments
+ *      The attachments of the email
+ * @param {MFMailComposeViewController} draft
+ *      The email composer view
  */
-- (void) setAttachments:(NSArray*)attatchments ofDraft:(MFMailComposeViewController*)draft
+- (void) setAttachments:(NSArray*)attatchments
+                ofDraft:(MFMailComposeViewController*)draft
 {
     if (attatchments)
     {
         for (NSString* path in attatchments)
         {
-            NSData* data       = [self getDataForAttachmentPath:path];
+            NSData* data = [self getDataForAttachmentPath:path];
 
             NSString* basename = [self getBasenameFromAttachmentPath:path];
             NSString* pathExt  = [basename pathExtension];
@@ -191,28 +251,31 @@
 }
 
 /**
- * @delegate
- *
- * Wird aufgerufen, nachdem der Composer View beendet wurde
+ * Delegate will be called after the mail composer did finish an action
+ * to dismiss the view.
  */
-- (void) mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error
+- (void) mailComposeController:(MFMailComposeViewController*)controller
+           didFinishWithResult:(MFMailComposeResult)result
+                         error:(NSError*)error
 {
     [controller dismissViewControllerAnimated:YES completion:nil];
 }
 
 /**
  * Retrieves the mime type from the file extension.
+ *
+ * @param {NSString} extension
+ *      The file's extension
  */
 - (NSString*) getMimeTypeFromFileExtension:(NSString*)extension
 {
-    if (!extension)
-    {
+    if (!extension) {
         return nil;
     }
 
     // Get the UTI from the file's extension
-    CFStringRef pathExtension = (CFStringRef)CFBridgingRetain(extension);
-    CFStringRef type          = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, pathExtension, NULL);
+    CFStringRef ext = (CFStringRef)CFBridgingRetain(extension);
+    CFStringRef type = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, ext, NULL);
 
     // Converting UTI to a mime type
     return (NSString*)CFBridgingRelease(UTTypeCopyPreferredTagWithClass(type, kUTTagClassMIMEType));
@@ -220,14 +283,21 @@
 
 /**
  * Retrieves the attachments basename.
+ *
+ * @param {NSString} path
+ *      The file path or bas64 data of the attachment
  */
 - (NSString*) getBasenameFromAttachmentPath:(NSString*)path
 {
     if ([path hasPrefix:@"base64:"])
     {
-        NSString* pathWithoutPrefix = [path stringByReplacingOccurrencesOfString:@"base64:" withString:@""];
+        NSString* pathWithoutPrefix;
 
-        return [pathWithoutPrefix substringToIndex:[pathWithoutPrefix rangeOfString:@"//"].location];
+        pathWithoutPrefix = [path stringByReplacingOccurrencesOfString:@"base64:"
+                                                            withString:@""];
+
+        return [pathWithoutPrefix substringToIndex:
+                [pathWithoutPrefix rangeOfString:@"//"].location];
     }
 
     return path;
@@ -235,36 +305,98 @@
 }
 
 /**
- * Returns the data for a given (relative) attachments path.
+ * Returns the data for a given (relative) attachment path.
+ *
+ * @param {NSString} path
+ *      An absolute/relative path or the base64 data
  */
 - (NSData*) getDataForAttachmentPath:(NSString*)path
 {
-    NSFileManager* fileManager = [NSFileManager defaultManager];
-
     if ([path hasPrefix:@"absolute://"])
     {
-        NSString* absolutePath = [path stringByReplacingOccurrencesOfString:@"absolute://" withString:@"/"];
-
-        return [fileManager contentsAtPath:absolutePath];
+        return [self dataForAbsolutePath:path];
     }
     else if ([path hasPrefix:@"relative://"])
     {
-        NSString* bundlePath   = [[[NSBundle mainBundle] bundlePath] stringByAppendingString:@"/"];
-        NSString* absolutePath = [path stringByReplacingOccurrencesOfString:@"relative://" withString:@""];
-
-        absolutePath = [bundlePath stringByAppendingString:absolutePath];
-
-        return [fileManager contentsAtPath:absolutePath];
+        return [self dataForRelativePath:path];
     }
     else if ([path hasPrefix:@"base64:"])
     {
-        NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"^base64:[^/]+.." options:NSRegularExpressionCaseInsensitive error:Nil];
-        NSString *dataString = [regex stringByReplacingMatchesInString:path options:0 range:NSMakeRange(0, [path length]) withTemplate:@""];
-
-        return [NSData dataFromBase64String:dataString];
+        return [self dataFromBase64String:path];
     }
 
+    NSFileManager* fileManager = [NSFileManager defaultManager];
+
     return [fileManager contentsAtPath:path];
+}
+
+/**
+ * Retrieves the data for an absolute attachment path.
+ *
+ * @param {NSString} path
+ *      An absolute file path
+ */
+- (NSData*) dataForAbsolutePath:(NSString*)path
+{
+    NSFileManager* fileManager = [NSFileManager defaultManager];
+
+    NSString* absPath = [path stringByReplacingOccurrencesOfString:@"absolute://"
+                                                        withString:@"/"];
+
+    NSData* data = [fileManager contentsAtPath:absPath];
+
+    return data;
+}
+
+/**
+ * Retrieves the data for a relative attachment path.
+ *
+ * @param {NSString} path
+ *      A relative file path
+ */
+- (NSData*) dataForRelativePath:(NSString*)path
+{
+    NSFileManager* fileManager = [NSFileManager defaultManager];
+    NSString* absPath;
+
+    NSBundle* mainBundle = [NSBundle mainBundle];
+    NSString* bundlePath = [[mainBundle bundlePath]
+                            stringByAppendingString:@"/"];
+
+    absPath = [path stringByReplacingOccurrencesOfString:@"relative://"
+                                              withString:@""];
+
+    absPath = [bundlePath stringByAppendingString:absPath];
+
+    NSData* data = [fileManager contentsAtPath:absPath];
+
+    return data;
+}
+
+/**
+ * Retrieves the data for a base64 encoded string.
+ *
+ * @param {NSString} base64String
+ *      Base64 encoded string
+ */
+- (NSData*) dataFromBase64String:(NSString*)base64String
+{
+    int length = [base64String length];
+    NSRegularExpression *regex;
+    NSString *dataString;
+
+    regex = [NSRegularExpression regularExpressionWithPattern:@"^base64:[^/]+.."
+                                                      options:NSRegularExpressionCaseInsensitive
+                                                        error:Nil];
+
+    dataString = [regex stringByReplacingMatchesInString:base64String
+                                                 options:0
+                                                   range:NSMakeRange(0, length)
+                                            withTemplate:@""];
+
+    NSData* data = [NSData dataFromBase64String:dataString];
+
+    return data;
 }
 
 @end

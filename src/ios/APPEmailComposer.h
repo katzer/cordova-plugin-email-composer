@@ -25,7 +25,7 @@
 
 @interface APPEmailComposer : CDVPlugin <MFMailComposeViewControllerDelegate>
 
-// Öffnet den Email-Kontroller mit vorausgefüllten Daten
+// Shows the email composer view with pre-filled data
 - (void) open:(CDVInvokedUrlCommand*)command;
 // Überprüft, ob Emails versendet werden können
 - (void) isServiceAvailable:(CDVInvokedUrlCommand*)command;
