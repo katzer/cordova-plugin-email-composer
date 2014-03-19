@@ -210,65 +210,106 @@ public class EmailComposer extends CordovaPlugin {
     }
 
     /**
-     * Retrieves the URI for a given path.
+     * The URI for an attachment path.
+     *
+     * @param {String} path
+     *      The given path to the attachment
+     *
+     * @return The URI pointing to the given path
      */
     private Uri getUriForPath (String path) {
         if (path.startsWith("relative://")) {
-            String resPath = path.replaceFirst("relative://", "");
-            String resName = resPath.substring(resPath.lastIndexOf('.') + 1);
-
-            Resources res  = cordova.getActivity().getResources();
-            int resId      = getResId(resPath);
-            Bitmap bmp     = BitmapFactory.decodeResource(res, resId);
-            String storage = Environment.getExternalStorageDirectory().toString() + "/email_composer";
-            File file      = new File(storage, resName + ".png");
-
-            new File(storage).mkdir();
-
-            try {
-                FileOutputStream outStream = new FileOutputStream(file);
-
-                bmp.compress(Bitmap.CompressFormat.PNG, 100, outStream);
-                outStream.flush();
-                outStream.close();
-
-                return Uri.fromFile(file);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            return getUriForRelativePath(path);
         } else if (path.startsWith("absolute://")) {
-            String absPath = path.replaceFirst("absolute://", "/");
-            File file      = new File(absPath);
-
-            return Uri.fromFile(file);
+            return getUriForAbsolutePath(path);
         } else if (path.startsWith("base64:")) {
-            String resName = path.substring(path.indexOf(":") + 1, path.indexOf("//"));
-            String resData = path.substring(path.indexOf("//") +2);
-
-            byte[] bytes   = Base64.decode(resData, 0);
-            String storage = this.cordova.getActivity().getCacheDir() + "/email_composer";
-            File file      = new File(storage, resName);
-
-            new File(storage).mkdir();
-
-            try {
-                FileOutputStream os = new FileOutputStream(file, true);
-
-                os.write(bytes);
-                os.flush();
-                os.close();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            return Uri.parse("content://" + AttachmentProvider.AUTHORITY + "/" + resName);
+            return getUriForBase64Content(path);
         }
 
         return Uri.parse(path);
+    }
+
+    /**
+     * The URI for an absolute path.
+     *
+     * @param {String} path
+     *      The given absolute path
+     *
+     * @return The URI pointing to the given path
+     */
+    private Uri getUriForAbsolutePath (String path) {
+        String absPath = path.replaceFirst("absolute://", "/");
+        File file      = new File(absPath);
+
+        return Uri.fromFile(file);
+    }
+
+    /**
+     * The URI for a relative path.
+     *
+     * @param {String} path
+     *      The given relative path
+     *
+     * @return The URI pointing to the given path
+     */
+    private Uri getUriForRelativePath (String path) {
+        String resPath = path.replaceFirst("relative://", "");
+        String resName = resPath.substring(resPath.lastIndexOf('.') + 1);
+
+        Resources res  = cordova.getActivity().getResources();
+        int resId      = getResId(resPath);
+        Bitmap bmp     = BitmapFactory.decodeResource(res, resId);
+        String storage = Environment.getExternalStorageDirectory().toString() + "/email_composer";
+        File file      = new File(storage, resName + ".png");
+
+        new File(storage).mkdir();
+
+        try {
+            FileOutputStream outStream = new FileOutputStream(file);
+
+            bmp.compress(Bitmap.CompressFormat.PNG, 100, outStream);
+            outStream.flush();
+            outStream.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return Uri.fromFile(file);
+    }
+
+    /**
+     * The URI for a base64 encoded content.
+     *
+     * @param {String} content
+     *      The given base64 encoded content
+     *
+     * @return The URI including the given content
+     */
+    private Uri getUriForBase64Content (String content) {
+        String resName = content.substring(content.indexOf(":") + 1, content.indexOf("//"));
+        String resData = content.substring(content.indexOf("//") + 2);
+
+        byte[] bytes   = Base64.decode(resData, 0);
+        String storage = this.cordova.getActivity().getCacheDir() + "/email_composer";
+        File file      = new File(storage, resName);
+
+        new File(storage).mkdir();
+
+        try {
+            FileOutputStream outStream = new FileOutputStream(file, true);
+
+            outStream.write(bytes);
+            outStream.flush();
+            outStream.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return Uri.parse("content://" + AttachmentProvider.AUTHORITY + "/" + resName);
     }
 
     /**
