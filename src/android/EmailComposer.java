@@ -241,6 +241,10 @@ public class EmailComposer extends CordovaPlugin {
         String absPath = path.replaceFirst("absolute://", "/");
         File file      = new File(absPath);
 
+        if (!file.exists()) {
+            System.err.println("Attachment path not found: " + file.getAbsolutePath());
+        }
+
         return Uri.fromFile(file);
     }
 
@@ -261,6 +265,10 @@ public class EmailComposer extends CordovaPlugin {
         Bitmap bmp     = BitmapFactory.decodeResource(res, resId);
         String storage = Environment.getExternalStorageDirectory().toString() + "/email_composer";
         File file      = new File(storage, resName + ".png");
+
+        if (resId == 0) {
+            System.err.println("Attachment ressource not found: " + resPath);
+        }
 
         new File(storage).mkdir();
 
