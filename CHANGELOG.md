@@ -1,6 +1,7 @@
 ## ChangeLog
 #### Version 0.8.1 (not yet released)
 - Make use Cordovas NSData+Base64 extension.
+- Log error message if attachment path does not exist.
 
 #### Version 0.8.0 (02.03.2014)
 - [enhancement:] New `absolute://` and `relative://` attachment prefixes.
