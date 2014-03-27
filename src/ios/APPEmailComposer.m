@@ -327,7 +327,7 @@
 
     NSFileManager* fileManager = [NSFileManager defaultManager];
 
-    if ([fileManager fileExistsAtPath:path]){
+    if (![fileManager fileExistsAtPath:path]){
         NSLog(@"Attachment path not found: %@", path);
     }
 
@@ -347,7 +347,7 @@
     NSString* absPath = [path stringByReplacingOccurrencesOfString:@"absolute://"
                                                         withString:@"/"];
 
-    if ([fileManager fileExistsAtPath:absPath]){
+    if (![fileManager fileExistsAtPath:absPath]){
         NSLog(@"Attachment path not found: %@", absPath);
     }
 
@@ -376,7 +376,7 @@
 
     absPath = [bundlePath stringByAppendingString:absPath];
 
-    if ([fileManager fileExistsAtPath:absPath]){
+    if (![fileManager fileExistsAtPath:absPath]){
         NSLog(@"Attachment path not found: %@", absPath);
     }
 
