@@ -36,74 +36,80 @@ import android.webkit.MimeTypeMap;
 
 public class AttachmentProvider extends ContentProvider {
 
-	public static final String AUTHORITY = ".plugin.emailcomposer.attachmentprovider";
+    public static final String AUTHORITY = ".plugin.emailcomposer.attachmentprovider";
 
-	private UriMatcher uriMatcher;
+    private UriMatcher uriMatcher;
 
-	@Override
-	public boolean onCreate() {
-		uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
+    @Override
+    public boolean onCreate() {
+        String pkgName = this.getContext().getPackageName();
 
-		uriMatcher.addURI(AUTHORITY, "*", 1);
+        uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
-		return true;
-	}
+        uriMatcher.addURI(pkgName + AUTHORITY, "*", 1);
 
-	@Override
+        return true;
+    }
+
+    @Override
     public ParcelFileDescriptor openFile(Uri uri, String mode) throws FileNotFoundException {
-		switch(uriMatcher.match(uri)) {
-			case 1:
-				String fileLocation = getContext().getCacheDir() + File.separator + uri.getLastPathSegment();
-				ParcelFileDescriptor pfd = ParcelFileDescriptor.open(new File(fileLocation), ParcelFileDescriptor.MODE_READ_ONLY);
-				return pfd;
-			default:
-				throw new FileNotFoundException("Unsupported uri: " + uri.toString());
-		}
-	}
+        switch(uriMatcher.match(uri)) {
+            case 1:
+                String storage = getContext().getCacheDir() + EmailComposer.STORAGE_FOLDER;
+                String path = storage + File.separator + uri.getLastPathSegment();
 
-	@Override
-	public int update(Uri arg0, ContentValues arg1, String arg2, String[] arg3) {
-		return 0;
-	}
+                File file = new File(path);
+                ParcelFileDescriptor pfd = ParcelFileDescriptor.open(file, ParcelFileDescriptor.MODE_READ_ONLY);
 
-	@Override
-	public int delete(Uri arg0, String arg1, String[] arg2) {
-		return 0;
-	}
+                return pfd;
+            default:
+                throw new FileNotFoundException("Unsupported uri: " + uri.toString());
+        }
+    }
 
-	@Override
-	public Uri insert(Uri arg0, ContentValues arg1) {
-		return null;
-	}
+    @Override
+    public int update(Uri arg0, ContentValues arg1, String arg2, String[] arg3) {
+        return 0;
+    }
 
-	@Override
-	public String getType(Uri arg0) {
-		String fileExtension = MimeTypeMap.getFileExtensionFromUrl(arg0.getPath());
-		String type = MimeTypeMap.getSingleton().getMimeTypeFromExtension(fileExtension);
+    @Override
+    public int delete(Uri arg0, String arg1, String[] arg2) {
+        return 0;
+    }
 
-		return type;
-	}
+    @Override
+    public Uri insert(Uri arg0, ContentValues arg1) {
+        return null;
+    }
 
-	@Override
-	public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
-		MatrixCursor result = new MatrixCursor(projection);
-		Object[] row = new Object[projection.length];
-		long fileSize = 0;
+    @Override
+    public String getType(Uri arg0) {
+        String fileExtension = MimeTypeMap.getFileExtensionFromUrl(arg0.getPath());
+        String type = MimeTypeMap.getSingleton().getMimeTypeFromExtension(fileExtension);
 
-		String fileLocation = getContext().getCacheDir() + File.separator + uri.getLastPathSegment();
-		File tempFile = new File(fileLocation);
-		fileSize = tempFile.length();
+        return type;
+    }
 
-		for (int i=0; i<projection.length; i++) {
-			if (projection[i].compareToIgnoreCase(MediaStore.MediaColumns.DISPLAY_NAME) == 0) {
-				row[i] = uri.getLastPathSegment();
-			} else if (projection[i].compareToIgnoreCase(MediaStore.MediaColumns.SIZE) == 0) {
-				row[i] = fileSize;
-			}
-		}
+    @Override
+    public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
+        MatrixCursor result = new MatrixCursor(projection);
+        Object[] row = new Object[projection.length];
+        long fileSize = 0;
 
-		result.addRow(row);
-		return result;
-	}
+        String fileLocation = getContext().getCacheDir() + File.separator + uri.getLastPathSegment();
+        File tempFile = new File(fileLocation);
+        fileSize = tempFile.length();
+
+        for (int i=0; i<projection.length; i++) {
+            if (projection[i].compareToIgnoreCase(MediaStore.MediaColumns.DISPLAY_NAME) == 0) {
+                row[i] = uri.getLastPathSegment();
+            } else if (projection[i].compareToIgnoreCase(MediaStore.MediaColumns.SIZE) == 0) {
+                row[i] = fileSize;
+            }
+        }
+
+        result.addRow(row);
+        return result;
+    }
 
 }

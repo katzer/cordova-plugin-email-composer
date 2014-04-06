@@ -46,6 +46,8 @@ import org.apache.cordova.PluginResult;
 
 public class EmailComposer extends CordovaPlugin {
 
+    static protected final String STORAGE_FOLDER = File.separator + "email_composer";
+
     @Override
     public boolean execute (String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
         // Eine E-Mail soll versendet werden
@@ -258,12 +260,12 @@ public class EmailComposer extends CordovaPlugin {
      */
     private Uri getUriForRelativePath (String path) {
         String resPath = path.replaceFirst("relative://", "");
-        String resName = resPath.substring(resPath.lastIndexOf('.') + 1);
+        String resName = resPath.substring(resPath.lastIndexOf('/') + 1);
 
         Resources res  = cordova.getActivity().getResources();
         int resId      = getResId(resPath);
         Bitmap bmp     = BitmapFactory.decodeResource(res, resId);
-        String storage = Environment.getExternalStorageDirectory().toString() + "/email_composer";
+        String storage = Environment.getExternalStorageDirectory() + STORAGE_FOLDER;
         File file      = new File(storage, resName + ".png");
 
         if (resId == 0) {
@@ -298,15 +300,14 @@ public class EmailComposer extends CordovaPlugin {
     private Uri getUriForBase64Content (String content) {
         String resName = content.substring(content.indexOf(":") + 1, content.indexOf("//"));
         String resData = content.substring(content.indexOf("//") + 2);
-
         byte[] bytes   = Base64.decode(resData, 0);
-        String storage = this.cordova.getActivity().getCacheDir() + "/email_composer";
+        String storage = this.cordova.getActivity().getCacheDir() + STORAGE_FOLDER;
         File file      = new File(storage, resName);
 
         new File(storage).mkdir();
 
         try {
-            FileOutputStream outStream = new FileOutputStream(file, true);
+            FileOutputStream outStream = new FileOutputStream(file);
 
             outStream.write(bytes);
             outStream.flush();
@@ -318,8 +319,9 @@ public class EmailComposer extends CordovaPlugin {
         }
 
         String pkgName = cordova.getActivity().getPackageName();
+        String uriPath = pkgName + AttachmentProvider.AUTHORITY + "/" + resName;
 
-        return Uri.parse("content://" + pkgName + AttachmentProvider.AUTHORITY + "/" + resName);
+        return Uri.parse("content://" + uriPath);
     }
 
     /**
@@ -327,8 +329,8 @@ public class EmailComposer extends CordovaPlugin {
      */
     private int getResId (String resPath) {
         String pkgName = cordova.getActivity().getPackageName();
-        String clsName = resPath.substring(0, resPath.lastIndexOf("."));
-        String resName = resPath.substring(resPath.lastIndexOf('.') + 1);
+        String clsName = resPath.substring(0, resPath.lastIndexOf("/"));
+        String resName = resPath.substring(resPath.lastIndexOf('/') + 1);
         int resId      = 0;
 
         try {

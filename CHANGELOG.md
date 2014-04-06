@@ -4,6 +4,8 @@
 - [enhancement:] Log error message if attachment path does not exist.
 - [feature:] Add support for amazon fire
 - [bugfix:] Fix INSTALL_FAILED_CONFLICTING_PROVIDER error
+- [bugfix:] `relative://` attachment path wasnt working due to a missing permission.
+- [bugfix:] `base64://` attachment path looked up in the wrong directory.
 
 #### Version 0.8.0 (02.03.2014)
 - [enhancement:] New `absolute://` and `relative://` attachment prefixes.
