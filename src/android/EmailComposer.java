@@ -21,6 +21,9 @@
 
 package de.appplant.cordova.plugin.emailcomposer;
 
+import java.io.InputStream;
+import java.io.OutputStream;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -226,6 +229,8 @@ public class EmailComposer extends CordovaPlugin {
             return getUriForAbsolutePath(path);
         } else if (path.startsWith("base64:")) {
             return getUriForBase64Content(path);
+        } else if (path.startsWith("resource://")) {
+            return getUriForResource(path);
         }
 
         return Uri.parse(path);
@@ -287,6 +292,64 @@ public class EmailComposer extends CordovaPlugin {
         }
 
         return Uri.fromFile(file);
+    }
+
+    /**
+     * The URI for a relative path based on the res folder
+     *
+     * @param {String} path
+     *      The given relative path
+     *
+     * @return The URI pointing to the given path
+     */
+    private Uri getUriForResource(String path) {
+        String resPath      = path.replaceFirst("resource://", "");
+        String directory    = resPath.substring(0, resPath.lastIndexOf('/'));
+        String fileName     = resPath.substring(resPath.lastIndexOf('/') + 1);
+        String resName      = fileName.substring(0, fileName.lastIndexOf('.'));
+        String extension    = resPath.substring(resPath.lastIndexOf('.'));
+        String storage      = cordova.getActivity().getExternalCacheDir().toString() + "/email_composer";
+
+        Resources res       = cordova.getActivity().getResources();
+        int resId           = res.getIdentifier(resName, directory, cordova.getActivity().getPackageName());
+        File file           = new File(storage, resName + extension);
+
+        if (resId == 0) {
+            System.err.println("Attachment ressource not found: " + resPath);
+        }
+
+        new File(storage).mkdir();
+        
+        try {
+            FileOutputStream outStream  = new FileOutputStream(file);
+            InputStream inputStream     = res.openRawResource(resId);
+            
+            copyFile(inputStream, outStream);
+            outStream.flush();
+            outStream.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
+        return Uri.fromFile(file);
+    }
+
+    /**
+     * Writes an InputStream to an OutputStream
+     *
+     * @param {InputStream} in
+     * @param {OutputStream} out
+     *
+     * @return void
+     */
+    private void copyFile(InputStream in, OutputStream out) throws IOException {
+        byte[] buffer = new byte[1024];
+        int read;
+        while((read = in.read(buffer)) != -1){
+            out.write(buffer, 0, read);
+        }
     }
 
     /**
