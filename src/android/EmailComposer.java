@@ -317,7 +317,9 @@ public class EmailComposer extends CordovaPlugin {
             e.printStackTrace();
         }
 
-        return Uri.parse("content://" + AttachmentProvider.AUTHORITY + "/" + resName);
+        String pkgName = cordova.getActivity().getPackageName();
+
+        return Uri.parse("content://" + pkgName + AttachmentProvider.AUTHORITY + "/" + resName);
     }
 
     /**

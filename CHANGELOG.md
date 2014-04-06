@@ -1,7 +1,9 @@
 ## ChangeLog
 #### Version 0.8.1 (not yet released)
-- Make use Cordovas NSData+Base64 extension.
-- Log error message if attachment path does not exist.
+- [enhancement:] Make use Cordovas NSData+Base64 extension.
+- [enhancement:] Log error message if attachment path does not exist.
+- [feature:] Add support for amazon fire
+- [bugfix:] Fix INSTALL_FAILED_CONFLICTING_PROVIDER error
 
 #### Version 0.8.0 (02.03.2014)
 - [enhancement:] New `absolute://` and `relative://` attachment prefixes.

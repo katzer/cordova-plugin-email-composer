@@ -36,7 +36,7 @@ import android.webkit.MimeTypeMap;
 
 public class AttachmentProvider extends ContentProvider {
 
-	public static final String AUTHORITY = "de.appplant.cordova.plugin.emailcomposer.attachmentprovider";
+	public static final String AUTHORITY = ".plugin.emailcomposer.attachmentprovider";
 
 	private UriMatcher uriMatcher;
 
