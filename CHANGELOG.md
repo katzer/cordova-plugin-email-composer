@@ -1,5 +1,5 @@
 ## ChangeLog
-#### Version 0.8.1 (not yet released)
+#### Version 0.8.1 (06.04.2014)
 - [enhancement:] Make use Cordovas NSData+Base64 extension.
 - [enhancement:] Log error message if attachment path does not exist.
 - [feature:] Add support for amazon fire
