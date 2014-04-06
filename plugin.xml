@@ -44,15 +44,31 @@
                 <param name="android-package" value="de.appplant.cordova.plugin.emailcomposer.EmailComposer"/>
             </feature>
         </config-file>
-
+		<!--
         <config-file target="AndroidManifest.xml" parent="application">
             <provider android:name="de.appplant.cordova.plugin.emailcomposer.AttachmentProvider" android:authorities="de.appplant.cordova.plugin.emailcomposer.attachmentprovider" />
         </config-file>
+		-->
 
         <source-file src="src/android/EmailComposer.java"      target-dir="src/de/appplant/cordova/plugin/emailcomposer" />
         <source-file src="src/android/AttachmentProvider.java" target-dir="src/de/appplant/cordova/plugin/emailcomposer" />
     </platform>
-
+	<!-- amazon-fireos -->
+    <platform name="amazon-fireos">
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="EmailComposer">
+                <param name="android-package" value="de.appplant.cordova.plugin.emailcomposer.EmailComposer"/>
+            </feature>
+        </config-file>
+		<!--
+        <config-file target="AndroidManifest.xml" parent="application">
+            <provider android:name="de.appplant.cordova.plugin.emailcomposer.AttachmentProvider" android:authorities="de.appplant.cordova.plugin.emailcomposer.attachmentprovider" />
+        </config-file>
+		-->
+		
+        <source-file src="src/android/EmailComposer.java"      target-dir="src/de/appplant/cordova/plugin/emailcomposer" />
+        <source-file src="src/android/AttachmentProvider.java" target-dir="src/de/appplant/cordova/plugin/emailcomposer" />
+    </platform>
     <!-- wp8 -->
     <platform name="wp8">
         <config-file target="config.xml" parent="/*">
