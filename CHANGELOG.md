@@ -6,6 +6,8 @@
 - [bugfix:] Fix INSTALL_FAILED_CONFLICTING_PROVIDER error
 - [bugfix:] `relative://` attachment path wasnt working due to a missing permission.
 - [bugfix:] `base64://` attachment path looked up in the wrong directory.
+- [enhancement:] `relative://` supports now any file types and not only images.
+- [***change***:] `relative://` URI's even for Android need a file extension.
 
 #### Version 0.8.0 (02.03.2014)
 - [enhancement:] New `absolute://` and `relative://` attachment prefixes.

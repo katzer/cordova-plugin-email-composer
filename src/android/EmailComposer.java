@@ -25,6 +25,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 
 import org.json.JSONArray;
@@ -33,10 +35,7 @@ import org.json.JSONObject;
 
 import android.content.Intent;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.Environment;
 import android.text.Html;
 import android.util.Base64;
 
@@ -259,14 +258,14 @@ public class EmailComposer extends CordovaPlugin {
      * @return The URI pointing to the given path
      */
     private Uri getUriForRelativePath (String path) {
-        String resPath = path.replaceFirst("relative://", "");
-        String resName = resPath.substring(resPath.lastIndexOf('/') + 1);
+        String resPath   = path.replaceFirst("relative://", "");
+        String fileName  = resPath.substring(resPath.lastIndexOf('/') + 1);
+        String resName   = fileName.substring(0, fileName.lastIndexOf('.'));
+        String extension = resPath.substring(resPath.lastIndexOf('.'));
+        String storage   = cordova.getActivity().getExternalCacheDir().toString() + "/email_composer";
 
-        Resources res  = cordova.getActivity().getResources();
-        int resId      = getResId(resPath);
-        Bitmap bmp     = BitmapFactory.decodeResource(res, resId);
-        String storage = Environment.getExternalStorageDirectory() + STORAGE_FOLDER;
-        File file      = new File(storage, resName + ".png");
+        int resId        = getResId(resPath);
+        File file        = new File(storage, resName + extension);
 
         if (resId == 0) {
             System.err.println("Attachment ressource not found: " + resPath);
@@ -275,9 +274,11 @@ public class EmailComposer extends CordovaPlugin {
         new File(storage).mkdir();
 
         try {
+            Resources res = cordova.getActivity().getResources();
             FileOutputStream outStream = new FileOutputStream(file);
+            InputStream inputStream    = res.openRawResource(resId);
 
-            bmp.compress(Bitmap.CompressFormat.PNG, 100, outStream);
+            copyFile(inputStream, outStream);
             outStream.flush();
             outStream.close();
         } catch (FileNotFoundException e) {
@@ -318,27 +319,51 @@ public class EmailComposer extends CordovaPlugin {
             e.printStackTrace();
         }
 
-        String pkgName = cordova.getActivity().getPackageName();
+        String pkgName = getPackageName();
         String uriPath = pkgName + AttachmentProvider.AUTHORITY + "/" + resName;
 
         return Uri.parse("content://" + uriPath);
     }
 
     /**
-     * @return The resource ID for the given resource.
+     * Writes an InputStream to an OutputStream
+     *
+     * @param {InputStream} in
+     * @param {OutputStream} out
+     *
+     * @return void
+     */
+    private void copyFile (InputStream in, OutputStream out) throws IOException {
+        byte[] buffer = new byte[1024];
+        int read;
+
+        while((read = in.read(buffer)) != -1){
+            out.write(buffer, 0, read);
+        }
+    }
+
+    /**
+     * @return
+     *      The resource ID for the given resource.
      */
     private int getResId (String resPath) {
-        String pkgName = cordova.getActivity().getPackageName();
-        String clsName = resPath.substring(0, resPath.lastIndexOf("/"));
-        String resName = resPath.substring(resPath.lastIndexOf('/') + 1);
-        int resId      = 0;
+        Resources res = cordova.getActivity().getResources();
 
-        try {
-            Class<?> klass  = Class.forName(pkgName + ".R$" + clsName);
+        String pkgName  = getPackageName();
+        String dirName  = resPath.substring(0, resPath.lastIndexOf('/'));
+        String fileName = resPath.substring(resPath.lastIndexOf('/') + 1);
+        String resName  = fileName.substring(0, fileName.lastIndexOf('.'));
 
-            resId = (Integer) klass.getDeclaredField(resName).get(Integer.class);
-        } catch (Exception e) {}
+        int resId = res.getIdentifier(resName, dirName, pkgName);
 
         return resId;
+    }
+
+    /**
+     * @return
+     *      The name for the package.
+     */
+    private String getPackageName () {
+        return cordova.getActivity().getPackageName();
     }
 }

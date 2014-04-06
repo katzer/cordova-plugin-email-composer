@@ -45,10 +45,6 @@
             </feature>
         </config-file>
 
-        <config-file target="AndroidManifest.xml" parent="/manifest">
-            <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-        </config-file>
-
         <config-file target="AndroidManifest.xml" parent="/manifest/application">
             <provider android:name="de.appplant.cordova.plugin.emailcomposer.AttachmentProvider"
                 android:authorities="$PACKAGE_NAME.plugin.emailcomposer.attachmentprovider">

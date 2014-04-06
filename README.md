@@ -161,7 +161,7 @@ File attachment paths can either be defined absolute or relative. A relative pat
 window.plugin.email.open({
     attachments: [
         'absolute://storage/sdcard/icon.jpg',
-        'relative://drawable/icon'
+        'relative://drawable/icon.png'
     ]
 });
 ```
