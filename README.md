@@ -22,6 +22,7 @@ The purpose of the plugin is to create an platform independent javascript interf
 ## Dependencies
 - [MessageUI.framework][messageui_framework]
 
+
 ## Installation
 The plugin can either be installed into the local development environment or cloud based through [PhoneGap Build][PGB].
 
@@ -53,6 +54,17 @@ or to use an specific version:
 <gap:plugin name="de.appplant.cordova.plugin.email-composer" version="0.8.0" />
 ```
 More informations can be found [here][PGB_plugin].
+
+
+## ChangeLog
+#### Version 0.8.2 (not yet released)
+- [***change:***] Renamed `absolute:` to `file:`
+- [***change:***] Removed `relative:` attachment prefix
+- [enhancement:] New `res:` attachment prefix
+- [enhancement:] New `www:` attachment prefix
+
+#### Further informations
+- See [CHANGELOG.md][changelog] to get the full changelog for the plugin.
 
 
 ## Using the plugin
@@ -140,10 +152,10 @@ window.plugin.email.open({
 ```
 
 ### Adding attachments
-Attachments can be either base64 encoded data or local files. The code below shows how to attach an base64 encoded image.
+Attachments can be either base64 encoded datas, files from the the device storage or assets from within the *www* folder.
 
-#### Further informations
-- Under [platform specifics][platform_specifics] you can find out how to attach files on the different device platforms.
+#### Attach Base64 encoded content
+The code below shows how to attach an base64 encoded image which will be added as a image with the name *icon.png*.
 
 ```javascript
 window.plugin.email.open({
@@ -152,28 +164,38 @@ window.plugin.email.open({
 });
 ```
 
-
-## Platform specifics
-### File attachments on Android
-File attachment paths can either be defined absolute or relative. A relative path must be point to a file from the res folder of the application.
+#### Attach files from the device storage
+The path to the files must be defined absolute from the root of the file system. The kind of the path may vary between mobile platforms.
 
 ```javascript
 window.plugin.email.open({
     attachments: [
-        'absolute://storage/sdcard/icon.jpg',
-        'relative://drawable/icon.png'
+        'file://storage/sdcard/icon.jpg', //=> Android
+        'file://Users/.../Library/Application Support/iPhone Simulator/7.0.3/Applications/E7981856-.../HelloCordova.app/../Documents/icon.jpg"' //=> iOS Simulator
     ]
 });
 ```
 
-### File attachments on iOS
-File attachment paths can either be defined absolute or relative. A relative path must be point to a file from the root folder of the application.
+#### Attach app's resources
+Each app has a resource folder, e.g. the *res* folder for Android apps or the *Resource* folder for iOS apps.<br>
+The following examples shows how to attach files from within the app's resource folder.
 
 ```javascript
 window.plugin.email.open({
     attachments: [
-        'absolute://Users/sebastian/Library/Application Support/iPhone Simulator/7.0.3/Applications/E7981856-801F-4355-8687-EAACDF8B2A54/HelloCordova.app/../Documents/icon.jpg"'
-        'relative://resources/icons/icon.jpg'
+        'res://drawable/icon.png', //=> points to res/drawable/icon.png on Android devices
+        'res://icons/icon.jpg'     //=> points to Resource/icons/icon.png on iOS devices
+    ]
+});
+```
+
+#### Attach assets from within the mobile web app folder
+The path to the files must be defined relative from the root of the mobile web app folder, which is located under the *www* folder.
+
+```javascript
+window.plugin.email.open({
+    attachments: [
+        'www://img/logo.png' //=> e.g. assets/www/img/logo.png on Android
     ]
 });
 ```
@@ -222,7 +244,7 @@ clang: error: linker command failed with exit code 1 (use -v to see invocation)
 
 ## License
 
-This software is released under the [Apache 2.0 License](http://opensource.org/licenses/Apache-2.0).
+This software is released under the [Apache 2.0 License][apache2_license].
 
 © 2013-2014 appPlant UG, Inc. All rights reserved
 
@@ -234,5 +256,7 @@ This software is released under the [Apache 2.0 License](http://opensource.org/l
 [PGB]: http://docs.build.phonegap.com/en_US/3.3.0/index.html
 [PGB_plugin]: https://build.phonegap.com/plugins/522
 [messageui_framework]: #compile-error-on-ios
+[changelog]: https://github.com/katzer/cordova-plugin-email-composer/blob/master/CHANGELOG.md
 [examples]: #examples
 [platform_specifics]: #platform-specifics
+[apache2_license]: http://opensource.org/licenses/Apache-2.0

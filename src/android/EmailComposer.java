@@ -22,7 +22,6 @@
 package de.appplant.cordova.plugin.emailcomposer;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -34,6 +33,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Intent;
+import android.content.res.AssetManager;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.text.Html;
@@ -219,10 +219,12 @@ public class EmailComposer extends CordovaPlugin {
      * @return The URI pointing to the given path
      */
     private Uri getUriForPath (String path) {
-        if (path.startsWith("relative://")) {
-            return getUriForRelativePath(path);
-        } else if (path.startsWith("absolute://")) {
+        if (path.startsWith("res://")) {
+            return getUriForResourcePath(path);
+        } else if (path.startsWith("file://")) {
             return getUriForAbsolutePath(path);
+        } else if (path.startsWith("www://")) {
+            return getUriForAssetPath(path);
         } else if (path.startsWith("base64:")) {
             return getUriForBase64Content(path);
         }
@@ -231,7 +233,7 @@ public class EmailComposer extends CordovaPlugin {
     }
 
     /**
-     * The URI for an absolute path.
+     * The URI for a file.
      *
      * @param {String} path
      *      The given absolute path
@@ -239,7 +241,7 @@ public class EmailComposer extends CordovaPlugin {
      * @return The URI pointing to the given path
      */
     private Uri getUriForAbsolutePath (String path) {
-        String absPath = path.replaceFirst("absolute://", "/");
+        String absPath = path.replaceFirst("file://", "/");
         File file      = new File(absPath);
 
         if (!file.exists()) {
@@ -250,25 +252,59 @@ public class EmailComposer extends CordovaPlugin {
     }
 
     /**
-     * The URI for a relative path.
+     * The URI for an asset.
+     *
+     * @param {String} path
+     *      The given asset path
+     *
+     * @return The URI pointing to the given path
+     */
+    private Uri getUriForAssetPath (String path) {
+        String resPath  = path.replaceFirst("www:/", "www");
+        String fileName = resPath.substring(resPath.lastIndexOf('/') + 1);
+        String storage  = cordova.getActivity().getExternalCacheDir().toString() + STORAGE_FOLDER;
+
+        File file = new File(storage, fileName);
+
+        new File(storage).mkdir();
+
+        try {
+            AssetManager assets = cordova.getActivity().getAssets();
+
+            FileOutputStream outStream = new FileOutputStream(file);
+            InputStream inputStream    = assets.open(resPath);
+
+            copyFile(inputStream, outStream);
+            outStream.flush();
+            outStream.close();
+        } catch (Exception e) {
+            System.err.println("Attachment asset not found: assets/" + resPath);
+            e.printStackTrace();
+        }
+
+        return Uri.fromFile(file);
+    }
+
+    /**
+     * The URI for a resource.
      *
      * @param {String} path
      *      The given relative path
      *
      * @return The URI pointing to the given path
      */
-    private Uri getUriForRelativePath (String path) {
-        String resPath   = path.replaceFirst("relative://", "");
+    private Uri getUriForResourcePath (String path) {
+        String resPath   = path.replaceFirst("res://", "");
         String fileName  = resPath.substring(resPath.lastIndexOf('/') + 1);
         String resName   = fileName.substring(0, fileName.lastIndexOf('.'));
         String extension = resPath.substring(resPath.lastIndexOf('.'));
-        String storage   = cordova.getActivity().getExternalCacheDir().toString() + "/email_composer";
+        String storage   = cordova.getActivity().getExternalCacheDir().toString() + STORAGE_FOLDER;
 
         int resId        = getResId(resPath);
         File file        = new File(storage, resName + extension);
 
         if (resId == 0) {
-            System.err.println("Attachment ressource not found: " + resPath);
+            System.err.println("Attachment resource not found: " + resPath);
         }
 
         new File(storage).mkdir();
@@ -281,9 +317,7 @@ public class EmailComposer extends CordovaPlugin {
             copyFile(inputStream, outStream);
             outStream.flush();
             outStream.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -313,9 +347,7 @@ public class EmailComposer extends CordovaPlugin {
             outStream.write(bytes);
             outStream.flush();
             outStream.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

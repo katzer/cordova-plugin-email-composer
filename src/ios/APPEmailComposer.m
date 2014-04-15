@@ -52,10 +52,12 @@
 - (NSString*) getBasenameFromAttachmentPath:(NSString*)path;
 // Retrieves the data for an absolute attachment path
 - (NSData*) dataForAbsolutePath:(NSString*)path;
-// Retrieves the data for a relative attachment path
-- (NSData*) dataForRelativePath:(NSString*)path;
+// Retrieves the data for a resource attachment path
+- (NSData*) dataForResource:(NSString*)path;
+// Retrieves the data for a asset path
+- (NSData*) dataForAsset:(NSString*)path;
 // Retrieves the data for a base64 encoded string
-- (NSData*) dataFromBase64String:(NSString*)base64String;
+- (NSData*) dataFromBase64:(NSString*)base64String;
 
 @end
 
@@ -312,17 +314,21 @@
  */
 - (NSData*) getDataForAttachmentPath:(NSString*)path
 {
-    if ([path hasPrefix:@"absolute://"])
+    if ([path hasPrefix:@"file://"])
     {
         return [self dataForAbsolutePath:path];
     }
-    else if ([path hasPrefix:@"relative://"])
+    else if ([path hasPrefix:@"res://"])
     {
-        return [self dataForRelativePath:path];
+        return [self dataForResource:path];
+    }
+    else if ([path hasPrefix:@"www://"])
+    {
+        return [self dataForAsset:path];
     }
     else if ([path hasPrefix:@"base64:"])
     {
-        return [self dataFromBase64String:path];
+        return [self dataFromBase64:path];
     }
 
     NSFileManager* fileManager = [NSFileManager defaultManager];
@@ -343,9 +349,10 @@
 - (NSData*) dataForAbsolutePath:(NSString*)path
 {
     NSFileManager* fileManager = [NSFileManager defaultManager];
+    NSString* absPath;
 
-    NSString* absPath = [path stringByReplacingOccurrencesOfString:@"absolute://"
-                                                        withString:@"/"];
+    absPath = [path stringByReplacingOccurrencesOfString:@"file://"
+                                              withString:@"/"];
 
     if (![fileManager fileExistsAtPath:absPath]){
         NSLog(@"Attachment path not found: %@", absPath);
@@ -357,12 +364,12 @@
 }
 
 /**
- * Retrieves the data for a relative attachment path.
+ * Retrieves the data for a resource path.
  *
  * @param {NSString} path
  *      A relative file path
  */
-- (NSData*) dataForRelativePath:(NSString*)path
+- (NSData*) dataForResource:(NSString*)path
 {
     NSFileManager* fileManager = [NSFileManager defaultManager];
     NSString* absPath;
@@ -371,8 +378,36 @@
     NSString* bundlePath = [[mainBundle bundlePath]
                             stringByAppendingString:@"/"];
 
-    absPath = [path stringByReplacingOccurrencesOfString:@"relative://"
-                                              withString:@""];
+    absPath = [path pathComponents].lastObject;
+
+    absPath = [bundlePath stringByAppendingString:absPath];
+
+    if (![fileManager fileExistsAtPath:absPath]){
+        NSLog(@"Attachment path not found: %@", absPath);
+    }
+
+    NSData* data = [fileManager contentsAtPath:absPath];
+
+    return data;
+}
+
+/**
+ * Retrieves the data for a asset path.
+ *
+ * @param {NSString} path
+ *      A relative www file path
+ */
+- (NSData*) dataForAsset:(NSString*)path
+{
+    NSFileManager* fileManager = [NSFileManager defaultManager];
+    NSString* absPath;
+
+    NSBundle* mainBundle = [NSBundle mainBundle];
+    NSString* bundlePath = [[mainBundle bundlePath]
+                            stringByAppendingString:@"/"];
+
+    absPath = [path stringByReplacingOccurrencesOfString:@"www:/"
+                                              withString:@"www"];
 
     absPath = [bundlePath stringByAppendingString:absPath];
 
@@ -391,7 +426,7 @@
  * @param {NSString} base64String
  *      Base64 encoded string
  */
-- (NSData*) dataFromBase64String:(NSString*)base64String
+- (NSData*) dataFromBase64:(NSString*)base64String
 {
     int length = [base64String length];
     NSRegularExpression *regex;
