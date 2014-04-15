@@ -258,6 +258,6 @@ This software is released under the [Apache 2.0 License][apache2_license].
 [PGB_plugin]: https://build.phonegap.com/plugins/522
 [messageui_framework]: #compile-error-on-ios
 [changelog]: https://github.com/katzer/cordova-plugin-email-composer/blob/master/CHANGELOG.md
-[is_service_available]: #determine_if_the_device_is_able_to_send_emails
+[is_service_available]: #determine-if-the-device-is-able-to-send-emails
 [examples]: #examples
 [apache2_license]: http://opensource.org/licenses/Apache-2.0
