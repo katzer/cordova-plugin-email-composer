@@ -101,9 +101,10 @@ The method takes a hash as an argument to specify the email's properties. All pr
 After opening the draft the user may have the possibilities to edit, delete or send the email.
 
 #### Further informations
+- An [configured email account][is_service_available] is required to send emails.
+- Attachments can be either base64 encoded datas, files from the the device storage or assets from within the *www* folder.
+- The default value for *isHTML* is *true*.
 - See the [examples][examples] of how to create and show an email draft.
-- Attachments can either be specified as base64 encoded content or local file paths.
-- Under [platform specifics][platform_specifics] you can find out how to attach files on the different device platforms.
 
 ```javascript
 window.plugin.email.open({
@@ -207,7 +208,7 @@ window.plugin.email.open({
 An configured email account is required to send emails.
 
 ### Limited support for Windows Phone 8
-Adding attachments and HTML formatted body are not supported.
+Attachments and HTML formatted body are not supported.
 
 ### TypeError: Cannot read property 'currentVersion' of null
 Along with Cordova 3 and Windows Phone 8 the `version.bat` script has to be renamed to `version`.
@@ -257,6 +258,6 @@ This software is released under the [Apache 2.0 License][apache2_license].
 [PGB_plugin]: https://build.phonegap.com/plugins/522
 [messageui_framework]: #compile-error-on-ios
 [changelog]: https://github.com/katzer/cordova-plugin-email-composer/blob/master/CHANGELOG.md
+[is_service_available]: #determine_if_the_device_is_able_to_send_emails
 [examples]: #examples
-[platform_specifics]: #platform-specifics
 [apache2_license]: http://opensource.org/licenses/Apache-2.0
