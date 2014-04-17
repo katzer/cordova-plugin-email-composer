@@ -51,6 +51,8 @@ EmailComposer.prototype = {
         for (var key in defaults) {
             if (options[key] !== undefined) {
                 defaults[key] = options[key];
+            } else {
+                console.log('EmailComposer plugin: unknown property "' + key + '"');
             }
         }
 
