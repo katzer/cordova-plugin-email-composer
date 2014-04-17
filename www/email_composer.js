@@ -25,12 +25,17 @@ var EmailComposer = function () {
 
 EmailComposer.prototype = {
     /**
-     * Öffnet den Email-Kontroller mit vorausgefüllten Daten.
+     * Displays the email composer pre-filled with data.
      *
-     * @param {Object?} options
+     * @param {Object} options
+     *      Different properties of the email like the body, subject
+     * @param {Function} callback
+     *      A callback function to be called with the result
+     * @param {Object?} scope
+     *      The scope of the callback
      */
-    open: function (options) {
-        var callbackFn = null,
+    open: function (options, callback, scope) {
+        var callbackFn = this.createCallbackFn(callback, scope),
             options    = options || {};
 
         var defaults = {
@@ -49,7 +54,7 @@ EmailComposer.prototype = {
             }
         }
 
-        cordova.exec(null, null, 'EmailComposer', 'open', [options]);
+        cordova.exec(callbackFn, null, 'EmailComposer', 'open', [options]);
     },
 
     /**
@@ -60,19 +65,39 @@ EmailComposer.prototype = {
     },
 
     /**
-     * Gibt an, ob Emails versendet werden können.
+     * Verifies if sending emails is supported on the device.
      *
      * @param {Function} callback
-     * @param {Object?}  scope (default: window)
+     *      A callback function to be called with the result
+     * @param {Object} scope
+     *      The scope of the callback
      */
     isServiceAvailable: function (callback, scope) {
-        var callbackFn = function () {
-            callback.apply(scope || window, arguments);
-        };
+        var callbackFn = this.createCallbackFn(callback, scope);
 
         cordova.exec(callbackFn, null, 'EmailComposer', 'isServiceAvailable', []);
-    }
+    },
 
+    /**
+     * @private
+     *
+     * Creates a callback, which will be executed within a specific scope.
+     *
+     * @param {Function} callbackFn
+     *      The callback function
+     * @param {Object} scope
+     *      The scope for the function
+     *
+     * @return {Function}
+     *      The new callback function
+     */
+    createCallbackFn: function (callbackFn, scope) {
+        return function () {
+            if (typeof callbackFn == 'function') {
+                callbackFn.apply(scope || this, arguments);
+            }
+        }
+    }
 };
 
 var plugin = new EmailComposer();

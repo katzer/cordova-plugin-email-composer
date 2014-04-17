@@ -58,6 +58,14 @@
 - (NSData*) dataForAsset:(NSString*)path;
 // Retrieves the data for a base64 encoded string
 - (NSData*) dataFromBase64:(NSString*)base64String;
+// Invokes the callback without any parameter
+- (void) execCallback;
+
+@end
+
+@interface APPEmailComposer ()
+
+@property (nonatomic, retain) CDVInvokedUrlCommand* command;
 
 @end
 
@@ -72,12 +80,12 @@
 - (void) isServiceAvailable:(CDVInvokedUrlCommand*)command
 {
     bool canSendMail = [MFMailComposeViewController canSendMail];
-    CDVPluginResult* pluginResult;
+    CDVPluginResult* result;
 
-    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
-                                       messageAsBool:canSendMail];
+    result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
+                                 messageAsBool:canSendMail];
 
-    [self.commandDelegate sendPluginResult:pluginResult
+    [self.commandDelegate sendPluginResult:result
                                 callbackId:command.callbackId];
 }
 
@@ -93,7 +101,11 @@
     MFMailComposeViewController* controller = [self getDraftWithProperties:
                                                properties];
 
+    _command = command;
+
     if (!controller) {
+        [self execCallback];
+
         return;
     }
 
@@ -261,6 +273,8 @@
                          error:(NSError*)error
 {
     [controller dismissViewControllerAnimated:YES completion:nil];
+
+    [self execCallback];
 }
 
 /**
@@ -444,6 +458,18 @@
     NSData* data = [NSData dataFromBase64String:dataString];
 
     return data;
+}
+
+/**
+ * Invokes the callback without any parameter.
+ */
+- (void) execCallback
+{
+    CDVPluginResult *result = [CDVPluginResult
+                               resultWithStatus:CDVCommandStatus_OK];
+
+    [self.commandDelegate sendPluginResult:result
+                                callbackId:_command.callbackId];
 }
 
 @end

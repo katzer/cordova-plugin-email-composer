@@ -47,18 +47,23 @@ public class EmailComposer extends CordovaPlugin {
 
     static protected final String STORAGE_FOLDER = File.separator + "email_composer";
 
+    private CallbackContext command;
+
     @Override
     public boolean execute (String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
+
+        this.command = callbackContext;
+
         // Eine E-Mail soll versendet werden
         if ("open".equals(action)) {
-            open(args, callbackContext);
+            open(args);
 
             return true;
         }
 
         // Es soll überprüft werden, ob ein Dienst zum Versenden der E-Mail zur Verfügung steht
         if ("isServiceAvailable".equals(action)) {
-            isServiceAvailable(callbackContext);
+            isServiceAvailable();
 
             return true;
         }
@@ -70,19 +75,19 @@ public class EmailComposer extends CordovaPlugin {
     /**
      * Überprüft, ob Emails versendet werden können.
      */
-    private void isServiceAvailable (CallbackContext ctx) {
+    private void isServiceAvailable () {
         Boolean available   = isEmailAccountConfigured();
         PluginResult result = new PluginResult(PluginResult.Status.OK, available);
 
-        ctx.sendPluginResult(result);
+        command.sendPluginResult(result);
     }
 
     /**
      * Öffnet den Email-Kontroller mit vorausgefüllten Daten.
      */
-    private void open (JSONArray args, CallbackContext ctx) throws JSONException {
+    private void open (JSONArray args) throws JSONException {
         JSONObject properties = args.getJSONObject(0);
-        Intent     draft      = getDraftWithProperties(properties);
+        Intent draft          = getDraftWithProperties(properties);
 
         openDraft(draft);
     }
@@ -397,5 +402,12 @@ public class EmailComposer extends CordovaPlugin {
      */
     private String getPackageName () {
         return cordova.getActivity().getPackageName();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        super.onActivityResult(requestCode, resultCode, intent);
+
+        command.success();
     }
 }

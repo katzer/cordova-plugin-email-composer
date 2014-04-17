@@ -62,6 +62,7 @@ More informations can be found [here][PGB_plugin].
 - [***change:***] Removed `relative:` attachment prefix
 - [enhancement:] New `res:` attachment prefix
 - [enhancement:] New `www:` attachment prefix
+- [feature:] Bring back simple callback support (Android, iOS)
 
 #### Further informations
 - See [CHANGELOG.md][changelog] to get the full changelog for the plugin.
@@ -96,7 +97,7 @@ window.plugin.email.isServiceAvailable(
 
 ### Open a pre-filled email draft
 A pre-filled email draft can be opened through the `email.open` or `email.openDraft` interface.<br>
-The method takes a hash as an argument to specify the email's properties. All properties are optional.
+The method takes a hash as an argument to specify the email's properties. All properties are optional. Further more it accepts an callback function to be called after the email view has been dismissed.
 
 After opening the draft the user may have the possibilities to edit, delete or send the email.
 
@@ -115,7 +116,7 @@ window.plugin.email.open({
     subject:    String, // subject of the email
     body:       String, // email body (could be HTML code, in this case set isHtml to true)
     isHtml:    Boolean, // indicats if the body is HTML or plain text
-});
+}, callback, scope);
 ```
 
 
@@ -139,7 +140,6 @@ Of course its also possible to open a blank email draft.
 window.plugin.email.open();
 ```
 
-
 ### Send HTML encoded body
 Its possible to send the email body either as text or HTML. In the case of HTML the `isHTML` properties needs to be set.
 
@@ -151,6 +151,15 @@ window.plugin.email.open({
     isHtml:  true
 });
 ```
+
+### Get informed when the view has been dismissed
+The `open` method supports additional callback to get informed when the view has been dismissed.
+
+```javascript
+window.plugin.email.open(properties, function () {
+    console.log('email view dismissed');
+}, this);
+``
 
 ### Adding attachments
 Attachments can be either base64 encoded datas, files from the the device storage or assets from within the *www* folder.

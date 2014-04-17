@@ -4,6 +4,7 @@
 - [***change:***] Removed `relative:` attachment prefix
 - [enhancement:] New `res:` attachment prefix
 - [enhancement:] New `www:` attachment prefix
+- [feature:] Bring back simple callback support (Android, iOS)
 
 #### Version 0.8.1 (06.04.2014)
 - [enhancement:] Make use Cordovas NSData+Base64 extension.
