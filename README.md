@@ -159,7 +159,7 @@ The `open` method supports additional callback to get informed when the view has
 window.plugin.email.open(properties, function () {
     console.log('email view dismissed');
 }, this);
-``
+```
 
 ### Adding attachments
 Attachments can be either base64 encoded datas, files from the the device storage or assets from within the *www* folder.
