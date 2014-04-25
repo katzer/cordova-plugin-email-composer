@@ -45,12 +45,6 @@
             </feature>
         </config-file>
 
-        <config-file target="AndroidManifest.xml" parent="/manifest/application">
-            <provider android:name="de.appplant.cordova.plugin.emailcomposer.AttachmentProvider"
-                android:authorities="$PACKAGE_NAME.plugin.emailcomposer.attachmentprovider">
-            </provider>
-        </config-file>
-
         <source-file src="src/android/EmailComposer.java"      target-dir="src/de/appplant/cordova/plugin/emailcomposer" />
         <source-file src="src/android/AttachmentProvider.java" target-dir="src/de/appplant/cordova/plugin/emailcomposer" />
     </platform>
@@ -62,13 +56,7 @@
                 <param name="android-package" value="de.appplant.cordova.plugin.emailcomposer.EmailComposer"/>
             </feature>
         </config-file>
-
-        <config-file target="AndroidManifest.xml" parent="/manifest/application">
-            <provider android:name="de.appplant.cordova.plugin.emailcomposer.AttachmentProvider"
-                android:authorities="$PACKAGE_NAME.plugin.emailcomposer.attachmentprovider">
-            </provider>
-        </config-file>
-
+        
         <source-file src="src/android/EmailComposer.java"      target-dir="src/de/appplant/cordova/plugin/emailcomposer" />
     </platform>
 
