@@ -365,6 +365,17 @@
     NSFileManager* fileManager = [NSFileManager defaultManager];
     NSString* absPath;
 
+    if ([path hasPrefix:@"file://./"]) {
+        NSBundle* mainBundle = [NSBundle mainBundle];
+        NSString* bundlePath = [[mainBundle bundlePath]
+                                stringByDeletingLastPathComponent];
+
+        NSString* relDocPath = [bundlePath stringByAppendingString:@"/Documents/"];
+
+        path = [path stringByReplacingOccurrencesOfString:@"file://./"
+                                                  withString:relDocPath];
+    }
+
     absPath = [path stringByReplacingOccurrencesOfString:@"file://"
                                               withString:@"/"];
 
@@ -442,7 +453,7 @@
  */
 - (NSData*) dataFromBase64:(NSString*)base64String
 {
-    int length = [base64String length];
+    NSUInteger length = [base64String length];
     NSRegularExpression *regex;
     NSString *dataString;
 

@@ -181,7 +181,18 @@ The path to the files must be defined absolute from the root of the file system.
 window.plugin.email.open({
     attachments: [
         'file://storage/sdcard/icon.jpg', //=> Android
-        'file://Users/.../Library/Application Support/iPhone Simulator/7.0.3/Applications/E7981856-.../HelloCordova.app/../Documents/icon.jpg"' //=> iOS Simulator
+        'file://Users/.../Library/Application Support/iPhone Simulator/7.0.3/Applications/E7981856-.../HelloCordova.app/../Documents/icon.jpg"' //=> iOS
+        'file://./icon.jpg' //=> iOS points
+    ]
+});
+```
+
+On iOS its possible to point to the relative app's Documents directory via `file://./`.
+
+```javascript
+window.plugin.email.open({
+    attachments: [
+        'file://./icon.jpg' //=> .../HelloCordova.app/../Documents/icon.jpg (iOS only)
     ]
 });
 ```
