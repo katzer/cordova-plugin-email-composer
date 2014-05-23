@@ -54,7 +54,7 @@ namespace Cordova.Extension.Commands
 
             OpenDraft(draft);
 
-            DispatchCommandResult();
+            DispatchCommandResult(new PluginResult(PluginResult.Status.OK, true));
         }
 
         /// </summary>
