@@ -224,11 +224,11 @@ public class EmailComposer extends CordovaPlugin {
      * @return The URI pointing to the given path
      */
     private Uri getUriForPath (String path) {
-        if (path.startsWith("res://")) {
+        if (path.startsWith("res:")) {
             return getUriForResourcePath(path);
-        } else if (path.startsWith("file://")) {
+        } else if (path.startsWith("file:")) {
             return getUriForAbsolutePath(path);
-        } else if (path.startsWith("www://")) {
+        } else if (path.startsWith("www:")) {
             return getUriForAssetPath(path);
         } else if (path.startsWith("base64:")) {
             return getUriForBase64Content(path);
@@ -246,7 +246,7 @@ public class EmailComposer extends CordovaPlugin {
      * @return The URI pointing to the given path
      */
     private Uri getUriForAbsolutePath (String path) {
-        String absPath = path.replaceFirst("file://", "/");
+        String absPath = path.replaceFirst("file://", "");
         File file      = new File(absPath);
 
         if (!file.exists()) {

@@ -328,15 +328,15 @@
  */
 - (NSData*) getDataForAttachmentPath:(NSString*)path
 {
-    if ([path hasPrefix:@"file://"])
+    if ([path hasPrefix:@"file:"])
     {
         return [self dataForAbsolutePath:path];
     }
-    else if ([path hasPrefix:@"res://"])
+    else if ([path hasPrefix:@"res:"])
     {
         return [self dataForResource:path];
     }
-    else if ([path hasPrefix:@"www://"])
+    else if ([path hasPrefix:@"www:"])
     {
         return [self dataForAsset:path];
     }
@@ -365,19 +365,19 @@
     NSFileManager* fileManager = [NSFileManager defaultManager];
     NSString* absPath;
 
-    if ([path hasPrefix:@"file://./"]) {
+    if (![path hasPrefix:@"file:///"]) {
         NSBundle* mainBundle = [NSBundle mainBundle];
         NSString* bundlePath = [[mainBundle bundlePath]
                                 stringByDeletingLastPathComponent];
 
         NSString* relDocPath = [bundlePath stringByAppendingString:@"/Documents/"];
 
-        path = [path stringByReplacingOccurrencesOfString:@"file://./"
+        path = [path stringByReplacingOccurrencesOfString:@"file://"
                                                   withString:relDocPath];
     }
 
     absPath = [path stringByReplacingOccurrencesOfString:@"file://"
-                                              withString:@"/"];
+                                              withString:@""];
 
     if (![fileManager fileExistsAtPath:absPath]){
         NSLog(@"Attachment path not found: %@", absPath);

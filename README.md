@@ -180,19 +180,18 @@ The path to the files must be defined absolute from the root of the file system.
 ```javascript
 window.plugin.email.open({
     attachments: [
-        'file://storage/sdcard/icon.jpg', //=> Android
-        'file://Users/.../Library/Application Support/iPhone Simulator/7.0.3/Applications/E7981856-.../HelloCordova.app/../Documents/icon.jpg"' //=> iOS
-        'file://./icon.jpg' //=> iOS points
+        'file:///storage/sdcard/icon.jpg', //=> Android
+        'file:///Users/.../Library/Application Support/iPhone Simulator/7.0.3/Applications/E7981856-.../HelloCordova.app/icon.jpg' //=> iOS
     ]
 });
 ```
 
-On iOS its possible to point to the relative app's Documents directory via `file://./`.
+On iOS it is also possible to point to the relative app's Documents directory:
 
 ```javascript
 window.plugin.email.open({
     attachments: [
-        'file://./icon.jpg' //=> .../HelloCordova.app/../Documents/icon.jpg (iOS only)
+        'file://icon.jpg' //=> points to /.../HelloCordova.app/../Documents/icon.jpg (iOS)
     ]
 });
 ```
@@ -204,8 +203,8 @@ The following examples shows how to attach files from within the app's resource 
 ```javascript
 window.plugin.email.open({
     attachments: [
-        'res://drawable/icon.png', //=> points to res/drawable/icon.png on Android devices
-        'res://icons/icon.jpg'     //=> points to Resource/icons/icon.png on iOS devices
+        'res://drawable/icon.png', //=> points to res/drawable/icon.png (Android)
+        'res://icons/icon.jpg'     //=> points to Resource/icons/icon.png (iOS)
     ]
 });
 ```
@@ -216,7 +215,7 @@ The path to the files must be defined relative from the root of the mobile web a
 ```javascript
 window.plugin.email.open({
     attachments: [
-        'www://img/logo.png' //=> e.g. assets/www/img/logo.png on Android
+        'www://img/logo.png' //=> e.g. assets/www/img/logo.png (Android)
     ]
 });
 ```
