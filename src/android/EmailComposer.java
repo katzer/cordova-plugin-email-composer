@@ -341,11 +341,10 @@ public class EmailComposer extends CordovaPlugin {
         String resName = content.substring(content.indexOf(":") + 1, content.indexOf("//"));
         String resData = content.substring(content.indexOf("//") + 2);
         byte[] bytes   = Base64.decode(resData, 0);
-        String storage = this.cordova.getActivity().getCacheDir() + STORAGE_FOLDER;
+
+        String storage = this.cordova.getActivity().getExternalCacheDir() + STORAGE_FOLDER;
         File file      = new File(storage, resName);
-
         new File(storage).mkdir();
-
         try {
             FileOutputStream outStream = new FileOutputStream(file);
 
@@ -356,10 +355,7 @@ public class EmailComposer extends CordovaPlugin {
             e.printStackTrace();
         }
 
-        String pkgName = getPackageName();
-        String uriPath = pkgName + AttachmentProvider.AUTHORITY + "/" + resName;
-
-        return Uri.parse("content://" + uriPath);
+        return Uri.fromFile(file);
     }
 
     /**
