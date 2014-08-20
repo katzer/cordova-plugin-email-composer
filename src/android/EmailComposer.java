@@ -210,7 +210,7 @@ public class EmailComposer extends CordovaPlugin {
      */
     private Boolean isEmailAccountConfigured () {
         Intent  intent    = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto","max@mustermann.com", null));
-        Boolean available = cordova.getActivity().getPackageManager().queryIntentActivities(intent, 0).size() > 1;
+        Boolean available = cordova.getActivity().getPackageManager().queryIntentActivities(intent, 0).size() > 0;
 
         return available;
     }
