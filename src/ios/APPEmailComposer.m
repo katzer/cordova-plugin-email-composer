@@ -160,9 +160,20 @@
 - (void) openDraft:(MFMailComposeViewController*)draft
 {
     [self.commandDelegate runInBackground:^{
-        [self.viewController presentViewController:draft
+        [self.topMostController presentViewController:draft
                                           animated:YES completion:NULL];
     }];
+}
+
+- (UIViewController*) topMostController
+{
+    UIViewController *topController = [UIApplication sharedApplication].keyWindow.rootViewController;
+
+    while (topController.presentedViewController) {
+        topController = topController.presentedViewController;
+    }
+
+    return topController;
 }
 
 /**
