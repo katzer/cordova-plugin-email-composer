@@ -23,46 +23,6 @@
 #import "Cordova/NSData+Base64.h"
 #import <MobileCoreServices/MobileCoreServices.h>
 
-@interface APPEmailComposer (Private)
-
-// Instantiates an email composer view
-- (MFMailComposeViewController*) getDraftWithProperties:(NSDictionary*)properties;
-// Displays the email draft
-- (void) openDraft: (MFMailComposeViewController*)draft;
-// Sets the subject of the email draft
-- (void) setSubject:(NSString*)subject ofDraft:(MFMailComposeViewController*)draft;
-// Sets the body of the email draft
-- (void) setBody:(NSString*)body ofDraft:(MFMailComposeViewController*)draft isHTML:(BOOL)isHTML;
-// Sets the recipients of the email draft
-- (void) setToRecipients:(NSArray*)recipients ofDraft:(MFMailComposeViewController*)draft;
-// Sets the CC recipients of the email draft
-- (void) setCcRecipients:(NSArray*)ccRecipients ofDraft:(MFMailComposeViewController*)draft;
-// Sets the BCC recipients of the email draft
-- (void) setBccRecipients:(NSArray*)bccRecipients ofDraft:(MFMailComposeViewController*)draft;
-// Sets the attachments of the email draft
-- (void) setAttachments:(NSArray*)attatchments ofDraft:(MFMailComposeViewController*)draft;
-// Delegate will be called after the mail composer did finish an action to dismiss the view
-- (void) mailComposeController:(MFMailComposeViewController*)controller
-           didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error;
-// Retrieves the mime type from the file extension
-- (NSString*) getMimeTypeFromFileExtension:(NSString*)extension;
-// Returns the data for a given (relative) attachments path
-- (NSData*) getDataForAttachmentPath:(NSString*)path;
-// Retrieves the attachments basename.
-- (NSString*) getBasenameFromAttachmentPath:(NSString*)path;
-// Retrieves the data for an absolute attachment path
-- (NSData*) dataForAbsolutePath:(NSString*)path;
-// Retrieves the data for a resource attachment path
-- (NSData*) dataForResource:(NSString*)path;
-// Retrieves the data for a asset path
-- (NSData*) dataForAsset:(NSString*)path;
-// Retrieves the data for a base64 encoded string
-- (NSData*) dataFromBase64:(NSString*)base64String;
-// Invokes the callback without any parameter
-- (void) execCallback;
-
-@end
-
 @interface APPEmailComposer ()
 
 @property (nonatomic, retain) CDVInvokedUrlCommand* command;
@@ -79,14 +39,16 @@
  */
 - (void) isServiceAvailable:(CDVInvokedUrlCommand*)command
 {
-    bool canSendMail = [MFMailComposeViewController canSendMail];
-    CDVPluginResult* result;
+    [self.commandDelegate runInBackground:^{
+        bool canSendMail = [MFMailComposeViewController canSendMail];
+        CDVPluginResult* result;
 
-    result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
-                                 messageAsBool:canSendMail];
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
+                                     messageAsBool:canSendMail];
 
-    [self.commandDelegate sendPluginResult:result
-                                callbackId:command.callbackId];
+        [self.commandDelegate sendPluginResult:result
+                                    callbackId:command.callbackId];
+    }];
 }
 
 /**
@@ -97,20 +59,22 @@
  */
 - (void) open:(CDVInvokedUrlCommand*)command
 {
-    NSDictionary* properties = [command.arguments objectAtIndex:0];
-    MFMailComposeViewController* controller = [self getDraftWithProperties:
-                                               properties];
+    [self.commandDelegate runInBackground:^{
+        NSArray* args = command.arguments;
+        NSDictionary* properties = [args objectAtIndex:0];
+        MFMailComposeViewController* draft;
 
-    _command = command;
+        draft = [self getDraftWithProperties:properties];
 
-    if (!controller) {
-        [self execCallback];
+        _command = command;
 
-        return;
-    }
+        if (!draft) {
+            [self execCallback];
+            return;
+        }
 
-    [self openDraft:controller];
-    [self commandDelegate];
+        [self openDraft:draft];
+    }];
 }
 
 /**
@@ -130,10 +94,9 @@
 
     BOOL isHTML = [[properties objectForKey:@"isHtml"] boolValue];
 
-    MFMailComposeViewController* draft = [[MFMailComposeViewController alloc]
-                                          init];
+    MFMailComposeViewController* draft;
 
-    draft.mailComposeDelegate = self;
+    draft = [[MFMailComposeViewController alloc] init];
 
     // Subject
     [self setSubject:[properties objectForKey:@"subject"] ofDraft:draft];
@@ -148,6 +111,8 @@
     // Attachments
     [self setAttachments:[properties objectForKey:@"attachments"] ofDraft:draft];
 
+    draft.mailComposeDelegate = self;
+
     return draft;
 }
 
@@ -159,10 +124,9 @@
  */
 - (void) openDraft:(MFMailComposeViewController*)draft
 {
-    [self.commandDelegate runInBackground:^{
-        [self.viewController presentViewController:draft
-                                          animated:YES completion:NULL];
-    }];
+    [self.viewController presentViewController:draft
+                                      animated:YES
+                                    completion:NULL];
 }
 
 /**
