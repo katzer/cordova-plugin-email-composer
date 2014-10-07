@@ -39,6 +39,7 @@ import android.content.res.Resources;
 import android.net.Uri;
 import android.text.Html;
 import android.util.Base64;
+import android.util.Log;
 
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CallbackContext;
@@ -320,7 +321,7 @@ public class EmailComposer extends CordovaPlugin {
         File file      = new File(absPath);
 
         if (!file.exists()) {
-            System.err.println("Attachment path not found: " + file.getAbsolutePath());
+            Log.e("EmailComposer", "Path not found: " + file.getAbsolutePath());
         }
 
         return Uri.fromFile(file);
@@ -341,8 +342,10 @@ public class EmailComposer extends CordovaPlugin {
         String fileName = resPath.substring(resPath.lastIndexOf('/') + 1);
         File dir        = cordova.getActivity().getExternalCacheDir();
 
-        if (dir == null)
-            return null;
+        if (dir == null) {
+            Log.e("EmailComposer", "Missing external cache dir");
+            return Uri.EMPTY;
+        }
 
         String storage  = dir.toString() + STORAGE_FOLDER;
         File file       = new File(storage, fileName);
@@ -359,7 +362,7 @@ public class EmailComposer extends CordovaPlugin {
             outStream.flush();
             outStream.close();
         } catch (Exception e) {
-            System.err.println("Attachment asset not found: assets/" + resPath);
+            Log.e("EmailComposer", "Asset not found: assets/" + resPath);
             e.printStackTrace();
         }
 
@@ -383,15 +386,17 @@ public class EmailComposer extends CordovaPlugin {
         String extension = resPath.substring(resPath.lastIndexOf('.'));
         File dir         = cordova.getActivity().getExternalCacheDir();
 
-        if (dir == null)
-            return null;
+        if (dir == null) {
+            Log.e("EmailComposer", "Missing external cache dir");
+            return Uri.EMPTY;
+        }
 
         String storage   = dir.toString() + STORAGE_FOLDER;
         int resId        = getResId(resPath);
         File file        = new File(storage, resName + extension);
 
         if (resId == 0) {
-            System.err.println("Resource not found: " + resPath);
+            Log.e("EmailComposer", "Resource not found: " + resPath);
         }
 
         new File(storage).mkdir();
@@ -424,17 +429,20 @@ public class EmailComposer extends CordovaPlugin {
     private Uri getUriForBase64Content (String content) {
         String resName = content.substring(content.indexOf(":") + 1, content.indexOf("//"));
         String resData = content.substring(content.indexOf("//") + 2);
-        byte[] bytes   = new byte[] {};
         File dir       = cordova.getActivity().getExternalCacheDir();
+        byte[] bytes;
 
         try {
             bytes = Base64.decode(resData, 0);
         } catch (Exception ignored) {
-            System.err.println("Invalid Base64 string");
+            Log.e("EmailComposer", "Invalid Base64 string");
+            return Uri.EMPTY;
         }
 
-        if (dir == null)
-            return null;
+        if (dir == null) {
+            Log.e("EmailComposer", "Missing external cache dir");
+            return Uri.EMPTY;
+        }
 
         String storage = dir.toString() + STORAGE_FOLDER;
         File file      = new File(storage, resName);
