@@ -33,6 +33,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 import android.content.res.Resources;
 import android.net.Uri;
@@ -49,19 +50,34 @@ public class EmailComposer extends CordovaPlugin {
 
     private CallbackContext command;
 
+    /**
+     * Executes the request.
+     *
+     * This method is called from the WebView thread.
+     * To do a non-trivial amount of work, use:
+     *     cordova.getThreadPool().execute(runnable);
+     *
+     * To run on the UI thread, use:
+     *     cordova.getActivity().runOnUiThread(runnable);
+     *
+     * @param action   The action to execute.
+     * @param args     The exec() arguments in JSON form.
+     * @param callback The callback context used when calling
+     *                 back into JavaScript.
+     * @return         Whether the action was valid.
+     */
     @Override
-    public boolean execute (String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
+    public boolean execute (String action, JSONArray args,
+                            CallbackContext callback) throws JSONException {
 
-        this.command = callbackContext;
+        this.command = callback;
 
-        // Eine E-Mail soll versendet werden
         if ("open".equals(action)) {
             open(args);
 
             return true;
         }
 
-        // Es soll überprüft werden, ob ein Dienst zum Versenden der E-Mail zur Verfügung steht
         if ("isServiceAvailable".equals(action)) {
             isServiceAvailable();
 
@@ -73,7 +89,7 @@ public class EmailComposer extends CordovaPlugin {
     }
 
     /**
-     * Überprüft, ob Emails versendet werden können.
+     * Tells if the device has the capability to send emails.
      */
     private void isServiceAvailable () {
         Boolean available   = isEmailAccountConfigured();
@@ -83,19 +99,35 @@ public class EmailComposer extends CordovaPlugin {
     }
 
     /**
-     * Öffnet den Email-Kontroller mit vorausgefüllten Daten.
+     * Sends an intent to the email app.
+     *
+     * @param args
+     *      The email properties like subject or body
+     *
+     * @throws JSONException
      */
     private void open (JSONArray args) throws JSONException {
         JSONObject properties = args.getJSONObject(0);
-        Intent draft          = getDraftWithProperties(properties);
+        final Intent draft = getDraftWithProperties(properties);
+        final EmailComposer plugin = this;
 
-        openDraft(draft);
+        cordova.getThreadPool().execute(new Runnable() {
+            public void run() {
+                cordova.startActivityForResult(
+                        plugin, Intent.createChooser(draft, "Select Email App"), 0);
+            }
+        });
     }
 
     /**
-     * Erstellt den ViewController für Mails und fügt die übergebenen Eigenschaften ein.
+     * The intent with the containing email properties.
      *
-     * @param {JSONObject} params (Subject, Body, Recipients, ...)
+     * @param params
+     *      The email properties like subject or body
+     * @return
+     *      The resulting intent
+     *
+     * @throws JSONException
      */
     private Intent getDraftWithProperties (JSONObject params) throws JSONException {
         Intent mail = new Intent(android.content.Intent.ACTION_SEND_MULTIPLE);
@@ -119,27 +151,27 @@ public class EmailComposer extends CordovaPlugin {
     }
 
     /**
-     * Zeigt den ViewController zum Versenden/Bearbeiten der Mail an.
-     */
-    private void openDraft (final Intent draft) {
-        final EmailComposer plugin = this;
-
-        cordova.getThreadPool().execute( new Runnable() {
-            public void run() {
-                cordova.startActivityForResult(plugin, Intent.createChooser(draft, "Select Email App"), 0);
-            }
-        });
-    }
-
-    /**
-     * Setzt den Subject der Mail.
+     * Setter for the subject.
+     *
+     * @param subject
+     *      The subject
+     * @param draft
+     *      The intent
      */
     private void setSubject (String subject, Intent draft) {
         draft.putExtra(android.content.Intent.EXTRA_SUBJECT, subject);
     }
 
     /**
-     * Setzt den Body der Mail.
+     * Setter for the body.
+     *
+     * @param body
+     *      The body
+     * @param isHTML
+     *      Indicates the encoding
+     *      (HTML or plain text)
+     * @param draft
+     *      The intent
      */
     private void setBody (String body, Boolean isHTML, Intent draft) {
         if (isHTML) {
@@ -152,7 +184,14 @@ public class EmailComposer extends CordovaPlugin {
     }
 
     /**
-     * Setzt die Empfänger der Mail.
+     * Setter for the recipients.
+     *
+     * @param recipients
+     *      List of email addresses
+     * @param draft
+     *      The intent
+     *
+     * @throws JSONException
      */
     private void setRecipients (JSONArray recipients, Intent draft) throws JSONException {
         String[] receivers = new String[recipients.length()];
@@ -165,52 +204,81 @@ public class EmailComposer extends CordovaPlugin {
     }
 
     /**
-     * Setzt die CC-Empfänger der Mail.
+     * Setter for the cc recipients.
+     *
+     * @param recipients
+     *      List of email addresses
+     * @param draft
+     *      The intent
+     *
+     * @throws JSONException
      */
-    private void setCcRecipients (JSONArray ccRecipients, Intent draft) throws JSONException {
-        String[] receivers = new String[ccRecipients.length()];
+    private void setCcRecipients (JSONArray recipients, Intent draft) throws JSONException {
+        String[] receivers = new String[recipients.length()];
 
-        for (int i = 0; i < ccRecipients.length(); i++) {
-            receivers[i] = ccRecipients.getString(i);
+        for (int i = 0; i < recipients.length(); i++) {
+            receivers[i] = recipients.getString(i);
         }
 
         draft.putExtra(android.content.Intent.EXTRA_CC, receivers);
     }
 
     /**
-     * Setzt die BCC-Empfänger der Mail.
+     * Setter for the bcc recipients.
+     *
+     * @param recipients
+     *      List of email addresses
+     * @param draft
+     *      The intent
+     *
+     * @throws JSONException
      */
-    private void setBccRecipients (JSONArray bccRecipients, Intent draft) throws JSONException {
-        String[] receivers = new String[bccRecipients.length()];
+    private void setBccRecipients (JSONArray recipients, Intent draft) throws JSONException {
+        String[] receivers = new String[recipients.length()];
 
-        for (int i = 0; i < bccRecipients.length(); i++) {
-            receivers[i] = bccRecipients.getString(i);
+        for (int i = 0; i < recipients.length(); i++) {
+            receivers[i] = recipients.getString(i);
         }
 
         draft.putExtra(android.content.Intent.EXTRA_BCC, receivers);
     }
 
     /**
-     * Fügt die Anhände zur Mail hinzu.
+     * Setter for the attachments.
+     *
+     * @param attachments
+     *      List of URIs
+     * @param draft
+     *      The intent
+     *
+     * @throws JSONException
      */
     private void setAttachments (JSONArray attachments, Intent draft) throws JSONException {
-        ArrayList<Uri> attachmentUris = new ArrayList<Uri>();
+        ArrayList<Uri> uris = new ArrayList<Uri>();
 
         for (int i = 0; i < attachments.length(); i++) {
-            Uri attachmentUri = getUriForPath(attachments.getString(i));
+            Uri uri = getUriForPath(attachments.getString(i));
 
-            attachmentUris.add(attachmentUri);
+            uris.add(uri);
         }
 
-        draft.putParcelableArrayListExtra(Intent.EXTRA_STREAM, attachmentUris);
+        draft.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris);
     }
 
     /**
-     * Gibt an, ob es eine Anwendung gibt, welche E-Mails versenden kann.
+     * If email apps are available.
+     *
+     * @return
+     *      true if available, otherwise false
      */
     private Boolean isEmailAccountConfigured () {
-        Intent  intent    = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto","max@mustermann.com", null));
-        Boolean available = cordova.getActivity().getPackageManager().queryIntentActivities(intent, 0).size() > 1;
+        Uri uri = Uri.fromParts("mailto","max@mustermann.com", null);
+        Intent intent = new Intent(Intent.ACTION_SENDTO, uri);
+        PackageManager pm = cordova.getActivity().getPackageManager();
+        Boolean available;
+
+        available =
+                pm.queryIntentActivities(intent, 0).size() > 1;
 
         return available;
     }
@@ -218,10 +286,11 @@ public class EmailComposer extends CordovaPlugin {
     /**
      * The URI for an attachment path.
      *
-     * @param {String} path
+     * @param path
      *      The given path to the attachment
      *
-     * @return The URI pointing to the given path
+     * @return
+     *      The URI pointing to the given path
      */
     private Uri getUriForPath (String path) {
         if (path.startsWith("res:")) {
@@ -240,10 +309,11 @@ public class EmailComposer extends CordovaPlugin {
     /**
      * The URI for a file.
      *
-     * @param {String} path
+     * @param path
      *      The given absolute path
      *
-     * @return The URI pointing to the given path
+     * @return
+     *      The URI pointing to the given path
      */
     private Uri getUriForAbsolutePath (String path) {
         String absPath = path.replaceFirst("file://", "");
@@ -259,17 +329,23 @@ public class EmailComposer extends CordovaPlugin {
     /**
      * The URI for an asset.
      *
-     * @param {String} path
+     * @param path
      *      The given asset path
      *
-     * @return The URI pointing to the given path
+     * @return
+     *      The URI pointing to the given path
      */
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     private Uri getUriForAssetPath (String path) {
         String resPath  = path.replaceFirst("www:/", "www");
         String fileName = resPath.substring(resPath.lastIndexOf('/') + 1);
-        String storage  = cordova.getActivity().getExternalCacheDir().toString() + STORAGE_FOLDER;
+        File dir        = cordova.getActivity().getExternalCacheDir();
 
-        File file = new File(storage, fileName);
+        if (dir == null)
+            return null;
+
+        String storage  = dir.toString() + STORAGE_FOLDER;
+        File file       = new File(storage, fileName);
 
         new File(storage).mkdir();
 
@@ -293,18 +369,24 @@ public class EmailComposer extends CordovaPlugin {
     /**
      * The URI for a resource.
      *
-     * @param {String} path
+     * @param path
      *      The given relative path
      *
-     * @return The URI pointing to the given path
+     * @return
+     *      The URI pointing to the given path
      */
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     private Uri getUriForResourcePath (String path) {
         String resPath   = path.replaceFirst("res://", "");
         String fileName  = resPath.substring(resPath.lastIndexOf('/') + 1);
         String resName   = fileName.substring(0, fileName.lastIndexOf('.'));
         String extension = resPath.substring(resPath.lastIndexOf('.'));
-        String storage   = cordova.getActivity().getExternalCacheDir().toString() + STORAGE_FOLDER;
+        File dir         = cordova.getActivity().getExternalCacheDir();
 
+        if (dir == null)
+            return null;
+
+        String storage   = dir.toString() + STORAGE_FOLDER;
         int resId        = getResId(resPath);
         File file        = new File(storage, resName + extension);
 
@@ -332,16 +414,23 @@ public class EmailComposer extends CordovaPlugin {
     /**
      * The URI for a base64 encoded content.
      *
-     * @param {String} content
+     * @param content
      *      The given base64 encoded content
      *
-     * @return The URI including the given content
+     * @return
+     *      The URI including the given content
      */
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     private Uri getUriForBase64Content (String content) {
         String resName = content.substring(content.indexOf(":") + 1, content.indexOf("//"));
         String resData = content.substring(content.indexOf("//") + 2);
         byte[] bytes   = Base64.decode(resData, 0);
-        String storage = this.cordova.getActivity().getCacheDir() + STORAGE_FOLDER;
+        File dir       = cordova.getActivity().getExternalCacheDir();
+
+        if (dir == null)
+            return null;
+
+        String storage = dir.toString() + STORAGE_FOLDER;
         File file      = new File(storage, resName);
 
         new File(storage).mkdir();
@@ -365,10 +454,10 @@ public class EmailComposer extends CordovaPlugin {
     /**
      * Writes an InputStream to an OutputStream
      *
-     * @param {InputStream} in
-     * @param {OutputStream} out
-     *
-     * @return void
+     * @param in
+     *      The input stream
+     * @param out
+     *      The output stream
      */
     private void copyFile (InputStream in, OutputStream out) throws IOException {
         byte[] buffer = new byte[1024];
@@ -385,13 +474,14 @@ public class EmailComposer extends CordovaPlugin {
      */
     private int getResId (String resPath) {
         Resources res = cordova.getActivity().getResources();
+        int resId;
 
         String pkgName  = getPackageName();
         String dirName  = resPath.substring(0, resPath.lastIndexOf('/'));
         String fileName = resPath.substring(resPath.lastIndexOf('/') + 1);
         String resName  = fileName.substring(0, fileName.lastIndexOf('.'));
 
-        int resId = res.getIdentifier(resName, dirName, pkgName);
+        resId = res.getIdentifier(resName, dirName, pkgName);
 
         return resId;
     }
