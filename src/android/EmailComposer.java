@@ -445,10 +445,7 @@ public class EmailComposer extends CordovaPlugin {
             e.printStackTrace();
         }
 
-        String pkgName = getPackageName();
-        String uriPath = pkgName + AttachmentProvider.AUTHORITY + "/" + resName;
-
-        return Uri.parse("content://" + uriPath);
+        return Uri.fromFile(file);
     }
 
     /**
