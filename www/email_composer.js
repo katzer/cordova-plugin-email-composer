@@ -46,14 +46,15 @@ EmailComposer.prototype = {
             bcc:         null,
             attachments: null,
             isHtml:      true
-        }
+        };
 
         for (var key in defaults) {
-            if (options[key] !== undefined) {
-                defaults[key] = options[key];
-            } else {
+            if (options.hasOwnProperty(key)) {
                 console.log('EmailComposer plugin: unknown property "' + key + '"');
+                continue;
             }
+
+            defaults[key] = options[key];
         }
 
         cordova.exec(callbackFn, null, 'EmailComposer', 'open', [options]);
@@ -94,11 +95,12 @@ EmailComposer.prototype = {
      *      The new callback function
      */
     createCallbackFn: function (callbackFn, scope) {
+        if (typeof callbackFn != 'function')
+            return;
+
         return function () {
-            if (typeof callbackFn == 'function') {
                 callbackFn.apply(scope || this, arguments);
-            }
-        }
+        };
     }
 };
 
