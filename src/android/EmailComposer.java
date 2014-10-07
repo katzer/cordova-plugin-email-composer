@@ -424,8 +424,14 @@ public class EmailComposer extends CordovaPlugin {
     private Uri getUriForBase64Content (String content) {
         String resName = content.substring(content.indexOf(":") + 1, content.indexOf("//"));
         String resData = content.substring(content.indexOf("//") + 2);
-        byte[] bytes   = Base64.decode(resData, 0);
+        byte[] bytes   = new byte[] {};
         File dir       = cordova.getActivity().getExternalCacheDir();
+
+        try {
+            bytes = Base64.decode(resData, 0);
+        } catch (Exception ignored) {
+            System.err.println("Invalid Base64 string");
+        }
 
         if (dir == null)
             return null;
