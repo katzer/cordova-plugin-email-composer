@@ -483,6 +483,10 @@ public class EmailComposer extends CordovaPlugin {
 
         resId = res.getIdentifier(resName, dirName, pkgName);
 
+        if (resId == 0) {
+            resId = res.getIdentifier(resName, "drawable", pkgName);
+        }
+
         return resId;
     }
 
