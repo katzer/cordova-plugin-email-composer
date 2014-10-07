@@ -391,7 +391,7 @@ public class EmailComposer extends CordovaPlugin {
         File file        = new File(storage, resName + extension);
 
         if (resId == 0) {
-            System.err.println("Attachment resource not found: " + resPath);
+            System.err.println("Resource not found: " + resPath);
         }
 
         new File(storage).mkdir();
@@ -477,9 +477,15 @@ public class EmailComposer extends CordovaPlugin {
         int resId;
 
         String pkgName  = getPackageName();
-        String dirName  = resPath.substring(0, resPath.lastIndexOf('/'));
-        String fileName = resPath.substring(resPath.lastIndexOf('/') + 1);
-        String resName  = fileName.substring(0, fileName.lastIndexOf('.'));
+        String dirName  = "drawable";
+        String fileName = resPath;
+
+        if (resPath.contains("/")) {
+            dirName  = resPath.substring(0, resPath.lastIndexOf('/'));
+            fileName = resPath.substring(resPath.lastIndexOf('/') + 1);
+        }
+
+        String resName = fileName.substring(0, fileName.lastIndexOf('.'));
 
         resId = res.getIdentifier(resName, dirName, pkgName);
 
