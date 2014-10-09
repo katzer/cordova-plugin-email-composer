@@ -92,6 +92,10 @@ exports.isServiceAvailable = function (callback, scope) {
 exports.mergeWithDefaults = function (options) {
     var defaults = this.getDefaults();
 
+    if (options.hasOwnProperty('isHTML')) {
+        options.isHtml = options.isHTML;
+    }
+
     for (var key in defaults) {
 
         if (!options.hasOwnProperty(key)) {
