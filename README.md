@@ -178,16 +178,12 @@ The path to the files must be defined absolute from the root of the file system.
 
 ```javascript
 cordova.plugins.email.open({
-    attachments: [
-        'file:///storage/sdcard/icon.jpg', //=> Android
-        'file:///Users/.../Library/Application Support/iPhone Simulator/7.0.3/Applications/E7981856-.../HelloCordova.app/icon.jpg' //=> iOS
-    ]
+    attachments: 'file:///storage/sdcard/icon.png', //=> Android
 });
 ```
 
-#### Attach app's resources
-Each app has a resource folder, e.g. the _res_ folder for Android apps or the _Resource_ folder for iOS apps.<br>
-The following example shows how to attach the app icon from within the app's resource folder.
+#### Attach native app resources
+Each app has a resource folder, e.g. the _res_ folder for Android apps or the _Resource_ folder for iOS apps. The following example shows how to attach the app icon from within the app's resource folder.
 
 ```javascript
 cordova.plugins.email.open({
@@ -195,13 +191,14 @@ cordova.plugins.email.open({
 });
 ```
 
-#### Attach assets from within the www folder
+#### Attach assets from the www folder
 The path to the files must be defined relative from the root of the mobile web app folder, which is located under the _www_ folder.
 
 ```javascript
 cordova.plugins.email.open({
     attachments: [
-        'file://img/logo.png' //=> e.g. assets/www/img/logo.png (Android)
+        'file://img/logo.png', //=> assets/www/img/logo.png (Android)
+        'file://css/index.css' //=> www/css/index.css (iOS)
     ]
 });
 ```
@@ -209,10 +206,49 @@ cordova.plugins.email.open({
 
 ## Quirks
 
-### Email composer under Android and Windows Phone
-An configured email account is required to send emails.
+### HTML and CSS on Android
+Even Android is capable to render HTML formatted mails, most native Mail clients like the standard app or Gmail only support rich formatted text while writing mails. That means that CSS cannot be used.
 
-### Limited support for Windows Phone 8
+The following table gives an overview which tags and attributes can be used:
+
+<table>
+<td width="60%">
+    <ul>
+        <li><code>&lt;a href="..."&gt;</code></li>
+        <li><code>&lt;b&gt;</code></li>
+        <li><code>&lt;big&gt;</code></li>
+        <li><code>&lt;blockquote&gt;</code></li>
+        <li><code>&lt;br&gt;</code></li>
+        <li><code>&lt;cite&gt;</code></li>
+        <li><code>&lt;dfn&gt;</code></li>
+        <li><code>&lt;div align="..."&gt;</code></li>
+        <li><code>&lt;em&gt;</code></li>
+        <li><code>&lt;font size="..." color="..." face="..."&gt;</code></li>
+        <li><code>&lt;h1&gt;</code></li>
+        <li><code>&lt;h2&gt;</code></li>
+        <li><code>&lt;h3&gt;</code></li>
+    </ul>
+</td>
+<td width="40%">
+    <ul>
+        <li><code>&lt;h4&gt;</code></li>
+        <li><code>&lt;h5&gt;</code></li>
+        <li><code>&lt;h6&gt;</code></li>
+        <li><code>&lt;i&gt;</code></li>
+        <li><code>&lt;img src="..."&gt;</code></li>
+        <li><code>&lt;p&gt;</code></li>
+        <li><code>&lt;small&gt;</code></li>
+        <li><code>&lt;strike&gt;</code></li>
+        <li><code>&lt;strong&gt;</code></li>
+        <li><code>&lt;sub&gt;</code></li>
+        <li><code>&lt;sup&gt;</code></li>
+        <li><code>&lt;tt&gt;</code></li>
+        <li><code>&lt;u&gt;</code></li>
+    </ul>
+</td>
+</table>
+
+### HTML and attachments on Windows Phone 8
 Attachments and HTML formatted body are not supported through the native API.
 
 ### Compile error on iOS
