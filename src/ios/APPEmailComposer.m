@@ -21,7 +21,9 @@
 
 #import "APPEmailComposer.h"
 #import "Cordova/NSData+Base64.h"
+#import "Cordova/CDVAvailability.h"
 #import <MobileCoreServices/MobileCoreServices.h>
+#include "TargetConditionals.h"
 
 @interface APPEmailComposer ()
 
@@ -59,14 +61,25 @@
  */
 - (void) open:(CDVInvokedUrlCommand*)command
 {
+    _command = command;
+
+    if (TARGET_IPHONE_SIMULATOR && IsAtLeastiOSVersion(@"8.0")) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Email-Composer Plug-in"
+                                                        message:@"Plug-in cannot run on the iOS8 Simulator.\nPlease downgrade or use a physical device."
+                                                       delegate:nil
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil];
+        [alert show];
+        [self execCallback];
+        return;
+    }
+
     [self.commandDelegate runInBackground:^{
         NSArray* args = command.arguments;
         NSDictionary* properties = [args objectAtIndex:0];
         MFMailComposeViewController* draft;
 
         draft = [self getDraftWithProperties:properties];
-
-        _command = command;
 
         if (!draft) {
             [self execCallback];
