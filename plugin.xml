@@ -19,9 +19,7 @@
         email, ios, android, windows phone, wp8, amazon fireos
     </keywords>
 
-    <license>
-        Apache 2.0
-    </license>
+    <license>Apache 2.0</license>
 
     <author>Sebastián Katzer</author>
 
