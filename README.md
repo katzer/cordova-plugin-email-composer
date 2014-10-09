@@ -187,7 +187,7 @@ Each app has a resource folder, e.g. the _res_ folder for Android apps or the _R
 
 ```javascript
 cordova.plugins.email.open({
-    attachments: 'res://icon.png'
+    attachments: 'res://icon.png' //=> res/drawable/icon (Android)
 });
 ```
 
