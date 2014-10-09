@@ -58,11 +58,14 @@ More informations can be found [here][PGB_plugin].
 
 ## ChangeLog
 #### Version 0.8.2 (not yet released)
-- [***change:***] Renamed `absolute:` to `file:`
-- [***change:***] Removed `relative:` attachment prefix
-- [enhancement:] New `res:` attachment prefix
-- [enhancement:] New `www:` attachment prefix
-- [feature:] Bring back simple callback support (Android, iOS)
+- Added new namespace `cordova.plugins.email`<br>
+  **Note:** The former `plugin.email` namespace is now deprecated and will be removed with the next major release.
+- [___change:___] Unified `absolute:` and `relative:` to `file:`
+- [___change:___] Renamed `isServiceAvailable` to `isAvailable`
+- [feature:] `res:` prefix for native ressource attachments
+- [enhancement:] `open` supports callbacks
+- [enhancement:] `isHTML` can be used next `isHtml`
+- [bugfix:] Defaults were ignored
 
 #### Further informations
 - See [CHANGELOG.md][changelog] to get the full changelog for the plugin.

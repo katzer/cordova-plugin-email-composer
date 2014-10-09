@@ -1,15 +1,12 @@
 ## ChangeLog
 #### Version 0.8.2 (not yet released)
 - Added new namespace `cordova.plugins.email`<br>
-  **Note:** The former `plugin.email` namespace is deprecated now and will be removed in the next major release.
-
-- [___change___:] Renamed `isServiceAvailable` to `isAvailable`.
-- [___change:___] Renamed `absolute:` to `file:`
-- [___change:___] Removed `relative:` attachment prefix
-- [enhancement:] New `res:` attachment prefix
-- [enhancement:] New `www:` attachment prefix
+  **Note:** The former `plugin.email` namespace is now deprecated and will be removed with the next major release.
+- [___change:___] Unified `absolute:` and `relative:` to `file:`
+- [___change:___] Renamed `isServiceAvailable` to `isAvailable`
+- [feature:] `res:` prefix for native ressource attachments
+- [enhancement:] `open` supports callbacks
 - [enhancement:] `isHTML` can be used next `isHtml`
-- [feature:] Bring back simple callback support (Android, iOS)
 - [bugfix:] Defaults were ignored
 
 #### Version 0.8.1 (06.04.2014)
@@ -20,7 +17,7 @@
 - [bugfix:] `relative://` attachment path wasnt working due to a missing permission.
 - [bugfix:] `base64://` attachment path looked up in the wrong directory.
 - [enhancement:] `relative://` supports now any file types and not only images.
-- [***change***:] `relative://` URI's even for Android need a file extension.
+- [___change:___] `relative://` URI's even for Android need a file extension.
 
 #### Version 0.8.0 (02.03.2014)
 - [enhancement:] New `absolute://` and `relative://` attachment prefixes.
