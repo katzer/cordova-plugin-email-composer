@@ -108,13 +108,13 @@ After opening the draft the user may have the possibilities to edit, delete or s
 
 ```javascript
 cordova.plugins.email.open({
-  to:          Array, // email addresses for TO field
-  cc:          Array, // email addresses for CC field
-  bcc:         Array, // email addresses for BCC field
-  attachments: Array, // paths to the files you want to attach or base64 encoded data streams
-  subject:    String, // subject of the email
-  body:       String, // email body (could be HTML code, in this case set isHtml to true)
-  isHtml:    Boolean, // indicats if the body is HTML or plain text
+    to:          Array, // email addresses for TO field
+    cc:          Array, // email addresses for CC field
+    bcc:         Array, // email addresses for BCC field
+    attachments: Array, // file paths or base64 data streams
+    subject:    String, // subject of the email
+    body:       String, // email body (for HTML, set isHtml to true)
+    isHtml:    Boolean, // indicats if the body is HTML or plain text
 }, callback, scope);
 ```
 
