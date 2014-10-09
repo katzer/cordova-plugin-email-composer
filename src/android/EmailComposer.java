@@ -93,10 +93,14 @@ public class EmailComposer extends CordovaPlugin {
      * Tells if the device has the capability to send emails.
      */
     private void isAvailable () {
-        Boolean available   = isEmailAccountConfigured();
-        PluginResult result = new PluginResult(PluginResult.Status.OK, available);
+        cordova.getThreadPool().execute(new Runnable() {
+            public void run() {
+                Boolean available   = isEmailAccountConfigured();
+                PluginResult result = new PluginResult(PluginResult.Status.OK, available);
 
-        command.sendPluginResult(result);
+                command.sendPluginResult(result);
+            }
+        });
     }
 
     /**
