@@ -20,6 +20,7 @@
 
     <!-- interface -->
     <js-module src="www/email_composer.js" name="EmailComposer">
+        <clobbers target="cordova.plugins.email" />
         <clobbers target="plugin.email" />
     </js-module>
 

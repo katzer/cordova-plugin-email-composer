@@ -1,5 +1,8 @@
 ## ChangeLog
 #### Version 0.8.2 (not yet released)
+- Added new namespace `cordova.plugins.email`<br>
+  **Note:** The former `plugin.email` namespace is deprecated now and will be removed in the next major release.
+
 - [___change___:] Renamed `isServiceAvailable` to `isAvailable`.
 - [___change:___] Renamed `absolute:` to `file:`
 - [___change:___] Removed `relative:` attachment prefix
