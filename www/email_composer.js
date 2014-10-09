@@ -25,6 +25,23 @@ var EmailComposer = function () {
 
 EmailComposer.prototype = {
     /**
+     * List of all available options with their default value.
+     *
+     * @return {Object}
+     */
+    getDefaults: function () {
+        return {
+            subject:     '',
+            body:        '',
+            to:          [],
+            cc:          [],
+            bcc:         [],
+            attachments: [],
+            isHtml:      true
+        };
+    },
+
+    /**
      * Displays the email composer pre-filled with data.
      *
      * @param {Object} options
@@ -35,27 +52,9 @@ EmailComposer.prototype = {
      *      The scope of the callback
      */
     open: function (options, callback, scope) {
-        var callbackFn = this.createCallbackFn(callback, scope),
-            options    = options || {};
+        var callbackFn = this.createCallbackFn(callback, scope);
 
-        var defaults = {
-            subject:     null,
-            body:        null,
-            to:          null,
-            cc:          null,
-            bcc:         null,
-            attachments: null,
-            isHtml:      true
-        };
-
-        for (var key in defaults) {
-            if (options.hasOwnProperty(key)) {
-                console.log('EmailComposer plugin: unknown property "' + key + '"');
-                continue;
-            }
-
-            defaults[key] = options[key];
-        }
+        options = this.mergeWithDefaults(options || {});
 
         cordova.exec(callbackFn, null, 'EmailComposer', 'open', [options]);
     },
@@ -84,7 +83,48 @@ EmailComposer.prototype = {
     /**
      * @private
      *
-     * Creates a callback, which will be executed within a specific scope.
+     * Merge settings with default values.
+     *
+     * @param {Object} options
+     *      The custom options
+     *
+     * @retrun {Object}
+     *      Default values merged
+     *      with custom values
+     */
+    mergeWithDefaults: function (options) {
+        var defaults = this.getDefaults();
+
+        for (var key in defaults) {
+
+            if (!options.hasOwnProperty(key)) {
+                options[key] = defaults[key];
+                continue;
+            }
+
+            var custom_  = options[key],
+                default_ = defaults[key];
+
+            if (typeof default_ != typeof custom_) {
+
+                if (typeof default_ == 'string') {
+                    options[key] = custom_.join('');
+                }
+
+                else if (typeof default_ == 'object') {
+                    options[key] = [custom_.toString()];
+                }
+            }
+        }
+
+        return options;
+    },
+
+    /**
+     * @private
+     *
+     * Creates a callback, which will be executed
+     * within a specific scope.
      *
      * @param {Function} callbackFn
      *      The callback function
