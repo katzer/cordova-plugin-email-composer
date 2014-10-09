@@ -56,7 +56,7 @@
 /**
  * Shows the email composer view with pre-filled data.
  *
- * @param {NSDictionary} properties
+ * @param properties
  *      The email properties like subject, body, attachments
  */
 - (void) open:(CDVInvokedUrlCommand*)command
@@ -93,10 +93,11 @@
 /**
  * Instantiates an email composer view.
  *
- * @param {NSDictionary} properties
+ * @param properties
  *      The email properties like subject, body, attachments
  *
- * @return {MFMailComposeViewController}
+ * @return
+ *      The configured email composer view
  */
 - (MFMailComposeViewController*) getDraftWithProperties:(NSDictionary*)properties
 {
@@ -132,7 +133,7 @@
 /**
  * Displays the email draft.
  *
- * @param {MFMailComposeViewController} draft
+ * @param draft
  *      The email composer view
  */
 - (void) openDraft:(MFMailComposeViewController*)draft
@@ -145,9 +146,9 @@
 /**
  * Sets the subject of the email draft.
  *
- * @param {NSString} subject
+ * @param subject
  *      The subject of the email
- * @param {MFMailComposeViewController} draft
+ * @param draft
  *      The email composer view
  */
 - (void) setSubject:(NSString*)subject
@@ -159,11 +160,11 @@
 /**
  * Sets the body of the email draft.
  *
- * @param {NSString} body
+ * @param body
  *      The body of the email
- * @param {BOOL} isHTML
+ * @param isHTML
  *      Indicates if the body is an HTML encoded string
- * @param {MFMailComposeViewController} draft
+ * @param draft
  *      The email composer view
  */
 - (void) setBody:(NSString*)body ofDraft:(MFMailComposeViewController*)draft
@@ -175,9 +176,9 @@
 /**
  * Sets the recipients of the email draft.
  *
- * @param {NSArray} recipients
+ * @param recipients
  *      The recipients of the email
- * @param {MFMailComposeViewController} draft
+ * @param draft
  *      The email composer view
  */
 - (void) setToRecipients:(NSArray*)recipients
@@ -189,9 +190,9 @@
 /**
  * Sets the CC recipients of the email draft.
  *
- * @param {NSArray} ccRecipients
+ * @param ccRecipients
  *      The CC recipients of the email
- * @param {MFMailComposeViewController} draft
+ * @param draft
  *      The email composer view
  */
 - (void) setCcRecipients:(NSArray*)ccRecipients
@@ -203,9 +204,9 @@
 /**
  * Sets the BCC recipients of the email draft.
  *
- * @param {NSArray} bccRecipients
+ * @param bccRecipients
  *      The BCC recipients of the email
- * @param {MFMailComposeViewController} draft
+ * @param draft
  *      The email composer view
  */
 - (void) setBccRecipients:(NSArray*)bccRecipients
@@ -217,9 +218,9 @@
 /**
  * Sets the attachments of the email draft.
  *
- * @param {NSArray} attachments
+ * @param attachments
  *      The attachments of the email
- * @param {MFMailComposeViewController} draft
+ * @param draft
  *      The email composer view
  */
 - (void) setAttachments:(NSArray*)attatchments
@@ -257,8 +258,11 @@
 /**
  * Retrieves the mime type from the file extension.
  *
- * @param {NSString} extension
+ * @param extension
  *      The file's extension
+ *
+ * @return
+ *      The coresponding MIME type
  */
 - (NSString*) getMimeTypeFromFileExtension:(NSString*)extension
 {
@@ -277,8 +281,11 @@
 /**
  * Retrieves the attachments basename.
  *
- * @param {NSString} path
+ * @param path
  *      The file path or bas64 data of the attachment
+ *
+ * @return
+ *      The attachments basename
  */
 - (NSString*) getBasenameFromAttachmentPath:(NSString*)path
 {
@@ -300,8 +307,11 @@
 /**
  * Returns the data for a given (relative) attachment path.
  *
- * @param {NSString} path
+ * @param path
  *      An absolute/relative path or the base64 data
+ *
+ * @return
+ *      The data for the attachment
  */
 - (NSData*) getDataForAttachmentPath:(NSString*)path
 {
@@ -334,8 +344,11 @@
 /**
  * Retrieves the data for an absolute attachment path.
  *
- * @param {NSString} path
+ * @param path
  *      An absolute file path
+ *
+ * @return
+ *      The data for the attachment
  */
 - (NSData*) dataForAbsolutePath:(NSString*)path
 {
@@ -368,8 +381,11 @@
 /**
  * Retrieves the data for a resource path.
  *
- * @param {NSString} path
+ * @param path
  *      A relative file path
+ *
+ * @return
+ *      The data for the attachment
  */
 - (NSData*) dataForResource:(NSString*)path
 {
@@ -396,8 +412,11 @@
 /**
  * Retrieves the data for a asset path.
  *
- * @param {NSString} path
+ * @param path
  *      A relative www file path
+ *
+ * @return
+ *      The data for the attachment
  */
 - (NSData*) dataForAsset:(NSString*)path
 {
@@ -425,8 +444,11 @@
 /**
  * Retrieves the data for a base64 encoded string.
  *
- * @param {NSString} base64String
+ * @param base64String
  *      Base64 encoded string
+ *
+ * @return
+ *      The data for the attachment
  */
 - (NSData*) dataFromBase64:(NSString*)base64String
 {
