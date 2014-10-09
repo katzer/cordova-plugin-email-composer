@@ -296,9 +296,9 @@ public class EmailComposer extends CordovaPlugin {
     private Uri getUriForPath (String path) {
         if (path.startsWith("res:")) {
             return getUriForResourcePath(path);
-        } else if (path.startsWith("file:")) {
+        } else if (path.startsWith("file:///")) {
             return getUriForAbsolutePath(path);
-        } else if (path.startsWith("www:")) {
+        } else if (path.startsWith("file://")) {
             return getUriForAssetPath(path);
         } else if (path.startsWith("base64:")) {
             return getUriForBase64Content(path);
@@ -321,7 +321,7 @@ public class EmailComposer extends CordovaPlugin {
         File file      = new File(absPath);
 
         if (!file.exists()) {
-            Log.e("EmailComposer", "Path not found: " + file.getAbsolutePath());
+            Log.e("EmailComposer", "File not found: " + file.getAbsolutePath());
         }
 
         return Uri.fromFile(file);
@@ -338,7 +338,7 @@ public class EmailComposer extends CordovaPlugin {
      */
     @SuppressWarnings("ResultOfMethodCallIgnored")
     private Uri getUriForAssetPath (String path) {
-        String resPath  = path.replaceFirst("www:/", "www");
+        String resPath  = path.replaceFirst("file:/", "www");
         String fileName = resPath.substring(resPath.lastIndexOf('/') + 1);
         File dir        = cordova.getActivity().getExternalCacheDir();
 
@@ -362,7 +362,7 @@ public class EmailComposer extends CordovaPlugin {
             outStream.flush();
             outStream.close();
         } catch (Exception e) {
-            Log.e("EmailComposer", "Asset not found: assets/" + resPath);
+            Log.e("EmailComposer", "File not found: assets/" + resPath);
             e.printStackTrace();
         }
 
@@ -396,7 +396,7 @@ public class EmailComposer extends CordovaPlugin {
         File file        = new File(storage, resName + extension);
 
         if (resId == 0) {
-            Log.e("EmailComposer", "Resource not found: " + resPath);
+            Log.e("EmailComposer", "File not found: " + resPath);
         }
 
         new File(storage).mkdir();
