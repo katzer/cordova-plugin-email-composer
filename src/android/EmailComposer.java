@@ -19,7 +19,7 @@
     under the License.
 */
 
-package de.appplant.cordova.plugin.emailcomposer;
+package de.appplant.cordova.emailcomposer;
 
 import java.io.File;
 import java.io.FileOutputStream;
