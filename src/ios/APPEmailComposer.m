@@ -37,7 +37,7 @@
  * @param callbackId
  *      The ID of the JS function to be called with the result
  */
-- (void) isServiceAvailable:(CDVInvokedUrlCommand*)command
+- (void) isAvailable:(CDVInvokedUrlCommand*)command
 {
     [self.commandDelegate runInBackground:^{
         bool canSendMail = [MFMailComposeViewController canSendMail];

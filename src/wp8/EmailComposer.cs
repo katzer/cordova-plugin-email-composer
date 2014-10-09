@@ -38,7 +38,7 @@ namespace Cordova.Extension.Commands
         /// <summary>
         /// Überprüft, ob Emails versendet werden können.
         /// </summary>
-        public void isServiceAvailable(string jsonArgs)
+        public void isAvailable(string jsonArgs)
         {
             DispatchCommandResult(new PluginResult(PluginResult.Status.OK, true));
         }

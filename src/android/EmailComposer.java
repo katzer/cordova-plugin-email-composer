@@ -79,8 +79,8 @@ public class EmailComposer extends CordovaPlugin {
             return true;
         }
 
-        if ("isServiceAvailable".equals(action)) {
-            isServiceAvailable();
+        if ("isAvailable".equals(action)) {
+            isAvailable();
 
             return true;
         }
@@ -92,7 +92,7 @@ public class EmailComposer extends CordovaPlugin {
     /**
      * Tells if the device has the capability to send emails.
      */
-    private void isServiceAvailable () {
+    private void isAvailable () {
         Boolean available   = isEmailAccountConfigured();
         PluginResult result = new PluginResult(PluginResult.Status.OK, available);
 

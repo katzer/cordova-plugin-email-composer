@@ -64,6 +64,16 @@ exports.openDraft = function () {
 };
 
 /**
+ * @depreacted
+ */
+exports.isServiceAvailable = function () {
+    console.log('`email.isServiceAvailable` is deprecated.' +
+                ' Please use `email.isAvailable` instead.');
+
+    this.isAvailable.apply(this, arguments);
+};
+
+/**
  * Verifies if sending emails is supported on the device.
  *
  * @param {Function} callback
@@ -71,10 +81,10 @@ exports.openDraft = function () {
  * @param {Object} scope
  *      The scope of the callback
  */
-exports.isServiceAvailable = function (callback, scope) {
+exports.isAvailable = function (callback, scope) {
     var fn = this.createCallbackFn(callback, scope);
 
-    exec(fn, null, 'EmailComposer', 'isServiceAvailable', []);
+    exec(fn, null, 'EmailComposer', 'isAvailable', []);
 };
 
 /**

@@ -1,11 +1,13 @@
 ## ChangeLog
 #### Version 0.8.2 (not yet released)
-- [***change:***] Renamed `absolute:` to `file:`
-- [***change:***] Removed `relative:` attachment prefix
+- [___change___:] Renamed `isServiceAvailable` to `isAvailable`.
+- [___change:___] Renamed `absolute:` to `file:`
+- [___change:___] Removed `relative:` attachment prefix
 - [enhancement:] New `res:` attachment prefix
 - [enhancement:] New `www:` attachment prefix
+- [enhancement:] `isHTML` can be used next `isHtml`
 - [feature:] Bring back simple callback support (Android, iOS)
-- [bugfix:] Defaults were ignored.
+- [bugfix:] Defaults were ignored
 
 #### Version 0.8.1 (06.04.2014)
 - [enhancement:] Make use Cordovas NSData+Base64 extension.
@@ -29,8 +31,8 @@
 
 #### Version 0.7.0 (05.12.2013)
 - Release under the Apache 2.0 license.
-- [***change:***] Removed the `callback` property from the `open` interface.
-- [***change:***] Renamed the properties `recipients`, `ccRecipients`, `bccRecipients`.
+- [___change:___] Removed the `callback` property from the `open` interface.
+- [___change:___] Renamed the properties `recipients`, `ccRecipients`, `bccRecipients`.
 - [bugfix:] Plugin under WP8 throws an error, if recipients were given as arrays.
 - [enhancement:] `open` does not block the ui thread on iOS & Android anymore.
 
