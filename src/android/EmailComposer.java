@@ -47,7 +47,7 @@ import org.apache.cordova.PluginResult;
 
 public class EmailComposer extends CordovaPlugin {
 
-    static protected final String STORAGE_FOLDER = File.separator + "email_composer";
+    static protected final String STORAGE_FOLDER = "/email_composer";
 
     private CallbackContext command;
 
