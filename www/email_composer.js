@@ -19,131 +19,123 @@
     under the License.
 */
 
-var EmailComposer = function () {
+var exec = require('cordova/exec');
 
+/**
+ * List of all available options with their default value.
+ *
+ * @return {Object}
+ */
+exports.getDefaults = function () {
+    return {
+        subject:     '',
+        body:        '',
+        to:          [],
+        cc:          [],
+        bcc:         [],
+        attachments: [],
+        isHtml:      true
+    };
 };
 
-EmailComposer.prototype = {
-    /**
-     * List of all available options with their default value.
-     *
-     * @return {Object}
-     */
-    getDefaults: function () {
-        return {
-            subject:     '',
-            body:        '',
-            to:          [],
-            cc:          [],
-            bcc:         [],
-            attachments: [],
-            isHtml:      true
-        };
-    },
+/**
+ * Displays the email composer pre-filled with data.
+ *
+ * @param {Object} options
+ *      Different properties of the email like the body, subject
+ * @param {Function} callback
+ *      A callback function to be called with the result
+ * @param {Object?} scope
+ *      The scope of the callback
+ */
+exports.open = function (options, callback, scope) {
+    var fn = this.createCallbackFn(callback, scope);
 
-    /**
-     * Displays the email composer pre-filled with data.
-     *
-     * @param {Object} options
-     *      Different properties of the email like the body, subject
-     * @param {Function} callback
-     *      A callback function to be called with the result
-     * @param {Object?} scope
-     *      The scope of the callback
-     */
-    open: function (options, callback, scope) {
-        var callbackFn = this.createCallbackFn(callback, scope);
+    options = this.mergeWithDefaults(options || {});
 
-        options = this.mergeWithDefaults(options || {});
+    exec(fn, null, 'EmailComposer', 'open', [options]);
+};
 
-        cordova.exec(callbackFn, null, 'EmailComposer', 'open', [options]);
-    },
+/**
+ * Alias für `open()`.
+ */
+exports.openDraft = function () {
+    this.open.apply(this, arguments);
+};
 
-    /**
-     * Alias für `open()`.
-     */
-    openDraft: function () {
-        this.open.apply(this, arguments);
-    },
+/**
+ * Verifies if sending emails is supported on the device.
+ *
+ * @param {Function} callback
+ *      A callback function to be called with the result
+ * @param {Object} scope
+ *      The scope of the callback
+ */
+exports.isServiceAvailable = function (callback, scope) {
+    var fn = this.createCallbackFn(callback, scope);
 
-    /**
-     * Verifies if sending emails is supported on the device.
-     *
-     * @param {Function} callback
-     *      A callback function to be called with the result
-     * @param {Object} scope
-     *      The scope of the callback
-     */
-    isServiceAvailable: function (callback, scope) {
-        var callbackFn = this.createCallbackFn(callback, scope);
+    exec(fn, null, 'EmailComposer', 'isServiceAvailable', []);
+};
 
-        cordova.exec(callbackFn, null, 'EmailComposer', 'isServiceAvailable', []);
-    },
+/**
+ * @private
+ *
+ * Merge settings with default values.
+ *
+ * @param {Object} options
+ *      The custom options
+ *
+ * @retrun {Object}
+ *      Default values merged
+ *      with custom values
+ */
+exports.mergeWithDefaults = function (options) {
+    var defaults = this.getDefaults();
 
-    /**
-     * @private
-     *
-     * Merge settings with default values.
-     *
-     * @param {Object} options
-     *      The custom options
-     *
-     * @retrun {Object}
-     *      Default values merged
-     *      with custom values
-     */
-    mergeWithDefaults: function (options) {
-        var defaults = this.getDefaults();
+    for (var key in defaults) {
 
-        for (var key in defaults) {
-
-            if (!options.hasOwnProperty(key)) {
-                options[key] = defaults[key];
-                continue;
-            }
-
-            var custom_  = options[key],
-                default_ = defaults[key];
-
-            if (typeof default_ != typeof custom_) {
-
-                if (typeof default_ == 'string') {
-                    options[key] = custom_.join('');
-                }
-
-                else if (typeof default_ == 'object') {
-                    options[key] = [custom_.toString()];
-                }
-            }
+        if (!options.hasOwnProperty(key)) {
+            options[key] = defaults[key];
+            continue;
         }
 
-        return options;
-    },
+        var custom_  = options[key],
+            default_ = defaults[key];
 
-    /**
-     * @private
-     *
-     * Creates a callback, which will be executed
-     * within a specific scope.
-     *
-     * @param {Function} callbackFn
-     *      The callback function
-     * @param {Object} scope
-     *      The scope for the function
-     *
-     * @return {Function}
-     *      The new callback function
-     */
-    createCallbackFn: function (callbackFn, scope) {
-        if (typeof callbackFn != 'function')
-            return;
+        if (typeof default_ != typeof custom_) {
 
-        return function () {
-                callbackFn.apply(scope || this, arguments);
-        };
+            if (typeof default_ == 'string') {
+                options[key] = custom_.join('');
+            }
+
+            else if (typeof default_ == 'object') {
+                options[key] = [custom_.toString()];
+            }
+        }
     }
+
+    return options;
 };
 
-var plugin = new EmailComposer();
+/**
+ * @private
+ *
+ * Creates a callback, which will be executed
+ * within a specific scope.
+ *
+ * @param {Function} callbackFn
+ *      The callback function
+ * @param {Object} scope
+ *      The scope for the function
+ *
+ * @return {Function}
+ *      The new callback function
+ */
+exports.createCallbackFn = function (callbackFn, scope) {
+    if (typeof callbackFn != 'function')
+        return;
 
-module.exports = plugin;
+    return function () {
+        callbackFn.apply(scope || this, arguments);
+    };
+};
