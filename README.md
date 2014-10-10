@@ -44,11 +44,9 @@ Please read the plugin's [README][readme] for further requirements and informati
 ## Screenshots
 
 <p align="center">
-    <img height="335px" src="images/ios.png"></img>
-    &nbsp;
-    <img height="335px" src="images/android.png"></img>
-    &nbsp;
-    <img height="335px" src="images/wp8.png"></img>
+    <img width="32.5%" src="images/ios.png"></img>
+    <img width="32.5%" src="images/android.png"></img>
+    <img width="32.5%" src="images/wp8.png"></img>
 </p>
 
 
