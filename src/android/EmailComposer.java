@@ -259,7 +259,7 @@ public class EmailComposer extends CordovaPlugin {
      * @throws JSONException
      */
     private void setAttachments (JSONArray attachments, Intent draft) throws JSONException {
-        ArrayList<Uri> uris = new ArrayList<>();
+        ArrayList<Uri> uris = new ArrayList<Uri>();
 
         for (int i = 0; i < attachments.length(); i++) {
             Uri uri = getUriForPath(attachments.getString(i));
