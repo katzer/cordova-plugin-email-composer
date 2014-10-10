@@ -1,4 +1,9 @@
-Cordova EmailComposer Plugin
+
+<p align="right">
+    <a href="https://github.com/katzer/cordova-plugin-email-composer/tree/example">EXAMPLE :point_right:</a>
+</p>
+
+Cordova Email Plugin
 ====================
 
 <img width="260px" align="right" hspace="7" vspace="5" src="http://flashsimulations.com/wp-content/uploads/2011/12/air-ios-in-app-mail-app.png">
@@ -24,7 +29,7 @@ The purpose of the plugin is to create an platform independent javascript interf
 ## Supported Platforms
 - __iOS__ _(up to iOS8)_
 - __Android__ _(up to KitKat and L)_
-- __WP8__ _(up to WP8.1)_
+- __WP 8.0__ and __WP 8.1 Silverlight__
 
 
 ## Installation
@@ -248,8 +253,8 @@ The following table gives an overview which tags and attributes can be used:
 </td>
 </table>
 
-### HTML and attachments on Windows Phone 8
-Attachments and HTML formatted body are not supported through the native API.
+### HTML, CSS and attachments on Windows Phone 8
+Attachments and HTML+CSS formatted body are not supported through the native API for Windows Phone 8.0 and Windows Phone 8.1 Silverlight.
 
 ### Compile error on iOS
 The error indicates, that the `MessageUI.framework` is not linked to your project. The framework is linked automatically when the plugin was installed, but may removed later.
