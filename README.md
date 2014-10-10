@@ -207,7 +207,7 @@ cordova.plugins.email.open({
 ## Quirks
 
 ### HTML and CSS on Android
-Even Android is capable to render HTML formatted mails, most native Mail clients like the standard app or Gmail only support rich formatted text while writing mails. That means that CSS cannot be used.
+Even Android is capable to render HTML formatted mails, most native Mail clients like the standard app or Gmail only support rich formatted text while writing mails. That means that __CSS cannot be used__ (no _class_ and _style_ support).
 
 The following table gives an overview which tags and attributes can be used:
 
