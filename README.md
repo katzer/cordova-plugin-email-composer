@@ -73,6 +73,12 @@ More informations can be found [here][PGB_plugin].
 - [enhancement:] `isHTML` can be used next `isHtml`
 - [bugfix:] Defaults were ignored
 
+#### Known issues
+- _res://_ attachments are not sent even they are present while editing the draft.
+- _<img>_ tags do not not work on Android.
+- Callbacks for WP8/Windows platform are called immediately.
+- _isAvailable_ does always return _true_ for WP8/Windows platform.
+
 #### Further informations
 - See [CHANGELOG.md][changelog] to get the full changelog for the plugin.
 
