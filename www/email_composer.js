@@ -39,6 +39,20 @@ exports.getDefaults = function () {
 };
 
 /**
+ * Verifies if sending emails is supported on the device.
+ *
+ * @param {Function} callback
+ *      A callback function to be called with the result
+ * @param {Object} scope
+ *      The scope of the callback
+ */
+exports.isAvailable = function (callback, scope) {
+    var fn = this.createCallbackFn(callback, scope);
+
+    exec(fn, null, 'EmailComposer', 'isAvailable', []);
+};
+
+/**
  * Displays the email composer pre-filled with data.
  *
  * @param {Object} options
@@ -57,13 +71,6 @@ exports.open = function (options, callback, scope) {
 };
 
 /**
- * Alias für `open()`.
- */
-exports.openDraft = function () {
-    this.open.apply(this, arguments);
-};
-
-/**
  * @depreacted
  */
 exports.isServiceAvailable = function () {
@@ -74,17 +81,10 @@ exports.isServiceAvailable = function () {
 };
 
 /**
- * Verifies if sending emails is supported on the device.
- *
- * @param {Function} callback
- *      A callback function to be called with the result
- * @param {Object} scope
- *      The scope of the callback
+ * Alias für `open()`.
  */
-exports.isAvailable = function (callback, scope) {
-    var fn = this.createCallbackFn(callback, scope);
-
-    exec(fn, null, 'EmailComposer', 'isAvailable', []);
+exports.openDraft = function () {
+    this.open.apply(this, arguments);
 };
 
 /**

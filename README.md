@@ -30,6 +30,7 @@ The purpose of the plugin is to create an platform independent javascript interf
 - __iOS__ _(up to iOS8)_
 - __Android__ _(up to KitKat and L)_
 - __WP 8.0__ and __WP 8.1 Silverlight__
+- __Windows__
 
 
 ## Installation
@@ -67,6 +68,7 @@ More informations can be found [here][PGB_plugin].
 - [___change:___] Unified `absolute:` and `relative:` to `file:`
 - [___change:___] Renamed `isServiceAvailable` to `isAvailable`
 - [feature:] `res:` prefix for native ressource attachments
+- [enhancement:] Support attachments on Windows Phone 8.1
 - [enhancement:] `open` supports callbacks
 - [enhancement:] `isHTML` can be used next `isHtml`
 - [bugfix:] Defaults were ignored

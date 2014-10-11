@@ -5,6 +5,7 @@
 - [___change:___] Unified `absolute:` and `relative:` to `file:`
 - [___change:___] Renamed `isServiceAvailable` to `isAvailable`
 - [feature:] `res:` prefix for native ressource attachments
+- [enhancement:] Support attachments on Windows Phone 8.1
 - [enhancement:] `open` supports callbacks
 - [enhancement:] `isHTML` can be used next `isHtml`
 - [bugfix:] Defaults were ignored
