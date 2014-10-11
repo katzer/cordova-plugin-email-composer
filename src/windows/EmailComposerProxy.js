@@ -255,7 +255,18 @@ exports.getUriForResourcePath = function (path) {
  *      The URI including the given content
  */
 exports.getUriForBase64Content = function (content) {
+    var base64 = content.replace('base64:icon.png//', ''),
+        name   = content.match(/^base64:([^\/]+)/)[1],
+        buffer = Windows.Security.Cryptography.CryptographicBuffer.decodeFromBase64String(base64),
+        rwplus = Windows.Storage.CreationCollisionOption.openIfExists,
+        folder = Windows.Storage.ApplicationData.current.temporaryFolder,
+        uri    = new Windows.Foundation.Uri('ms-appdata:///temp/' + name);
 
+    folder.createFileAsync(name, rwplus).done(function (file) {
+        Windows.Storage.FileIO.writeBufferAsync(file, buffer);
+    });
+
+    return uri;
 };
 
 require('cordova/exec/proxy').add('EmailComposer', exports);
