@@ -52,9 +52,9 @@ namespace Cordova.Extension.Commands
             Options options        = JsonHelper.Deserialize<Options>(args[0]);
             EmailComposeTask draft = GetDraftWithProperties(options);
 
-            OpenDraft(draft);
-
             DispatchCommandResult(new PluginResult(PluginResult.Status.OK, true));
+
+            OpenDraft(draft);
         }
 
         /// </summary>
@@ -103,10 +103,7 @@ namespace Cordova.Extension.Commands
         /// </summary>
         private void SetTo(string[] recipients, EmailComposeTask draft)
         {
-            if (recipients != null)
-            {
-                draft.To = string.Join(",", recipients);
-            }
+            draft.To = string.Join(",", recipients);
         }
 
         /// </summary>
@@ -114,10 +111,7 @@ namespace Cordova.Extension.Commands
         /// </summary>
         private void SetCc(string[] recipients, EmailComposeTask draft)
         {
-            if (recipients != null)
-            {
-                draft.Cc = string.Join(",", recipients);
-            }
+            draft.Cc = string.Join(",", recipients);
         }
 
         /// </summary>
@@ -125,10 +119,7 @@ namespace Cordova.Extension.Commands
         /// </summary>
         private void SetBcc(string[] recipients, EmailComposeTask draft)
         {
-            if (recipients != null)
-            {
-                draft.Bcc = string.Join(",", recipients);
-            }
+            draft.Bcc = string.Join(",", recipients);
         }
 
         /// </summary>
@@ -136,7 +127,7 @@ namespace Cordova.Extension.Commands
         /// </summary>
         private void SetAttachments(string[] attachments, EmailComposeTask draft)
         {
-            // Not yet supported :(
+            // Not supported on WP8.0 and WP8.1 Silverlight
         }
     }
 }

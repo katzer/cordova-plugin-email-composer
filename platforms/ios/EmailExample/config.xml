@@ -19,9 +19,6 @@
     <feature name="LocalStorage">
         <param name="ios-package" value="CDVLocalStorage" />
     </feature>
-    <feature name="EmailComposer">
-        <param name="ios-package" value="APPEmailComposer" />
-    </feature>
     <feature name="Camera">
         <param name="ios-package" value="CDVCamera" />
     </feature>
@@ -38,4 +35,7 @@
     </author>
     <content src="index.html" />
     <access origin="*" />
+    <feature name="EmailComposer">
+        <param name="ios-package" value="APPEmailComposer" />
+    </feature>
 </widget>

@@ -1,0 +1,64 @@
+{
+    "prepare_queue": {
+        "installed": [],
+        "uninstalled": []
+    },
+    "config_munge": {
+        "files": {
+            "package.windows.appxmanifest": {
+                "parents": {
+                    "/Package/Capabilities": [
+                        {
+                            "xml": "<Capability Name=\"picturesLibrary\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<DeviceCapability Name=\"webcam\" />",
+                            "count": 1
+                        }
+                    ]
+                }
+            },
+            "package.windows80.appxmanifest": {
+                "parents": {
+                    "/Package/Capabilities": [
+                        {
+                            "xml": "<Capability Name=\"picturesLibrary\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<DeviceCapability Name=\"webcam\" />",
+                            "count": 1
+                        }
+                    ]
+                }
+            },
+            "package.phone.appxmanifest": {
+                "parents": {
+                    "/Package/Capabilities": [
+                        {
+                            "xml": "<Capability Name=\"picturesLibrary\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<DeviceCapability Name=\"webcam\" />",
+                            "count": 1
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    "installed_plugins": {
+        "de.appplant.cordova.plugin.email-composer": {
+            "PACKAGE_NAME": "de.appplant.cordova.plugin.emailcomposer.example"
+        },
+        "org.apache.cordova.camera": {
+            "PACKAGE_NAME": "de.appplant.cordova.plugin.emailcomposer.example"
+        },
+        "org.apache.cordova.device": {
+            "PACKAGE_NAME": "de.appplant.cordova.plugin.emailcomposer.example"
+        }
+    },
+    "dependent_plugins": {}
+}

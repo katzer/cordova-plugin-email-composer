@@ -9,13 +9,13 @@
     </author>
     <content src="index.html" />
     <access origin="*" />
-    <feature name="EmailComposer">
-        <param name="wp-package" value="EmailComposer" />
-    </feature>
     <feature name="Camera">
         <param name="wp-package" value="Camera" />
     </feature>
     <feature name="Device">
         <param name="wp-package" value="Device" />
+    </feature>
+    <feature name="EmailComposer">
+        <param name="wp-package" value="EmailComposer" />
     </feature>
 </widget>
