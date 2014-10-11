@@ -22,13 +22,7 @@ A click on the _"Draft with attachments"_ button will present the email composit
 ```javascript
 cordova.plugins.email.open({
     subject: 'Cordova Icons',
-    body: [
-        '<ol>',
-            '<li>Asset from the www folder</li>',
-            '<li>Asset from the res folder</li>',
-            '<li>Asset from Base64 string</li>',
-        '</ol>'
-    ],
+    recipients: 'max@mustermann.de',
     attachments: [
         'file://img/logo.png',
         'res://icon.png',
@@ -46,7 +40,7 @@ Please read the plugin's [README][readme] for further requirements and informati
 <p align="center">
     <img width="32.5%" src="images/ios.png"></img>
     <img width="32.5%" src="images/android.png"></img>
-    <img width="32.5%" src="images/wp8.png"></img>
+    <img width="32.5%" src="images/windows.png"></img>
 </p>
 
 
