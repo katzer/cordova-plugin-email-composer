@@ -78,6 +78,7 @@ More informations can be found [here][PGB_plugin].
 - _<img>_ tags do not not work on Android.
 - Callbacks for WP8/Windows platform are called immediately.
 - _isAvailable_ does always return _true_ for WP8/Windows platform.
+- The plugin may crash on WP8.1/Windows if an attachmant does not exist.
 
 #### Further informations
 - See [CHANGELOG.md][changelog] to get the full changelog for the plugin.
