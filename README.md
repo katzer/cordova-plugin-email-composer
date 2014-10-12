@@ -327,6 +327,6 @@ This software is released under the [Apache 2.0 License][apache2_license].
 [changelog]: https://github.com/katzer/cordova-plugin-email-composer/blob/master/CHANGELOG.md
 [available]: #determine-if-the-device-is-capable-to-send-emails
 [open]: #open-a-pre-filled-email-draft
-[email_app]: #specify_email_app
+[email_app]: #specify-email-app
 [examples]: #examples
 [apache2_license]: http://opensource.org/licenses/Apache-2.0
