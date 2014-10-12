@@ -22,12 +22,20 @@
 var exec = require('cordova/exec');
 
 /**
+ * List of all registered mail app aliases.
+ */
+exports.aliases = {
+    gmail: 'com.google.android.gm'
+};
+
+/**
  * List of all available options with their default value.
  *
  * @return {Object}
  */
 exports.getDefaults = function () {
     return {
+        app:         undefined,
         subject:     '',
         body:        '',
         to:          [],
@@ -71,6 +79,18 @@ exports.open = function (options, callback, scope) {
 };
 
 /**
+ * Adds a new mail app alias.
+ *
+ * @param {String} alias
+ *      The alias name
+ * @param {String} package
+ *      The package name
+ */
+exports.addAlias = function (alias, package) {
+    this.aliases[alias] = package;
+}
+
+/**
  * @depreacted
  */
 exports.isServiceAvailable = function () {
@@ -104,6 +124,12 @@ exports.mergeWithDefaults = function (options) {
 
     if (options.hasOwnProperty('isHTML')) {
         options.isHtml = options.isHTML;
+    }
+
+    if (options.hasOwnProperty('app')) {
+        var package = this.aliases[options.app];
+
+        options.app = package || options.app;
     }
 
     for (var key in defaults) {
