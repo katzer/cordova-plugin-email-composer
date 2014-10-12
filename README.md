@@ -89,7 +89,7 @@ More informations can be found [here][PGB_plugin].
 The plugin creates the object ```cordova.plugins.email``` with following methods:
 
 1. [email.isAvailable][available]
-2. [email.open][print]
+2. [email.open][open]
 
 ### Plugin initialization
 The plugin and its methods are not available before the *deviceready* event has been fired.
