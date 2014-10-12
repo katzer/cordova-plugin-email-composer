@@ -129,6 +129,10 @@
                     return;
                 }
 
+                if (isHtml && device.platform == 'Android') {
+                    alert('Most email apps support richt formatted text instead of HTML/CSS!');
+                }
+
                 cordova.plugins.email.open({
                     to: 'to@email.de',
                     cc: ['cc1@email.de', 'cc2@email.de'],
@@ -159,6 +163,7 @@
                     subject: 'Cordova Icons',
                     body: attachments.map(mapFn).join("\n\n"),
                     attachments: attachments,
+                    isHtml: false,
                     app: 'gmail'
                 }, callback);
             };
@@ -265,28 +270,6 @@
                 if (!isHtml) {
                     return "\nHello,\n\nthis is just a plain text email body!";
                 }
-
-                if (device.platform != 'Android')
-                    return body;
-
-                body = [
-                    '<img src="https://lh5.googleusercontent.com/-l3G7rAgwxcg/TjX879NoFTI/AAAAAAAAAHA/ahJNL9OMGFA/Screen%252520Shot%2525202011-07-31%252520at%2525208.09.11%252520PM.png">',
-                    '<p>',
-                        'Hi,',
-                    '</p>',
-                    '<p>',
-                        '<b><font color="red">I have no HTML and CSS support</font></b> like every other mobile OS does have.',
-                    '</p>',
-                    '<p>',
-                        'I am sorry for being a <b>disappointment</b> for you. But I am an <b>Android</b> device!',
-                    '</p>',
-                    '<p>',
-                        'Don\'t hope for the future, there is none. I use a text view that <b>can only display rich formatted text</b>.',
-                    '</p>',
-                    '<p>',
-                        '<b>You deserve something better than Android.</b> I suggest you to throw me away!',
-                    '</p>'
-                ];
 
                 return body;
             };
