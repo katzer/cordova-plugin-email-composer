@@ -37,6 +37,7 @@ import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 import android.content.res.Resources;
 import android.net.Uri;
+import android.os.Build;
 import android.text.Html;
 import android.util.Base64;
 import android.util.Log;
@@ -135,7 +136,7 @@ public class EmailComposer extends CordovaPlugin {
      * @throws JSONException
      */
     private Intent getDraftWithProperties (JSONObject params) throws JSONException {
-        Intent mail = new Intent(android.content.Intent.ACTION_SEND_MULTIPLE);
+        Intent mail = new Intent(Intent.ACTION_SEND_MULTIPLE);
 
         if (params.has("subject"))
             setSubject(params.getString("subject"), mail);
@@ -150,7 +151,7 @@ public class EmailComposer extends CordovaPlugin {
         if (params.has("attachments"))
             setAttachments(params.getJSONArray("attachments"), mail);
 
-        mail.setType("application/octet-stream");
+        mail.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
         return mail;
     }
@@ -164,7 +165,7 @@ public class EmailComposer extends CordovaPlugin {
      *      The intent
      */
     private void setSubject (String subject, Intent draft) {
-        draft.putExtra(android.content.Intent.EXTRA_SUBJECT, subject);
+        draft.putExtra(Intent.EXTRA_SUBJECT, subject);
     }
 
     /**
@@ -180,10 +181,14 @@ public class EmailComposer extends CordovaPlugin {
      */
     private void setBody (String body, Boolean isHTML, Intent draft) {
         if (isHTML) {
-            draft.putExtra(android.content.Intent.EXTRA_TEXT, Html.fromHtml(body));
+            draft.putExtra(Intent.EXTRA_TEXT, Html.fromHtml(body));
             draft.setType("text/html");
+
+            if (Build.VERSION.SDK_INT > 15) {
+                draft.putExtra(Intent.EXTRA_HTML_TEXT, body);
+            }
         } else {
-            draft.putExtra(android.content.Intent.EXTRA_TEXT, body);
+            draft.putExtra(Intent.EXTRA_TEXT, body);
             draft.setType("text/plain");
         }
     }
@@ -205,7 +210,7 @@ public class EmailComposer extends CordovaPlugin {
             receivers[i] = recipients.getString(i);
         }
 
-        draft.putExtra(android.content.Intent.EXTRA_EMAIL, receivers);
+        draft.putExtra(Intent.EXTRA_EMAIL, receivers);
     }
 
     /**
@@ -225,7 +230,7 @@ public class EmailComposer extends CordovaPlugin {
             receivers[i] = recipients.getString(i);
         }
 
-        draft.putExtra(android.content.Intent.EXTRA_CC, receivers);
+        draft.putExtra(Intent.EXTRA_CC, receivers);
     }
 
     /**
@@ -245,7 +250,7 @@ public class EmailComposer extends CordovaPlugin {
             receivers[i] = recipients.getString(i);
         }
 
-        draft.putExtra(android.content.Intent.EXTRA_BCC, receivers);
+        draft.putExtra(Intent.EXTRA_BCC, receivers);
     }
 
     /**
