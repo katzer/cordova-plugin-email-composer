@@ -37,6 +37,7 @@ import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 import android.content.res.Resources;
 import android.net.Uri;
+import android.os.Build;
 import android.text.Html;
 import android.util.Base64;
 import android.util.Log;
@@ -135,7 +136,8 @@ public class EmailComposer extends CordovaPlugin {
      * @throws JSONException
      */
     private Intent getDraftWithProperties (JSONObject params) throws JSONException {
-        Intent mail = new Intent(android.content.Intent.ACTION_SEND_MULTIPLE);
+        Intent mail = new Intent(Intent.ACTION_SEND_MULTIPLE);
+        String app  = params.optString("app", null);
 
         if (params.has("subject"))
             setSubject(params.getString("subject"), mail);
@@ -150,7 +152,11 @@ public class EmailComposer extends CordovaPlugin {
         if (params.has("attachments"))
             setAttachments(params.getJSONArray("attachments"), mail);
 
-        mail.setType("application/octet-stream");
+        if (app != null && isAppInstalled(app)) {
+            mail.setPackage(app);
+        }
+
+        mail.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
         return mail;
     }
@@ -164,7 +170,7 @@ public class EmailComposer extends CordovaPlugin {
      *      The intent
      */
     private void setSubject (String subject, Intent draft) {
-        draft.putExtra(android.content.Intent.EXTRA_SUBJECT, subject);
+        draft.putExtra(Intent.EXTRA_SUBJECT, subject);
     }
 
     /**
@@ -180,10 +186,14 @@ public class EmailComposer extends CordovaPlugin {
      */
     private void setBody (String body, Boolean isHTML, Intent draft) {
         if (isHTML) {
-            draft.putExtra(android.content.Intent.EXTRA_TEXT, Html.fromHtml(body));
+            draft.putExtra(Intent.EXTRA_TEXT, Html.fromHtml(body));
             draft.setType("text/html");
+
+            if (Build.VERSION.SDK_INT > 15) {
+                draft.putExtra(Intent.EXTRA_HTML_TEXT, body);
+            }
         } else {
-            draft.putExtra(android.content.Intent.EXTRA_TEXT, body);
+            draft.putExtra(Intent.EXTRA_TEXT, body);
             draft.setType("text/plain");
         }
     }
@@ -205,7 +215,7 @@ public class EmailComposer extends CordovaPlugin {
             receivers[i] = recipients.getString(i);
         }
 
-        draft.putExtra(android.content.Intent.EXTRA_EMAIL, receivers);
+        draft.putExtra(Intent.EXTRA_EMAIL, receivers);
     }
 
     /**
@@ -225,7 +235,7 @@ public class EmailComposer extends CordovaPlugin {
             receivers[i] = recipients.getString(i);
         }
 
-        draft.putExtra(android.content.Intent.EXTRA_CC, receivers);
+        draft.putExtra(Intent.EXTRA_CC, receivers);
     }
 
     /**
@@ -245,7 +255,7 @@ public class EmailComposer extends CordovaPlugin {
             receivers[i] = recipients.getString(i);
         }
 
-        draft.putExtra(android.content.Intent.EXTRA_BCC, receivers);
+        draft.putExtra(Intent.EXTRA_BCC, receivers);
     }
 
     /**
@@ -268,24 +278,6 @@ public class EmailComposer extends CordovaPlugin {
         }
 
         draft.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris);
-    }
-
-    /**
-     * If email apps are available.
-     *
-     * @return
-     *      true if available, otherwise false
-     */
-    private Boolean isEmailAccountConfigured () {
-        Uri uri           = Uri.fromParts("mailto","max@mustermann.com", null);
-        Intent intent     = new Intent(Intent.ACTION_SENDTO, uri);
-        PackageManager pm = cordova.getActivity().getPackageManager();
-        int mailApps      = pm.queryIntentActivities(intent, 0).size();
-        Boolean available;
-
-        available = mailApps > 0;
-
-        return available;
     }
 
     /**
@@ -512,15 +504,66 @@ public class EmailComposer extends CordovaPlugin {
     }
 
     /**
+     * If email apps are available.
+     *
      * @return
-     *      The name for the package.
+     *      true if available, otherwise false
+     */
+    private Boolean isEmailAccountConfigured () {
+        Uri uri           = Uri.fromParts("mailto","max@mustermann.com", null);
+        Intent intent     = new Intent(Intent.ACTION_SENDTO, uri);
+        PackageManager pm = cordova.getActivity().getPackageManager();
+        int mailApps      = pm.queryIntentActivities(intent, 0).size();
+        Boolean available;
+
+        available = mailApps > 0;
+
+        return available;
+    }
+
+    /**
+     * Ask the package manager if the app is installed on the device.
+     *
+     * @param id
+     *      The app id
+     *
+     * @return
+     *      true if yes otherwise false
+     */
+    private boolean isAppInstalled(String id) {
+        PackageManager pm = cordova.getActivity().getPackageManager();
+
+        try {
+            pm.getPackageInfo(id, 0);
+            return true;
+        } catch(PackageManager.NameNotFoundException e) {
+            return false;
+        }
+    }
+
+    /**
+     * The name for the package.
+     *
+     * @return
+     *      The package name
      */
     private String getPackageName () {
         return cordova.getActivity().getPackageName();
     }
 
+    /**
+     * Called when an activity you launched exits, giving you the reqCode you
+     * started it with, the resCode it returned, and any additional data from it.
+     *
+     * @param reqCode     The request code originally supplied to startActivityForResult(),
+     *                    allowing you to identify who this result came from.
+     * @param resCode     The integer result code returned by the child activity
+     *                    through its setResult().
+     * @param intent      An Intent, which can return result data to the caller
+     *                    (various data can be attached to Intent "extras").
+     */
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+    public void onActivityResult(int reqCode, int resCode, Intent intent) {
         command.success();
     }
 }

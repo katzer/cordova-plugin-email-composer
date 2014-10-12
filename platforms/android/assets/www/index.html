@@ -158,7 +158,8 @@
                 cordova.plugins.email.open({
                     subject: 'Cordova Icons',
                     body: attachments.map(mapFn).join("\n\n"),
-                    attachments: attachments
+                    attachments: attachments,
+                    app: 'gmail'
                 }, callback);
             };
 
