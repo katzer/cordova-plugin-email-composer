@@ -4,6 +4,7 @@
   **Note:** The former `plugin.email` namespace is now deprecated and will be removed with the next major release.
 - [___change:___] Unified `absolute:` and `relative:` to `file:`
 - [___change:___] Renamed `isServiceAvailable` to `isAvailable`
+- [feature:] `app:` allows to specify target mail app on Android
 - [feature:] `res:` prefix for native ressource attachments
 - [enhancement:] Support attachments on Windows Phone 8.1
 - [enhancement:] `open` supports callbacks
