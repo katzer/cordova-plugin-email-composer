@@ -133,7 +133,7 @@ cordova.plugins.email.open({
     attachments: Array, // file paths or base64 data streams
     subject:    String, // subject of the email
     body:       String, // email body (for HTML, set isHtml to true)
-    isHtml:    Boolean, // indicats if the body is HTML or plain text
+    isHtml:    Boolean, // indicates if the body is HTML or plain text
 }, callback, scope);
 ```
 
@@ -188,7 +188,7 @@ The code below shows how to attach an base64 encoded image which will be added a
 ```javascript
 cordova.plugins.email.open({
     subject:     'Cordova Icon',
-    attachments: 'base64:icon.png//iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAYAAAA6/...'
+    attachments: [ 'base64:icon.png//iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAYAAAA6/...' ]
 });
 ```
 
@@ -197,7 +197,7 @@ The path to the files must be defined absolute from the root of the file system.
 
 ```javascript
 cordova.plugins.email.open({
-    attachments: 'file:///storage/sdcard/icon.png', //=> Android
+    attachments: [ 'file:///storage/sdcard/icon.png' ], //=> Android
 });
 ```
 
@@ -206,7 +206,7 @@ Each app has a resource folder, e.g. the _res_ folder for Android apps or the _R
 
 ```javascript
 cordova.plugins.email.open({
-    attachments: 'res://icon.png' //=> res/drawable/icon (Android)
+    attachments: [ 'res://icon.png' ] //=> res/drawable/icon (Android)
 });
 ```
 
