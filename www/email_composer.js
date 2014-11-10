@@ -142,6 +142,11 @@ exports.mergeWithDefaults = function (options) {
         var custom_  = options[key],
             default_ = defaults[key];
 
+        if (custom_ === null || custom_ === undefined) {
+            options[key] = default_;
+            continue;
+        }
+
         if (typeof default_ != typeof custom_) {
 
             if (typeof default_ == 'string') {
