@@ -84,7 +84,7 @@
 
     </platform>
 
-	<!-- amazon-fireos -->
+    <!-- amazon-fireos -->
     <platform name="amazon-fireos">
         <config-file target="res/xml/config.xml" parent="/*">
             <feature name="EmailComposer">
@@ -116,5 +116,9 @@
         <js-module src="src/windows/EmailComposerProxy.js" name="EmailComposerProxy">
             <merges target="" />
         </js-module>
+    </platform>
+
+    <!-- blackberry10 -->
+    <platform name="blackberry10">
     </platform>
 </plugin>
