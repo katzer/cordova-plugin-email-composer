@@ -30,6 +30,8 @@ public:
 	virtual ~EmailComposer_NDK();
 
 	// The extension methods are defined here
+	std::string isAvailable();
+
 	std::string emailComposerTest();
 
 	std::string emailComposerTest(const std::string& inputString);
