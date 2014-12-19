@@ -120,5 +120,8 @@
 
     <!-- blackberry10 -->
     <platform name="blackberry10">
+        <source-file src="src/blackberry10/index.js" target-dir="EmailComposer"/>
+        <lib-file arch="device" src="src/blackberry10/native/device/libEmailComposer.so"/>
+        <lib-file arch="sumulator" src="src/blackberry10/native/simulator/libEmailComposer.so"/>
     </platform>
 </plugin>
