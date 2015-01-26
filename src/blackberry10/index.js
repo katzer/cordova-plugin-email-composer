@@ -27,7 +27,10 @@ module.exports = {
 
 	// These methods call into JNEXT.EmailComposer which handles the
 	// communication through the JNEXT plugin to emailcomposer_js.cpp
-	isAvailable: function () {
+	isAvailable: function (success, fail, args, env) {
+		console.log(">>> Entrou!!!")
+		var result = new PluginResult(args, env);
+		result.ok(emailComposer.getInstance().emailComposerIsAvailable(), false); // undefined
 	},
 	emailComposerTest: function (success, fail, args, env) {
 		var result = new PluginResult(args, env);
@@ -111,8 +114,14 @@ JNEXT.EmailComposer = function () {
 	// ************************
 
 	// calls into InvokeMethod(string command) in emailcomposer_js.cpp
-	self.isAvailable = function() {
-		return JNEXT.invoke(self.m_id, "isAvailable");
+	self.emailComposerIsAvailable = function() {
+		var result = JNEXT.invoke(self.m_id, "isAvailable");
+		if (result === "true") {
+			return true;
+		} else {
+			return false;
+		}
+		// return result;
 	};
 	self.emailComposerTest = function () {
 		return JNEXT.invoke(self.m_id, "emailComposerTest");

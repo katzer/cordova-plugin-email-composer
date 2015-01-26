@@ -40,10 +40,11 @@ EmailComposer_NDK::~EmailComposer_NDK() {
 
 // These methods are the true native code we intend to reach from WebWorks
 std::string EmailComposer_NDK::isAvailable() {
-    Json::Value root;
-    root["result"] = "true";
-    Json::FastWriter writer;
-    return writer.write(root);
+//    Json::Value root;
+//    root["result"] = "true";
+//    Json::FastWriter writer;
+//    return writer.write(root);
+    return "true";
 }
 
 
