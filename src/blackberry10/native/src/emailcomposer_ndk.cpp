@@ -22,6 +22,8 @@
 #include "emailcomposer_ndk.hpp"
 #include "emailcomposer_js.hpp"
 
+#include <bps/navigator_invoke.h>
+
 namespace webworks {
 
 EmailComposer_NDK::EmailComposer_NDK(EmailComposer_JS *parent):
@@ -45,6 +47,26 @@ std::string EmailComposer_NDK::isAvailable() {
 //    Json::FastWriter writer;
 //    return writer.write(root);
     return "true";
+}
+
+std::string EmailComposer_NDK::open() {
+    bps_initialize();
+    navigator_invoke_invocation_t *invoke = NULL;
+    navigator_invoke_invocation_create(&invoke);
+    // set invocation action and type
+    navigator_invoke_invocation_set_action(invoke, "bb.action.COMPOSE");
+    navigator_invoke_invocation_set_target(invoke, "sys.pim.uib.email.hybridcomposer");
+    navigator_invoke_invocation_set_type(invoke, "message/rfc822");
+    // invoke the target
+    navigator_invoke_invocation_send(invoke);
+    // clean up resources
+    int result = navigator_invoke_invocation_destroy(invoke);
+    // checks the result of the invocation
+    if (result == BPS_SUCCESS) {
+        return "success";
+    } else {
+        return "fail";
+    }
 }
 
 

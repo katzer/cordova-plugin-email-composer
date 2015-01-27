@@ -89,6 +89,8 @@ string EmailComposer_JS::InvokeMethod(const string& command) {
 	// based on the command given, run the appropriate method in emailcomposer_ndk.cpp
 	if (strCommand == "isAvailable") {
 	    return m_pEmailComposerController->isAvailable();
+	} else if (strCommand == "emailComposerOpen") {
+	    return m_pEmailComposerController->open();
 	} else if (strCommand == "emailComposerTest") {
 		return m_pEmailComposerController->emailComposerTest();
 	} else if (strCommand == "emailComposerTestInput") {

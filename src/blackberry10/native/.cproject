@@ -18,7 +18,7 @@
 				</extensions>
 			</storageModule>
 			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-				<configuration artifactExtension="so" artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.sharedLib" buildProperties="org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.release,org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.sharedLib" description="" id="com.qnx.qcc.configuration.sharedLib.release.608922875.1009704567" name="device" parent="com.qnx.qcc.configuration.sharedLib.release">
+				<configuration artifactExtension="so" artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.sharedLib" buildProperties="org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.release,org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.sharedLib" description="" id="com.qnx.qcc.configuration.sharedLib.release.608922875.1009704567" name="device" parent="com.qnx.qcc.configuration.sharedLib.release" prebuildStep="">
 					<folderInfo id="com.qnx.qcc.configuration.sharedLib.release.608922875.1009704567." name="/" resourcePath="">
 						<toolChain id="com.qnx.qcc.toolChain.2215983" name="QNX QCC" superClass="com.qnx.qcc.toolChain">
 							<option id="com.qnx.qcc.option.cpu.315540759" name="Target CPU:" superClass="com.qnx.qcc.option.cpu" value="com.qnx.qcc.option.gen.cpu.armle-v7" valueType="enumerated"/>
@@ -53,7 +53,10 @@
 								<option id="com.qnx.qcc.option.linker.security.1157664997" name="Enhanced Security (-Wl,-z,relro -Wl,-z,now)" superClass="com.qnx.qcc.option.linker.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.linker.libraries.1316432206" name="Libraries (-l)" superClass="com.qnx.qcc.option.linker.libraries" valueType="libs">
 									<listOptionValue builtIn="false" value="slog2"/>
+									<listOptionValue builtIn="false" value="bps"/>
 								</option>
+								<option id="com.qnx.qcc.option.linker.qccoptions.979063239" name="QCC Options" superClass="com.qnx.qcc.option.linker.qccoptions" valueType="stringList"/>
+								<option id="com.qnx.qcc.option.linker.ldoptions.2120992105" name="Linker Options (-Wl,)" superClass="com.qnx.qcc.option.linker.ldoptions" valueType="stringList"/>
 								<inputType id="com.qnx.qcc.inputType.linker.1028572887" superClass="com.qnx.qcc.inputType.linker">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
@@ -121,6 +124,7 @@
 								<option id="com.qnx.qcc.option.linker.security.9141791" name="Enhanced Security (-Wl,-z,relro -Wl,-z,now)" superClass="com.qnx.qcc.option.linker.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.linker.libraries.220836649" name="Libraries (-l)" superClass="com.qnx.qcc.option.linker.libraries" valueType="libs">
 									<listOptionValue builtIn="false" value="slog2"/>
+									<listOptionValue builtIn="false" value="bps"/>
 								</option>
 								<inputType id="com.qnx.qcc.inputType.linker.167117375" superClass="com.qnx.qcc.inputType.linker">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
@@ -142,8 +146,13 @@
 	<storageModule moduleId="cdtBuildSystem" version="4.0.0">
 		<project id="EmailComposer.null.138005006" name="EmailComposer"/>
 	</storageModule>
-	<storageModule moduleId="refreshScope" versionNumber="1">
-		<resource resourceType="PROJECT" workspacePath="/EmailComposer"/>
+	<storageModule moduleId="refreshScope" versionNumber="2">
+		<configuration configurationName="simulator">
+			<resource resourceType="PROJECT" workspacePath="/EmailComposer"/>
+		</configuration>
+		<configuration configurationName="device">
+			<resource resourceType="PROJECT" workspacePath="/EmailComposer"/>
+		</configuration>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
 	<storageModule moduleId="scannerConfiguration">

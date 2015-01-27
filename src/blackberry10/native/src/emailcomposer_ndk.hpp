@@ -32,6 +32,8 @@ public:
 	// The extension methods are defined here
 	std::string isAvailable();
 
+	std::string open();
+
 	std::string emailComposerTest();
 
 	std::string emailComposerTest(const std::string& inputString);
