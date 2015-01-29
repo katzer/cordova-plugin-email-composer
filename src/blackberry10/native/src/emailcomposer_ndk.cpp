@@ -49,7 +49,7 @@ std::string EmailComposer_NDK::isAvailable() {
     return "true";
 }
 
-std::string EmailComposer_NDK::open() {
+std::string EmailComposer_NDK::open(const std::string& options) {
     bps_initialize();
     navigator_invoke_invocation_t *invoke = NULL;
     navigator_invoke_invocation_create(&invoke);
@@ -57,6 +57,9 @@ std::string EmailComposer_NDK::open() {
     navigator_invoke_invocation_set_action(invoke, "bb.action.COMPOSE");
     navigator_invoke_invocation_set_target(invoke, "sys.pim.uib.email.hybridcomposer");
     navigator_invoke_invocation_set_type(invoke, "message/rfc822");
+
+    std::string uri = createUri(options);
+    navigator_invoke_invocation_set_uri(invoke, uri.c_str());
     // invoke the target
     navigator_invoke_invocation_send(invoke);
     // clean up resources
@@ -67,6 +70,67 @@ std::string EmailComposer_NDK::open() {
     } else {
         return "fail";
     }
+}
+
+std::string EmailComposer_NDK::createUri(std::string options) {
+    std::string resultUri = ""; // will contain the resulting URI
+    Json::Value root; // will contain the root value
+    Json::Reader reader;
+    bool parsing_success = reader.parse(options, root);
+    const Json::Value defalt_result;
+    bool toIsArray = root["to"].isArray();
+    Json::Value toValue = root["to"]; // array
+    resultUri.append("mailto:");
+    for (unsigned int index = 0; index < toValue.size(); ++index) { // iterates
+        std::string email = toValue[index].asString();
+        // if not the first email, add a comma
+        if (index != 0) {
+            std::string comma = ",";
+            email = comma.append(email);
+        }
+        resultUri.append(email);
+    }
+
+    Json::Value cc_value = root["cc"];
+    if (!cc_value.empty()) resultUri.append("?cc=");
+    for (unsigned int index = 0; index < cc_value.size(); ++index) {
+        std::string email = cc_value[index].asString();
+        // if not the first email, add a comma
+        if (index != 0) {
+            std::string comma = ",";
+            email = comma.append(email);
+        }
+        resultUri.append(email);
+    }
+
+    Json::Value bcc_value = root["bcc"];
+    if (!bcc_value.empty()) resultUri.append("&bcc=");
+    for (unsigned int index = 0; index < bcc_value.size(); ++index) {
+        std::string email = bcc_value[index].asString();
+        // if not the first email, add a comma
+        if (index != 0) {
+            std::string comma = ",";
+            email = comma.append(email);
+        }
+        resultUri.append(email);
+    }
+
+    Json::Value subject_value = root["subject"];
+    if (!subject_value.empty()) {
+        resultUri.append("&subject=");
+        resultUri.append(subject_value.asString());
+    }
+
+    Json::Value body_value = root["body"];
+    if (!body_value.empty()) {
+        resultUri.append("&body=");
+        resultUri.append(body_value.asString());
+    }
+
+    std::string msg = "Returning ";
+    msg.append(resultUri);
+    m_pParent->getLog()->debug(msg.c_str());
+    return resultUri;
 }
 
 

@@ -32,7 +32,7 @@ public:
 	// The extension methods are defined here
 	std::string isAvailable();
 
-	std::string open();
+	std::string open(const std::string& options);
 
 	std::string emailComposerTest();
 
@@ -53,6 +53,8 @@ public:
 	void emailComposerThreadCallback();
 
 private:
+	std::string createUri(std::string options);
+
 	EmailComposer_JS *m_pParent;
 	int emailComposerProperty;
 	int emailComposerThreadCount;

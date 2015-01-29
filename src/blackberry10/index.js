@@ -32,9 +32,10 @@ module.exports = {
 		result.ok(emailComposer.getInstance().emailComposerIsAvailable(), false);
 	},
 	open: function(success, fail, args, env) {
-		console.log(">>> opening email");
 		var result = new PluginResult(args, env);
-		result.ok(emailComposer.getInstance().emailComposerOpen(), false);
+		var options = JSON.parse(decodeURIComponent(args[0]));
+		console.log(options);
+		result.ok(emailComposer.getInstance().emailComposerOpen(result.callbackId, options), false);
 	},
 	emailComposerTest: function (success, fail, args, env) {
 		var result = new PluginResult(args, env);
@@ -119,17 +120,12 @@ JNEXT.EmailComposer = function () {
 
 	// calls into InvokeMethod(string command) in emailcomposer_js.cpp
 	self.emailComposerIsAvailable = function() {
-		var result = JNEXT.invoke(self.m_id, "isAvailable");
-		if (result === "true") {
-			return true;
-		} else {
-			return false;
-		}
-		// return result;
+		var result = JNEXT.invoke(self.m_id, "emailComposerIsAvailable");
+		return (result === "true");
 	};
-	self.emailComposerOpen = function() {
-		var result = JNEXT.invoke(self.m_id, "emailComposerOpen");
-		console.log('Result of the invocation was ' + result);
+	self.emailComposerOpen = function(callbackId, options) {
+		var result = JNEXT.invoke(self.m_id, "emailComposerOpen " + callbackId + " " + JSON.stringify(options));
+		console.log('result was: ' + result);
 		return result;
 	};
 	self.emailComposerTest = function () {
