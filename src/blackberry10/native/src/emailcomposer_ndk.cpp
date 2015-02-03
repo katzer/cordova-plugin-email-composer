@@ -16,9 +16,9 @@
 
 #include <string>
 #include <sstream>
+#include <pthread.h>
 #include <json/reader.h>
 #include <json/writer.h>
-#include <pthread.h>
 #include "emailcomposer_ndk.hpp"
 #include "emailcomposer_js.hpp"
 
@@ -60,6 +60,7 @@ std::string EmailComposer_NDK::open(const std::string& options) {
 
     std::string uri = createUri(options);
     navigator_invoke_invocation_set_uri(invoke, uri.c_str());
+
     // invoke the target
     navigator_invoke_invocation_send(invoke);
     // clean up resources
@@ -72,12 +73,13 @@ std::string EmailComposer_NDK::open(const std::string& options) {
     }
 }
 
-std::string EmailComposer_NDK::createUri(std::string options) {
+std::string EmailComposer_NDK::createUri(const std::string & options) {
     std::string resultUri = ""; // will contain the resulting URI
     Json::Value root; // will contain the root value
     Json::Reader reader;
     bool parsing_success = reader.parse(options, root);
     const Json::Value defalt_result;
+
     bool toIsArray = root["to"].isArray();
     Json::Value toValue = root["to"]; // array
     resultUri.append("mailto:");
@@ -127,12 +129,22 @@ std::string EmailComposer_NDK::createUri(std::string options) {
         resultUri.append(body_value.asString());
     }
 
+    Json::Value attachment_value = root["attachments"];
+    if (!attachment_value.empty()) resultUri.append("&attachment=");
+    for (unsigned int index = 0; index < attachment_value.size(); ++index) {
+        std::string attachment = attachment_value[index].asString();
+        if (index != 0) {
+            std::string comma = ",";
+            attachment = comma.append(attachment);
+        }
+        resultUri.append(attachment);
+    }
+
     std::string msg = "Returning ";
     msg.append(resultUri);
     m_pParent->getLog()->debug(msg.c_str());
     return resultUri;
 }
-
 
 std::string EmailComposer_NDK::emailComposerTest() {
 	m_pParent->getLog()->debug("testString");

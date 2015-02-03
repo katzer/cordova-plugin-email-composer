@@ -53,7 +53,7 @@ public:
 	void emailComposerThreadCallback();
 
 private:
-	std::string createUri(std::string options);
+	std::string createUri(const std::string & options);
 
 	EmailComposer_JS *m_pParent;
 	int emailComposerProperty;
