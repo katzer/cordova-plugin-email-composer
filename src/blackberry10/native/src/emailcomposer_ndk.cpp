@@ -19,6 +19,9 @@
 #include <pthread.h>
 #include <json/reader.h>
 #include <json/writer.h>
+
+#include <qstring.h>
+
 #include "emailcomposer_ndk.hpp"
 #include "emailcomposer_js.hpp"
 

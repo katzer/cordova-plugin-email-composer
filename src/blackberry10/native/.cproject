@@ -28,9 +28,11 @@
 								<option id="com.qnx.qcc.option.compiler.shared.553244928" name="Shared (-shared)" superClass="com.qnx.qcc.option.compiler.shared" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.optlevel.2070537906" name="Optimization Level" superClass="com.qnx.qcc.option.compiler.optlevel" value="com.qnx.qcc.option.compiler.optlevel.2" valueType="enumerated"/>
 								<option id="com.qnx.qcc.option.compiler.includePath.1483355415" name="Include Directories (-I)" superClass="com.qnx.qcc.option.compiler.includePath" valueType="includePath">
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/qt4/QtCore"/>
 									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/public}"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
+									<listOptionValue builtIn="false" value="&quot;${QNX_TARGET}/usr/include/qt4&quot;"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.security.9625963" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.872099896" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
@@ -47,6 +49,8 @@
 							<tool id="com.qnx.qcc.tool.linker.871546588" name="QCC Linker" superClass="com.qnx.qcc.tool.linker">
 								<option id="com.qnx.qcc.option.linker.shared.915102752" name="Shared (-shared)" superClass="com.qnx.qcc.option.linker.shared" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.linker.libraryPaths.1049529253" name="Library Paths (-L)" superClass="com.qnx.qcc.option.linker.libraryPaths" valueType="libPaths">
+									<listOptionValue builtIn="false" value="&quot;${QNX_TARGET}/${CPUVARDIR}/usr/lib&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${QNX_TARGET}/${CPUVARDIR}/usr/lib/qt4/lib&quot;"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/lib"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/usr/lib"/>
 								</option>
@@ -54,9 +58,10 @@
 								<option id="com.qnx.qcc.option.linker.libraries.1316432206" name="Libraries (-l)" superClass="com.qnx.qcc.option.linker.libraries" valueType="libs">
 									<listOptionValue builtIn="false" value="slog2"/>
 									<listOptionValue builtIn="false" value="bps"/>
+									<listOptionValue builtIn="false" value="QtCore"/>
 								</option>
-								<option id="com.qnx.qcc.option.linker.qccoptions.979063239" name="QCC Options" superClass="com.qnx.qcc.option.linker.qccoptions" valueType="stringList"/>
-								<option id="com.qnx.qcc.option.linker.ldoptions.2120992105" name="Linker Options (-Wl,)" superClass="com.qnx.qcc.option.linker.ldoptions" valueType="stringList"/>
+								<option id="com.qnx.qcc.option.linker.qccoptions.979063239" name="QCC Options" superClass="com.qnx.qcc.option.linker.qccoptions"/>
+								<option id="com.qnx.qcc.option.linker.ldoptions.2120992105" name="Linker Options (-Wl,)" superClass="com.qnx.qcc.option.linker.ldoptions"/>
 								<inputType id="com.qnx.qcc.inputType.linker.1028572887" superClass="com.qnx.qcc.inputType.linker">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
@@ -100,6 +105,7 @@
 								<option id="com.qnx.qcc.option.compiler.optlevel.1164238904" name="Optimization Level" superClass="com.qnx.qcc.option.compiler.optlevel" value="com.qnx.qcc.option.compiler.optlevel.0" valueType="enumerated"/>
 								<option id="com.qnx.qcc.option.compile.debug.3716470" name="Debug (-g)" superClass="com.qnx.qcc.option.compile.debug" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.includePath.306305432" name="Include Directories (-I)" superClass="com.qnx.qcc.option.compiler.includePath" valueType="includePath">
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/qt4/QtCore"/>
 									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/public}"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
@@ -125,6 +131,7 @@
 								<option id="com.qnx.qcc.option.linker.libraries.220836649" name="Libraries (-l)" superClass="com.qnx.qcc.option.linker.libraries" valueType="libs">
 									<listOptionValue builtIn="false" value="slog2"/>
 									<listOptionValue builtIn="false" value="bps"/>
+									<listOptionValue builtIn="false" value="QtCore"/>
 								</option>
 								<inputType id="com.qnx.qcc.inputType.linker.167117375" superClass="com.qnx.qcc.inputType.linker">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
