@@ -20,7 +20,15 @@
 #include <json/reader.h>
 #include <json/writer.h>
 
-#include <qstring.h>
+#include <QUrl>
+#include <QDebug>
+
+// Cascades headers
+#include <bb/system/InvokeRequest>
+#include <bb/system/InvokeManager>
+#include <bb/system/InvokeTargetReply>
+#include <bb/data/JsonDataAccess>
+#include <bb/PpsObject>
 
 #include "emailcomposer_ndk.hpp"
 #include "emailcomposer_js.hpp"
@@ -53,100 +61,43 @@ std::string EmailComposer_NDK::isAvailable() {
 }
 
 std::string EmailComposer_NDK::open(const std::string& options) {
-    bps_initialize();
-    navigator_invoke_invocation_t *invoke = NULL;
-    navigator_invoke_invocation_create(&invoke);
-    // set invocation action and type
-    navigator_invoke_invocation_set_action(invoke, "bb.action.COMPOSE");
-    navigator_invoke_invocation_set_target(invoke, "sys.pim.uib.email.hybridcomposer");
-    navigator_invoke_invocation_set_type(invoke, "message/rfc822");
 
-    std::string uri = createUri(options);
-    navigator_invoke_invocation_set_uri(invoke, uri.c_str());
+    bb::system::InvokeRequest request;
+    request.setAction("bb.action.COMPOSE");
+    request.setTarget("sys.pim.uib.email.hybridcomposer");
+    request.setMimeType("message/rfc822");
 
-    // invoke the target
-    navigator_invoke_invocation_send(invoke);
-    // clean up resources
-    int result = navigator_invoke_invocation_destroy(invoke);
-    // checks the result of the invocation
-    if (result == BPS_SUCCESS) {
-        return "success";
-    } else {
-        return "fail";
-    }
+    QVariantMap data;
+    data["data"] = createData(options);
+    bool ok;
+    request.setData(bb::PpsObject::encode(data, &ok));
+
+    bb::system::InvokeManager invokeManager;
+    bb::system::InvokeTargetReply * reply = invokeManager.invoke(request);
+    return "success";
 }
 
-std::string EmailComposer_NDK::createUri(const std::string & options) {
-    std::string resultUri = ""; // will contain the resulting URI
-    Json::Value root; // will contain the root value
-    Json::Reader reader;
-    bool parsing_success = reader.parse(options, root);
-    const Json::Value defalt_result;
-
-    bool toIsArray = root["to"].isArray();
-    Json::Value toValue = root["to"]; // array
-    resultUri.append("mailto:");
-    for (unsigned int index = 0; index < toValue.size(); ++index) { // iterates
-        std::string email = toValue[index].asString();
-        // if not the first email, add a comma
-        if (index != 0) {
-            std::string comma = ",";
-            email = comma.append(email);
-        }
-        resultUri.append(email);
+QVariantMap EmailComposer_NDK::createData(const std::string & options) {
+    bb::data::JsonDataAccess jda;
+    QVariant parsedObject = jda.loadFromBuffer(QString::fromUtf8(options.c_str(), options.size()));
+    QVariantMap map = parsedObject.toMap();
+    QVariantMap fixedMap;
+    fixedMap.insert("to", map["to"]);
+    fixedMap.insert("cc", map["cc"]);
+    fixedMap.insert("bcc", map["bcc"]);
+    fixedMap.insert("subject", map["subject"]);
+    fixedMap.insert("body", map["body"]);
+    QVariantList attachments = map["attachments"].toList();
+    QVariantList fixedAttachments;
+    foreach(QVariant file, attachments) {
+        QString filePath = file.toString();
+        fixedAttachments.append(QString(QUrl(filePath).toEncoded()));
     }
+    fixedMap.insert("attachment", fixedAttachments);
 
-    Json::Value cc_value = root["cc"];
-    if (!cc_value.empty()) resultUri.append("?cc=");
-    for (unsigned int index = 0; index < cc_value.size(); ++index) {
-        std::string email = cc_value[index].asString();
-        // if not the first email, add a comma
-        if (index != 0) {
-            std::string comma = ",";
-            email = comma.append(email);
-        }
-        resultUri.append(email);
-    }
-
-    Json::Value bcc_value = root["bcc"];
-    if (!bcc_value.empty()) resultUri.append("&bcc=");
-    for (unsigned int index = 0; index < bcc_value.size(); ++index) {
-        std::string email = bcc_value[index].asString();
-        // if not the first email, add a comma
-        if (index != 0) {
-            std::string comma = ",";
-            email = comma.append(email);
-        }
-        resultUri.append(email);
-    }
-
-    Json::Value subject_value = root["subject"];
-    if (!subject_value.empty()) {
-        resultUri.append("&subject=");
-        resultUri.append(subject_value.asString());
-    }
-
-    Json::Value body_value = root["body"];
-    if (!body_value.empty()) {
-        resultUri.append("&body=");
-        resultUri.append(body_value.asString());
-    }
-
-    Json::Value attachment_value = root["attachments"];
-    if (!attachment_value.empty()) resultUri.append("&attachment=");
-    for (unsigned int index = 0; index < attachment_value.size(); ++index) {
-        std::string attachment = attachment_value[index].asString();
-        if (index != 0) {
-            std::string comma = ",";
-            attachment = comma.append(attachment);
-        }
-        resultUri.append(attachment);
-    }
-
-    std::string msg = "Returning ";
-    msg.append(resultUri);
-    m_pParent->getLog()->debug(msg.c_str());
-    return resultUri;
+    m_pParent->getLog()->debug(fixedMap["to"].toList().at(0).toString().toStdString().c_str());
+    m_pParent->getLog()->debug(fixedMap["attachment"].toList().at(0).toString().toStdString().c_str());
+    return fixedMap;
 }
 
 std::string EmailComposer_NDK::emailComposerTest() {
