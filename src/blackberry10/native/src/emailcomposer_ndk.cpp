@@ -20,8 +20,8 @@
 #include <json/reader.h>
 #include <json/writer.h>
 
+// Qt headers
 #include <QUrl>
-#include <QDebug>
 
 // Cascades headers
 #include <bb/system/InvokeRequest>
@@ -38,17 +38,13 @@
 namespace webworks {
 
 EmailComposer_NDK::EmailComposer_NDK(EmailComposer_JS *parent):
-	m_pParent(parent),
-	m_thread(0) {
-		pthread_cond_t cond  = PTHREAD_COND_INITIALIZER;
-		pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+	m_pParent(parent) {
 		m_pParent->getLog()->info("EmailComposer Created");
 }
 
 EmailComposer_NDK::~EmailComposer_NDK() {
 }
 
-// These methods are the true native code we intend to reach from WebWorks
 std::string EmailComposer_NDK::isAvailable() {
     return "true";
 }

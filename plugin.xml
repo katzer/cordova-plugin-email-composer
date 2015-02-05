@@ -123,5 +123,8 @@
         <source-file src="src/blackberry10/index.js" target-dir="EmailComposer"/>
         <lib-file arch="device" src="src/blackberry10/native/device/libEmailComposer.so"/>
         <lib-file arch="sumulator" src="src/blackberry10/native/simulator/libEmailComposer.so"/>
+        <config-file target="config.xml" parent="/widget/rim:permissions">
+            <rim:permit>access_shared</rim:permit>
+        </config-file>
     </platform>
 </plugin>

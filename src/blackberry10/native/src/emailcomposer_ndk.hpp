@@ -29,19 +29,11 @@ class EmailComposer_NDK {
 public:
 	explicit EmailComposer_NDK(EmailComposer_JS *parent = NULL);
 	virtual ~EmailComposer_NDK();
-
-	// The extension methods are defined here
 	std::string isAvailable();
 	std::string open(const std::string& options);
-
 private:
-//	std::string createUri(const std::string & options);
 	QVariantMap createData(const std::string & options);
 	EmailComposer_JS *m_pParent;
-	std::string threadCallbackId;
-	pthread_t m_thread;
-	pthread_cond_t cond;
-	pthread_mutex_t mutex;
 };
 
 } // namespace webworks

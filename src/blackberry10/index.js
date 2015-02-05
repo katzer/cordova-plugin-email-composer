@@ -36,55 +36,6 @@ module.exports = {
 		var options = JSON.parse(decodeURIComponent(args[0]));
 		console.log(options);
 		result.ok(emailComposer.getInstance().emailComposerOpen(result.callbackId, options), false);
-	},
-	emailComposerTest: function (success, fail, args, env) {
-		var result = new PluginResult(args, env);
-		result.ok(emailComposer.getInstance().emailComposerTest(), false);
-	},
-	emailComposerTestInput: function (success, fail, args, env) {
-		var result = new PluginResult(args, env);
-		args = JSON.parse(decodeURIComponent(args["input"]));
-		result.ok(emailComposer.getInstance().emailComposerTestInput(result.callbackId, args), false);
-	},
-	// Asynchronous function calls into the plugin and returns
-	emailComposerTestAsync: function (success, fail, args, env) {
-		var result = new PluginResult(args, env);
-		resultObjs[result.callbackId] = result;
-		args = JSON.parse(decodeURIComponent(args["input"]));
-		emailComposer.getInstance().emailComposerTestAsync(result.callbackId, args);
-		result.noResult(true);
-	},
-	emailComposerProperty: function (success, fail, args, env) {
-		var result = new PluginResult(args, env);
-		var value;
-		if (args && args["value"]) {
-			value = JSON.parse(decodeURIComponent(args["value"]));
-			emailComposer.getInstance().emailComposerProperty(result.callbackId, value);
-			result.noResult(false);
-		} else {
-			result.ok(emailComposer.getInstance().emailComposerProperty(), false);
-		}
-	},
-	// Thread methods to start and stop
-	emailComposerStartThread: function (success, fail, args, env) {
-		var result = new PluginResult(args, env);
-		if (!threadCallback) {
-			threadCallback = result.callbackId;
-			resultObjs[result.callbackId] = result;
-			result.ok(emailComposer.getInstance().emailComposerStartThread(result.callbackId), true);
-		} else {
-			result.error(emailComposer.getInstance().emailComposerStartThread(result.callbackId), false);
-		}
-	},
-	emailComposerStopThread: function (success, fail, args, env) {
-		var result = new PluginResult(args, env);
-		if (!threadCallback) {
-			result.error("Thread is not running", false);
-		} else {
-			delete resultObjs[threadCallback];
-			threadCallback = null;
-			result.ok(emailComposer.getInstance().emailComposerStopThread(), false);
-		}
 	}
 };
 
@@ -128,22 +79,6 @@ JNEXT.EmailComposer = function () {
 		console.log('result was: ' + result);
 		return result;
 	};
-	self.emailComposerTest = function () {
-		return JNEXT.invoke(self.m_id, "emailComposerTest");
-	};
-	self.emailComposerTestInput = function (callbackId, input) {
-		return JNEXT.invoke(self.m_id, "emailComposerTestInput " + callbackId + " " + input);
-	};
-	self.emailComposerTestAsync = function (callbackId, input) {
-		return JNEXT.invoke(self.m_id, "emailComposerTestAsync " + callbackId + " " + JSON.stringify(input));
-	};
-	self.emailComposerProperty = function (callbackId, value) {
-		if (value) {
-			return JNEXT.invoke(self.m_id, "emailComposerProperty " + callbackId + " " + value);
-		} else {
-			return JNEXT.invoke(self.m_id, "emailComposerProperty");
-		}
-	};
 	// Fired by the Event framework (used by asynchronous callbacks)
 	self.onEvent = function (strData) {
 		var arData = strData.split(" "),
@@ -160,15 +95,6 @@ JNEXT.EmailComposer = function () {
 			}
 		}
 	};
-
-	// Thread methods
-	self.emailComposerStartThread = function (callbackId) {
-		return JNEXT.invoke(self.m_id, "emailComposerStartThread " + callbackId);
-	};
-	self.emailComposerStopThread = function () {
-		return JNEXT.invoke(self.m_id, "emailComposerStopThread");
-	};
-
 	// ************************
 	// End of methods to edit
 	// ************************
