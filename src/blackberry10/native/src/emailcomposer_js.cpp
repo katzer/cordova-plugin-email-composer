@@ -91,23 +91,6 @@ string EmailComposer_JS::InvokeMethod(const string& command) {
 	    return m_pEmailComposerController->isAvailable();
 	} else if (strCommand == "emailComposerOpen") {
 	    return m_pEmailComposerController->open(arg);
-	} else if (strCommand == "emailComposerTest") {
-		return m_pEmailComposerController->emailComposerTest();
-	} else if (strCommand == "emailComposerTestInput") {
-		return m_pEmailComposerController->emailComposerTest(arg);
-	} else if (strCommand == "emailComposerProperty") {
-		// if arg exists we are setting property
-		if (arg != strCommand) {
-			m_pEmailComposerController->setEmailComposerProperty(arg);
-		} else {
-			return m_pEmailComposerController->getEmailComposerProperty();
-		}
-	} else if (strCommand == "emailComposerTestAsync") {
-		m_pEmailComposerController->emailComposerTestAsync(callbackId, arg);
-	} else if (strCommand == "emailComposerStartThread") {
-		return m_pEmailComposerController->emailComposerStartThread(callbackId);
-	} else if (strCommand == "emailComposerStopThread") {
-		return m_pEmailComposerController->emailComposerStopThread();
 	}
 
 	strCommand.append(";");

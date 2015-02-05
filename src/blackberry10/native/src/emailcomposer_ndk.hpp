@@ -32,34 +32,12 @@ public:
 
 	// The extension methods are defined here
 	std::string isAvailable();
-
 	std::string open(const std::string& options);
-
-	std::string emailComposerTest();
-
-	std::string emailComposerTest(const std::string& inputString);
-
-	std::string getEmailComposerProperty();
-
-	void setEmailComposerProperty(const std::string& inputString);
-
-	void emailComposerTestAsync(const std::string& callbackId, const std::string& inputString);
-
-	std::string emailComposerStartThread(const std::string& callbackId);
-
-	std::string emailComposerStopThread();
-
-	bool isThreadHalt();
-
-	void emailComposerThreadCallback();
 
 private:
 //	std::string createUri(const std::string & options);
 	QVariantMap createData(const std::string & options);
 	EmailComposer_JS *m_pParent;
-	int emailComposerProperty;
-	int emailComposerThreadCount;
-	bool threadHalt;
 	std::string threadCallbackId;
 	pthread_t m_thread;
 	pthread_cond_t cond;
