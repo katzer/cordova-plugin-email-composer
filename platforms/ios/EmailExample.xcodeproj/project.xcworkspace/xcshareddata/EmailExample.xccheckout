@@ -5,7 +5,7 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>515CFD8F-6636-42D4-A27C-0586AE7D90E1</string>
+	<string>8408FA7A-5C2C-4F55-8FC7-B0D66FE17C1E</string>
 	<key>IDESourceControlProjectName</key>
 	<string>EmailExample</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
@@ -34,7 +34,7 @@
 			<key>IDESourceControlWCCIdentifierKey</key>
 			<string>780E3A01BFE57AFB4D6E63D4CDCAE54AEFB238F3</string>
 			<key>IDESourceControlWCCName</key>
-			<string>cordova-plugin-email-composer</string>
+			<string>cordova-example-email-composer</string>
 		</dict>
 	</array>
 </dict>
