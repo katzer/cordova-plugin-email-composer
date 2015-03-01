@@ -259,7 +259,10 @@
             NSString* pathExt  = [basename pathExtension];
             NSString* fileName = [basename pathComponents].lastObject;
             NSString* mimeType = [self getMimeTypeFromFileExtension:pathExt];
-
+            
+            // Couldn't find mimeType, must be some type of binary data
+            if (mimeType == nil) mimeType = @"application/octet-stream";
+            
             [draft addAttachmentData:data mimeType:mimeType fileName:fileName];
         }
     }
