@@ -1,5 +1,5 @@
 ## ChangeLog
-#### Version 0.8.2 (not yet released)
+#### Version 0.8.2 (01.03.2015)
 - Added new namespace `cordova.plugins.email`<br>
   **Note:** The former `plugin.email` namespace is now deprecated and will be removed with the next major release.
 - [___change:___] Unified `absolute:` and `relative:` to `file:`
