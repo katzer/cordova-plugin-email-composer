@@ -30,6 +30,7 @@ The purpose of the plugin is to create an platform independent javascript interf
 - __iOS__ _(up to iOS8)_
 - __Android__ _(up to KitKat and L)_
 - __WP 8.0__ and __WP 8.1 Silverlight__
+- __Windows__
 
 
 ## Installation
@@ -61,15 +62,24 @@ More informations can be found [here][PGB_plugin].
 
 
 ## ChangeLog
-#### Version 0.8.2 (not yet released)
+#### Version 0.8.2 (01.03.2015)
 - Added new namespace `cordova.plugins.email`<br>
   **Note:** The former `plugin.email` namespace is now deprecated and will be removed with the next major release.
 - [___change:___] Unified `absolute:` and `relative:` to `file:`
 - [___change:___] Renamed `isServiceAvailable` to `isAvailable`
+- [feature:] `app:` allows to specify target mail app on Android
 - [feature:] `res:` prefix for native ressource attachments
+- [enhancement:] Support attachments on Windows Phone 8.1
 - [enhancement:] `open` supports callbacks
 - [enhancement:] `isHTML` can be used next `isHtml`
+- [enhancement:] Set mime type to binary if unknown
 - [bugfix:] Defaults were ignored
+
+#### Known issues
+- _\<img\>_ tags do not work on Android.
+- Callbacks for WP8/Windows platform are called immediately.
+- _isAvailable_ does always return _true_ for WP8/Windows platform.
+- The plugin may crash on WP8.1/Windows if an attachmant does not exist.
 
 #### Further informations
 - See [CHANGELOG.md][changelog] to get the full changelog for the plugin.
@@ -77,6 +87,9 @@ More informations can be found [here][PGB_plugin].
 
 ## Using the plugin
 The plugin creates the object ```cordova.plugins.email``` with following methods:
+
+1. [email.isAvailable][available]
+2. [email.open][open]
 
 ### Plugin initialization
 The plugin and its methods are not available before the *deviceready* event has been fired.
@@ -106,9 +119,10 @@ A pre-filled email draft can be opened through the `email.open` or `email.openDr
 After opening the draft the user may have the possibilities to edit, delete or send the email.
 
 #### Further informations
-- An [configured email account][is_service_available] is required to send emails.
+- An [configured email account][available] is required to send emails.
 - Attachments can be either base64 encoded datas, files from the the device storage or assets from within the *www* folder.
 - The default value for *isHTML* is *true*.
+- Its possible to [specify][email_app] the email app on Android.
 - See the [examples][examples] for how to create and show an email draft.
 
 ```javascript
@@ -209,6 +223,25 @@ cordova.plugins.email.open({
 ```
 
 
+## Platform specifics
+
+### Specify email app
+Its possible to specify the email app __on Android__ which shall open the draft for further editing. By default `email.open` does show a chooser with all available applications.
+
+The app can be specified by either an alias or its package name. The alias _gmail_ is available by default.
+
+```javascript
+// Add app alias
+cordova.plugins.email.addAlias('gmail', 'com.google.android.gm');
+
+// Specify app by name or alias
+cordova.plugins.email.open({
+    app: 'gmail',
+    subject: 'Sent from Gmail'
+})
+```
+
+
 ## Quirks
 
 ### HTML and CSS on Android
@@ -281,7 +314,7 @@ clang: error: linker command failed with exit code 1 (use -v to see invocation)
 
 This software is released under the [Apache 2.0 License][apache2_license].
 
-© 2013-2014 appPlant UG, Inc. All rights reserved
+© 2013-2015 appPlant UG, Inc. All rights reserved
 
 
 [cordova]: https://cordova.apache.org
@@ -292,6 +325,8 @@ This software is released under the [Apache 2.0 License][apache2_license].
 [PGB_plugin]: https://build.phonegap.com/plugins/705
 [messageui_framework]: #compile-error-on-ios
 [changelog]: https://github.com/katzer/cordova-plugin-email-composer/blob/master/CHANGELOG.md
-[is_service_available]: #determine-if-the-device-is-able-to-send-emails
+[available]: #determine-if-the-device-is-capable-to-send-emails
+[open]: #open-a-pre-filled-email-draft
+[email_app]: #specify-email-app
 [examples]: #examples
 [apache2_license]: http://opensource.org/licenses/Apache-2.0

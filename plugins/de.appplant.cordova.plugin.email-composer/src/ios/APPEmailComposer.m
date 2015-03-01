@@ -1,5 +1,5 @@
 /*
- Copyright 2013-2014 appPlant UG
+ Copyright 2013-2015 appPlant UG
 
  Licensed to the Apache Software Foundation (ASF) under one
  or more contributor license agreements.  See the NOTICE file
@@ -23,6 +23,7 @@
 #import "Cordova/NSData+Base64.h"
 #import "Cordova/CDVAvailability.h"
 #import <MobileCoreServices/MobileCoreServices.h>
+
 #include "TargetConditionals.h"
 
 @interface APPEmailComposer ()
@@ -32,6 +33,9 @@
 @end
 
 @implementation APPEmailComposer
+
+#pragma mark -
+#pragma mark Plugin interface methods
 
 /**
  * Checks if the mail composer is able to send mails.
@@ -89,6 +93,25 @@
         [self openDraft:draft];
     }];
 }
+
+#pragma mark -
+#pragma mark MFMailComposeViewControllerDelegate methods
+
+/**
+ * Delegate will be called after the mail composer did finish an action
+ * to dismiss the view.
+ */
+- (void) mailComposeController:(MFMailComposeViewController*)controller
+           didFinishWithResult:(MFMailComposeResult)result
+                         error:(NSError*)error
+{
+    [controller dismissViewControllerAnimated:YES completion:nil];
+
+    [self execCallback];
+}
+
+#pragma mark -
+#pragma mark Plugin core methods
 
 /**
  * Instantiates an email composer view.
@@ -236,72 +259,13 @@
             NSString* pathExt  = [basename pathExtension];
             NSString* fileName = [basename pathComponents].lastObject;
             NSString* mimeType = [self getMimeTypeFromFileExtension:pathExt];
-
+            
+            // Couldn't find mimeType, must be some type of binary data
+            if (mimeType == nil) mimeType = @"application/octet-stream";
+            
             [draft addAttachmentData:data mimeType:mimeType fileName:fileName];
         }
     }
-}
-
-/**
- * Delegate will be called after the mail composer did finish an action
- * to dismiss the view.
- */
-- (void) mailComposeController:(MFMailComposeViewController*)controller
-           didFinishWithResult:(MFMailComposeResult)result
-                         error:(NSError*)error
-{
-    [controller dismissViewControllerAnimated:YES completion:nil];
-
-    [self execCallback];
-}
-
-/**
- * Retrieves the mime type from the file extension.
- *
- * @param extension
- *      The file's extension
- *
- * @return
- *      The coresponding MIME type
- */
-- (NSString*) getMimeTypeFromFileExtension:(NSString*)extension
-{
-    if (!extension) {
-        return nil;
-    }
-
-    // Get the UTI from the file's extension
-    CFStringRef ext = (CFStringRef)CFBridgingRetain(extension);
-    CFStringRef type = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, ext, NULL);
-
-    // Converting UTI to a mime type
-    return (NSString*)CFBridgingRelease(UTTypeCopyPreferredTagWithClass(type, kUTTagClassMIMEType));
-}
-
-/**
- * Retrieves the attachments basename.
- *
- * @param path
- *      The file path or bas64 data of the attachment
- *
- * @return
- *      The attachments basename
- */
-- (NSString*) getBasenameFromAttachmentPath:(NSString*)path
-{
-    if ([path hasPrefix:@"base64:"])
-    {
-        NSString* pathWithoutPrefix;
-
-        pathWithoutPrefix = [path stringByReplacingOccurrencesOfString:@"base64:"
-                                                            withString:@""];
-
-        return [pathWithoutPrefix substringToIndex:
-                [pathWithoutPrefix rangeOfString:@"//"].location];
-    }
-
-    return path;
-
 }
 
 /**
@@ -457,6 +421,58 @@
     NSData* data = [NSData dataFromBase64String:dataString];
 
     return data;
+}
+
+#pragma mark -
+#pragma mark Plugin helper methods
+
+/**
+ * Retrieves the mime type from the file extension.
+ *
+ * @param extension
+ *      The file's extension
+ *
+ * @return
+ *      The coresponding MIME type
+ */
+- (NSString*) getMimeTypeFromFileExtension:(NSString*)extension
+{
+    if (!extension) {
+        return nil;
+    }
+
+    // Get the UTI from the file's extension
+    CFStringRef ext = (CFStringRef)CFBridgingRetain(extension);
+    CFStringRef type = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, ext, NULL);
+
+    // Converting UTI to a mime type
+    return (NSString*)CFBridgingRelease(UTTypeCopyPreferredTagWithClass(type, kUTTagClassMIMEType));
+}
+
+/**
+ * Retrieves the attachments basename.
+ *
+ * @param path
+ *      The file path or bas64 data of the attachment
+ *
+ * @return
+ *      The attachments basename
+ */
+- (NSString*) getBasenameFromAttachmentPath:(NSString*)path
+{
+    if ([path hasPrefix:@"base64:"])
+    {
+        NSString* pathWithoutPrefix;
+
+        pathWithoutPrefix = [path stringByReplacingOccurrencesOfString:@"base64:"
+                                                            withString:@""];
+
+        return [pathWithoutPrefix substringToIndex:
+                [pathWithoutPrefix rangeOfString:@"//"].location];
+    }
+
+    return path;
+
 }
 
 /**

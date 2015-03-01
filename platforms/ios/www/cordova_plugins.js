@@ -49,7 +49,7 @@ module.exports.metadata =
 {
     "org.apache.cordova.camera": "0.3.2",
     "org.apache.cordova.device": "0.2.12",
-    "de.appplant.cordova.plugin.email-composer": "0.8.2dev"
+    "de.appplant.cordova.plugin.email-composer": "0.8.2"
 }
 // BOTTOM OF METADATA
 });

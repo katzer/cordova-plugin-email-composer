@@ -1,5 +1,5 @@
 /*
-    Copyright 2013-2014 appPlant UG
+    Copyright 2013-2015 appPlant UG
 
     Licensed to the Apache Software Foundation (ASF) under one
     or more contributor license agreements.  See the NOTICE file
@@ -46,10 +46,13 @@ import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.PluginResult;
 
+@SuppressWarnings("Convert2Diamond")
 public class EmailComposer extends CordovaPlugin {
 
-    static protected final String STORAGE_FOLDER = "/email_composer";
+    //
+    static private final String STORAGE_FOLDER = "/email_composer";
 
+    // The callback context used when calling back into JavaScript
     private CallbackContext command;
 
     /**
@@ -114,13 +117,15 @@ public class EmailComposer extends CordovaPlugin {
      */
     private void open (JSONArray args) throws JSONException {
         JSONObject properties = args.getJSONObject(0);
-        final Intent draft = getDraftWithProperties(properties);
+        Intent draft = getDraftWithProperties(properties);
+
+        final Intent chooser = Intent.createChooser(draft, "Open with");
         final EmailComposer plugin = this;
 
         cordova.getThreadPool().execute(new Runnable() {
             public void run() {
                 cordova.startActivityForResult(
-                        plugin, Intent.createChooser(draft, "Select Email App"), 0);
+                        plugin, chooser, 0);
             }
         });
     }

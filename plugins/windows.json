@@ -50,13 +50,13 @@
         }
     },
     "installed_plugins": {
-        "de.appplant.cordova.plugin.email-composer": {
-            "PACKAGE_NAME": "de.appplant.cordova.plugin.emailcomposer.example"
-        },
         "org.apache.cordova.camera": {
             "PACKAGE_NAME": "de.appplant.cordova.plugin.emailcomposer.example"
         },
         "org.apache.cordova.device": {
+            "PACKAGE_NAME": "de.appplant.cordova.plugin.emailcomposer.example"
+        },
+        "de.appplant.cordova.plugin.email-composer": {
             "PACKAGE_NAME": "de.appplant.cordova.plugin.emailcomposer.example"
         }
     },

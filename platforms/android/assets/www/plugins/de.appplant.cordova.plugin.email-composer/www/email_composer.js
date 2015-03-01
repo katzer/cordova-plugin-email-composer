@@ -1,5 +1,5 @@
 cordova.define("de.appplant.cordova.plugin.email-composer.EmailComposer", function(require, exports, module) { /*
-    Copyright 2013-2014 appPlant UG
+    Copyright 2013-2015 appPlant UG
 
     Licensed to the Apache Software Foundation (ASF) under one
     or more contributor license agreements.  See the NOTICE file
@@ -141,6 +141,11 @@ exports.mergeWithDefaults = function (options) {
 
         var custom_  = options[key],
             default_ = defaults[key];
+
+        if (custom_ === null || custom_ === undefined) {
+            options[key] = default_;
+            continue;
+        }
 
         if (typeof default_ != typeof custom_) {
 

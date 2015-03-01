@@ -1,5 +1,5 @@
 cordova.define("de.appplant.cordova.plugin.email-composer.EmailComposer", function(require, exports, module) { /*
-    Copyright 2013-2014 appPlant UG
+    Copyright 2013-2015 appPlant UG
 
     Licensed to the Apache Software Foundation (ASF) under one
     or more contributor license agreements.  See the NOTICE file
@@ -22,12 +22,20 @@ cordova.define("de.appplant.cordova.plugin.email-composer.EmailComposer", functi
 var exec = require('cordova/exec');
 
 /**
+ * List of all registered mail app aliases.
+ */
+exports.aliases = {
+    gmail: 'com.google.android.gm'
+};
+
+/**
  * List of all available options with their default value.
  *
  * @return {Object}
  */
 exports.getDefaults = function () {
     return {
+        app:         undefined,
         subject:     '',
         body:        '',
         to:          [],
@@ -71,6 +79,18 @@ exports.open = function (options, callback, scope) {
 };
 
 /**
+ * Adds a new mail app alias.
+ *
+ * @param {String} alias
+ *      The alias name
+ * @param {String} package
+ *      The package name
+ */
+exports.addAlias = function (alias, package) {
+    this.aliases[alias] = package;
+}
+
+/**
  * @depreacted
  */
 exports.isServiceAvailable = function () {
@@ -106,6 +126,12 @@ exports.mergeWithDefaults = function (options) {
         options.isHtml = options.isHTML;
     }
 
+    if (options.hasOwnProperty('app')) {
+        var package = this.aliases[options.app];
+
+        options.app = package || options.app;
+    }
+
     for (var key in defaults) {
 
         if (!options.hasOwnProperty(key)) {
@@ -115,6 +141,11 @@ exports.mergeWithDefaults = function (options) {
 
         var custom_  = options[key],
             default_ = defaults[key];
+
+        if (custom_ === null || custom_ === undefined) {
+            options[key] = default_;
+            continue;
+        }
 
         if (typeof default_ != typeof custom_) {
 
