@@ -72,6 +72,7 @@ More informations can be found [here][PGB_plugin].
 - [enhancement:] Support attachments on Windows Phone 8.1
 - [enhancement:] `open` supports callbacks
 - [enhancement:] `isHTML` can be used next `isHtml`
+- [enhancement:] Set mime type to binary if unknown
 - [bugfix:] Defaults were ignored
 
 #### Known issues
