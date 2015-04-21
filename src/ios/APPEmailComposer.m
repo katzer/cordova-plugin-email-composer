@@ -132,25 +132,30 @@
     BOOL isHTML = [[properties objectForKey:@"isHtml"] boolValue];
 
     MFMailComposeViewController* draft;
-
-    draft = [[MFMailComposeViewController alloc] init];
-
-    // Subject
-    [self setSubject:[properties objectForKey:@"subject"] ofDraft:draft];
-    // Body (as HTML)
-    [self setBody:[properties objectForKey:@"body"] ofDraft:draft isHTML:isHTML];
-    // Recipients
-    [self setToRecipients:[properties objectForKey:@"to"] ofDraft:draft];
-    // CC Recipients
-    [self setCcRecipients:[properties objectForKey:@"cc"] ofDraft:draft];
-    // BCC Recipients
-    [self setBccRecipients:[properties objectForKey:@"bcc"] ofDraft:draft];
-    // Attachments
-    [self setAttachments:[properties objectForKey:@"attachments"] ofDraft:draft];
-
-    draft.mailComposeDelegate = self;
-
-    return draft;
+    
+    @try {
+        draft = [[MFMailComposeViewController alloc] init];
+        
+        // Subject
+        [self setSubject:[properties objectForKey:@"subject"] ofDraft:draft];
+        // Body (as HTML)
+        [self setBody:[properties objectForKey:@"body"] ofDraft:draft isHTML:isHTML];
+        // Recipients
+        [self setToRecipients:[properties objectForKey:@"to"] ofDraft:draft];
+        // CC Recipients
+        [self setCcRecipients:[properties objectForKey:@"cc"] ofDraft:draft];
+        // BCC Recipients
+        [self setBccRecipients:[properties objectForKey:@"bcc"] ofDraft:draft];
+        // Attachments
+        [self setAttachments:[properties objectForKey:@"attachments"] ofDraft:draft];
+        
+        draft.mailComposeDelegate = self;
+        
+        return draft;
+    }
+    @catch(NSException * e) {
+        return NULL;
+    }
 }
 
 /**
