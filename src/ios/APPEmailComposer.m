@@ -67,17 +67,6 @@
 {
     _command = command;
 
-    if (TARGET_IPHONE_SIMULATOR && IsAtLeastiOSVersion(@"8.0")) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Email-Composer Plug-in"
-                                                        message:@"Plug-in cannot run on the iOS8 Simulator.\nPlease downgrade or use a physical device."
-                                                       delegate:nil
-                                              cancelButtonTitle:@"OK"
-                                              otherButtonTitles:nil];
-        [alert show];
-        [self execCallback];
-        return;
-    }
-
     [self.commandDelegate runInBackground:^{
         NSArray* args = command.arguments;
         NSDictionary* properties = [args objectAtIndex:0];
@@ -418,7 +407,7 @@
                                                    range:NSMakeRange(0, length)
                                             withTemplate:@""];
 
-    NSData* data = [NSData dataFromBase64String:dataString];
+    NSData* data = [NSData cdv_dataFromBase64String:dataString];
 
     return data;
 }
