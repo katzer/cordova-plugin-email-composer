@@ -482,13 +482,13 @@
 {
     NSString *outputString = nil;
     if (composeResult == MFMailComposeResultCancelled) {
-        outputString = @"MFMailComposeResultCancelled";
+        outputString = @"Cancelled";
     }else if(composeResult == MFMailComposeResultSaved){
-        outputString = @"MFMailComposeResultSaved";
+        outputString = @"Saved";
     }else if(composeResult == MFMailComposeResultFailed){
-        outputString = @"MFMailComposeResultFailed";
+        outputString = @"Failed";
     }else{
-        outputString = @"MFMailComposeResultSent";
+        outputString = @"Sent";
     }
     CDVPluginResult *result = [CDVPluginResult
                                resultWithStatus:CDVCommandStatus_OK messageAsString:outputString];
