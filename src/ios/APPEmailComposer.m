@@ -74,7 +74,7 @@
                                               cancelButtonTitle:@"OK"
                                               otherButtonTitles:nil];
         [alert show];
-        [self execCallback];
+        [self execCallback:MFMailComposeResultFailed];
         return;
     }
 
@@ -86,7 +86,7 @@
         draft = [self getDraftWithProperties:properties];
 
         if (!draft) {
-            [self execCallback];
+            [self execCallback:MFMailComposeResultFailed];
             return;
         }
 
@@ -107,7 +107,7 @@
 {
     [controller dismissViewControllerAnimated:YES completion:nil];
 
-    [self execCallback];
+    [self execCallback:result];
 }
 
 #pragma mark -
@@ -478,11 +478,21 @@
 /**
  * Invokes the callback without any parameter.
  */
-- (void) execCallback
+- (void) execCallback:(MFMailComposeResult)composeResult
 {
+    NSString *outputString = nil;
+    if (composeResult == MFMailComposeResultCancelled) {
+        outputString = @"Cancelled";
+    }else if(composeResult == MFMailComposeResultSaved){
+        outputString = @"Saved";
+    }else if(composeResult == MFMailComposeResultFailed){
+        outputString = @"Failed";
+    }else{
+        outputString = @"Sent";
+    }
     CDVPluginResult *result = [CDVPluginResult
-                               resultWithStatus:CDVCommandStatus_OK];
-
+                               resultWithStatus:CDVCommandStatus_OK messageAsString:outputString];
+    outputString = nil;
     [self.commandDelegate sendPluginResult:result
                                 callbackId:_command.callbackId];
 }
