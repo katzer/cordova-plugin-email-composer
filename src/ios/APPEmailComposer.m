@@ -418,7 +418,11 @@
                                                    range:NSMakeRange(0, length)
                                             withTemplate:@""];
 
+#ifndef __CORDOVA_3_8_0
     NSData* data = [NSData dataFromBase64String:dataString];
+#else
+    NSData* data = [NSData cdv_dataFromBase64String:dataString];
+#endif
 
     return data;
 }
