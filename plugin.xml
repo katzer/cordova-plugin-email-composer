@@ -99,22 +99,11 @@
 
     </platform>
 
-    <!-- wp8 -->
-    <platform name="wp8">
-        <config-file target="config.xml" parent="/*">
-            <feature name="EmailComposer">
-                <param name="wp-package" value="EmailComposer"/>
-            </feature>
-        </config-file>
-
-        <source-file src="src/wp8/EmailComposer.cs" />
-        <source-file src="src/wp8/Options.cs" />
-    </platform>
-
     <!-- windows -->
     <platform name="windows">
         <js-module src="src/windows/EmailComposerProxy.js" name="EmailComposerProxy">
             <merges target="" />
         </js-module>
     </platform>
+
 </plugin>

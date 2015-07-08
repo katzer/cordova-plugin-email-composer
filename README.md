@@ -27,9 +27,9 @@ The purpose of the plugin is to create an platform independent javascript interf
 
 
 ## Supported Platforms
-- __iOS__ _(up to iOS8)_
-- __Android__ _(up to KitKat and L)_
-- __WP 8.0__ and __WP 8.1 Silverlight__
+- __iOS__
+- __Android__
+- __Amazon FireOS__
 - __Windows__
 
 
