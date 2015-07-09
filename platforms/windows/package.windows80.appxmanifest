@@ -1,33 +1,32 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest" xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest">
-  <Identity Name="91ba75f0-512a-11e4-8b01-bf4c05b1b275" Publisher="CN=$username$" Version="1.1.0.0" />
-  <Properties>
-    <DisplayName>de.appplant.cordova.plugin.emailcomposer.example</DisplayName>
-    <PublisherDisplayName>$username$</PublisherDisplayName>
-    <Logo>images\storelogo.png</Logo>
-  </Properties>
-  <Prerequisites>
-    <OSMinVersion>6.3.0</OSMinVersion>
-    <OSMaxVersionTested>6.3.0</OSMaxVersionTested>
-  </Prerequisites>
-  <Resources>
-    <Resource Language="x-generate" />
-  </Resources>
-  <Applications>
-    <Application Id="EmailExample" StartPage="www/index.html">
-      <m2:VisualElements DisplayName="de.appplant.cordova.plugin.emailcomposer.example" Description="CordovaApp" BackgroundColor="#464646" ForegroundText="light" Square150x150Logo="images\logo.png" Square30x30Logo="images\smalllogo.png">
-        <m2:DefaultTile>
-          <m2:ShowNameOnTiles>
-            <m2:ShowOn Tile="square150x150Logo" />
-          </m2:ShowNameOnTiles>
-        </m2:DefaultTile>
-        <m2:SplashScreen Image="images\splashscreen.png" />
-      </m2:VisualElements>
-    </Application>
-  </Applications>
-  <Capabilities>
-    <Capability Name="internetClient" />
-    <Capability Name="picturesLibrary" />
-    <DeviceCapability Name="webcam" />
-  </Capabilities>
+    <Identity Name="91ba75f0-512a-11e4-8b01-bf4c05b1b275" Publisher="CN=$username$" Version="1.1.0.0" />
+    <Properties>
+        <DisplayName>de.appplant.cordova.plugin.emailcomposer.example</DisplayName>
+        <PublisherDisplayName>$username$</PublisherDisplayName>
+        <Logo>images\storelogo.png</Logo>
+    </Properties>
+    <Prerequisites>
+        <OSMinVersion>6.3.0</OSMinVersion>
+        <OSMaxVersionTested>6.3.0</OSMaxVersionTested>
+    </Prerequisites>
+    <Resources>
+        <Resource Language="x-generate" />
+    </Resources>
+    <Applications>
+        <Application Id="EmailExample" StartPage="www/index.html">
+            <m2:VisualElements BackgroundColor="#464646" Description="CordovaApp" DisplayName="de.appplant.cordova.plugin.emailcomposer.example" ForegroundText="light" Square150x150Logo="images\logo.png" Square30x30Logo="images\smalllogo.png">
+                <m2:DefaultTile>
+                    <m2:ShowNameOnTiles>
+                        <m2:ShowOn Tile="square150x150Logo" />
+                    </m2:ShowNameOnTiles>
+                </m2:DefaultTile>
+                <m2:SplashScreen Image="images\splashscreen.png" />
+            </m2:VisualElements>
+        </Application>
+    </Applications>
+    <Capabilities>
+        <Capability Name="internetClient" />
+        <DeviceCapability Name="webcam" />
+    </Capabilities>
 </Package>

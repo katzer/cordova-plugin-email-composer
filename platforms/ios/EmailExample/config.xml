@@ -23,14 +23,14 @@
     </author>
     <content src="index.html" />
     <access origin="*" />
-    <feature name="EmailComposer">
-        <param name="ios-package" value="APPEmailComposer" />
-    </feature>
     <feature name="Camera">
         <param name="ios-package" value="CDVCamera" />
     </feature>
     <preference name="CameraUsesGeolocation" value="false" />
     <feature name="Device">
         <param name="ios-package" value="CDVDevice" />
+    </feature>
+    <feature name="EmailComposer">
+        <param name="ios-package" value="APPEmailComposer" />
     </feature>
 </widget>

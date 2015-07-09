@@ -7,39 +7,22 @@
         "files": {
             "package.windows.appxmanifest": {
                 "parents": {
-                    "/Package/Capabilities": [
-                        {
-                            "xml": "<Capability Name=\"picturesLibrary\" />",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<DeviceCapability Name=\"webcam\" />",
-                            "count": 1
-                        }
-                    ]
+                    "/Package/Capabilities": []
                 }
             },
             "package.windows80.appxmanifest": {
                 "parents": {
-                    "/Package/Capabilities": [
-                        {
-                            "xml": "<Capability Name=\"picturesLibrary\" />",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<DeviceCapability Name=\"webcam\" />",
-                            "count": 1
-                        }
-                    ]
+                    "/Package/Capabilities": []
                 }
             },
             "package.phone.appxmanifest": {
                 "parents": {
+                    "/Package/Capabilities": []
+                }
+            },
+            "package.appxmanifest": {
+                "parents": {
                     "/Package/Capabilities": [
-                        {
-                            "xml": "<Capability Name=\"picturesLibrary\" />",
-                            "count": 1
-                        },
                         {
                             "xml": "<DeviceCapability Name=\"webcam\" />",
                             "count": 1
@@ -50,13 +33,13 @@
         }
     },
     "installed_plugins": {
-        "org.apache.cordova.camera": {
-            "PACKAGE_NAME": "de.appplant.cordova.plugin.emailcomposer.example"
-        },
-        "org.apache.cordova.device": {
-            "PACKAGE_NAME": "de.appplant.cordova.plugin.emailcomposer.example"
-        },
         "de.appplant.cordova.plugin.email-composer": {
+            "PACKAGE_NAME": "de.appplant.cordova.plugin.emailcomposer.example"
+        },
+        "cordova-plugin-camera": {
+            "PACKAGE_NAME": "de.appplant.cordova.plugin.emailcomposer.example"
+        },
+        "cordova-plugin-device": {
             "PACKAGE_NAME": "de.appplant.cordova.plugin.emailcomposer.example"
         }
     },

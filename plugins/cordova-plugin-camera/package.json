@@ -1,0 +1,46 @@
+{
+  "name": "cordova-plugin-camera",
+  "version": "1.2.0",
+  "description": "Cordova Camera Plugin",
+  "cordova": {
+    "id": "cordova-plugin-camera",
+    "platforms": [
+      "firefoxos",
+      "android",
+      "amazon-fireos",
+      "ubuntu",
+      "ios",
+      "blackberry10",
+      "wp7",
+      "wp8",
+      "windows8",
+      "browser",
+      "windows"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/apache/cordova-plugin-camera"
+  },
+  "keywords": [
+    "cordova",
+    "camera",
+    "ecosystem:cordova",
+    "cordova-firefoxos",
+    "cordova-android",
+    "cordova-amazon-fireos",
+    "cordova-ubuntu",
+    "cordova-ios",
+    "cordova-blackberry10",
+    "cordova-wp7",
+    "cordova-wp8",
+    "cordova-windows8",
+    "cordova-browser",
+    "cordova-windows"
+  ],
+  "peerDependencies": {
+    "cordova-plugin-file": ">=2.0.0"
+  },
+  "author": "Apache Software Foundation",
+  "license": "Apache 2.0"
+}
