@@ -1,0 +1,22 @@
+{
+    "org.apache.cordova.camera": {
+        "source": {
+            "type": "local",
+            "path": "/Users/sebastian/.plugman/cache/org.apache.cordova.camera/0.3.2/package"
+        }
+    },
+    "org.apache.cordova.device": {
+        "source": {
+            "type": "local",
+            "path": "/Users/sebastian/.plugman/cache/org.apache.cordova.device/0.2.12/package"
+        }
+    },
+    "de.appplant.cordova.plugin.email-composer": {
+        "source": {
+            "type": "local",
+            "path": "/Users/sebastian/Documents/github/cordova-plugin-email-composer"
+        },
+        "is_top_level": true,
+        "variables": {}
+    }
+}
