@@ -11,6 +11,10 @@
                         {
                             "xml": "true",
                             "count": 1
+                        },
+                        {
+                            "xml": true,
+                            "count": 1
                         }
                     ],
                     "ImageIO.framework": [
@@ -49,10 +53,6 @@
                 "parents": {
                     "/*": [
                         {
-                            "xml": "<feature name=\"EmailComposer\"><param name=\"ios-package\" value=\"APPEmailComposer\" /></feature>",
-                            "count": 1
-                        },
-                        {
                             "xml": "<feature name=\"Camera\"><param name=\"ios-package\" value=\"CDVCamera\" /></feature>",
                             "count": 1
                         },
@@ -62,6 +62,10 @@
                         },
                         {
                             "xml": "<feature name=\"Device\"><param name=\"ios-package\" value=\"CDVDevice\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"EmailComposer\"><param name=\"ios-package\" value=\"APPEmailComposer\" /></feature>",
                             "count": 1
                         }
                     ]
@@ -80,13 +84,13 @@
         }
     },
     "installed_plugins": {
-        "de.appplant.cordova.plugin.email-composer": {
-            "PACKAGE_NAME": "de.appplant.cordova.plugin.emailcomposer.example"
-        },
         "org.apache.cordova.camera": {
             "PACKAGE_NAME": "de.appplant.cordova.plugin.emailcomposer.example"
         },
         "org.apache.cordova.device": {
+            "PACKAGE_NAME": "de.appplant.cordova.plugin.emailcomposer.example"
+        },
+        "de.appplant.cordova.plugin.email-composer": {
             "PACKAGE_NAME": "de.appplant.cordova.plugin.emailcomposer.example"
         }
     },

@@ -67,7 +67,7 @@
 {
     _command = command;
 
-    if (TARGET_IPHONE_SIMULATOR && IsAtLeastiOSVersion(@"8.0")) {
+    if (TARGET_IPHONE_SIMULATOR && !IsAtLeastiOSVersion(@"8.3")) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Email-Composer Plug-in"
                                                         message:@"Plug-in cannot run on the iOS8 Simulator.\nPlease downgrade or use a physical device."
                                                        delegate:nil
@@ -259,10 +259,10 @@
             NSString* pathExt  = [basename pathExtension];
             NSString* fileName = [basename pathComponents].lastObject;
             NSString* mimeType = [self getMimeTypeFromFileExtension:pathExt];
-            
+
             // Couldn't find mimeType, must be some type of binary data
             if (mimeType == nil) mimeType = @"application/octet-stream";
-            
+
             [draft addAttachmentData:data mimeType:mimeType fileName:fileName];
         }
     }
@@ -418,7 +418,11 @@
                                                    range:NSMakeRange(0, length)
                                             withTemplate:@""];
 
+#ifndef __CORDOVA_3_8_0
     NSData* data = [NSData dataFromBase64String:dataString];
+#else
+    NSData* data = [NSData cdv_dataFromBase64String:dataString];
+#endif
 
     return data;
 }
