@@ -52,6 +52,28 @@ public class EmailComposer extends CordovaPlugin {
 
     private CallbackContext command;
 
+	/**
+     * Delete externalCacheDirectory on appstart
+     *
+     * @param cordova Cordova-instance
+     * @param webView CordovaWebView-instance
+     */
+    public void initialize(CordovaInterface cordova, CordovaWebView webView) {
+        super.initialize(cordova, webView);
+
+        try {
+            File dir = new File(cordova.getActivity().getExternalCacheDir()+STORAGE_FOLDER);
+            if (dir.isDirectory()) {
+                String[] children = dir.list();
+                for (int i = 0; i < children.length; i++) {
+                    new File(dir, children[i]).delete();
+                }
+            }
+        } catch (Exception npe){
+            Log.e("EmailComposer", "Missing external cache dir");
+        }
+    }	
+	
     /**
      * Executes the request.
      *
