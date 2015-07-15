@@ -27,9 +27,9 @@ The purpose of the plugin is to create an platform independent javascript interf
 
 
 ## Supported Platforms
-- __iOS__ _(up to iOS8)_
-- __Android__ _(up to KitKat and L)_
-- __WP 8.0__ and __WP 8.1 Silverlight__
+- __iOS__
+- __Android__
+- __Amazon FireOS__
 - __Windows__
 
 
@@ -62,7 +62,7 @@ More informations can be found [here][PGB_plugin].
 
 
 ## ChangeLog
-#### Version 0.8.2 (not yet released)
+#### Version 0.8.2 (01.03.2015)
 - Added new namespace `cordova.plugins.email`<br>
   **Note:** The former `plugin.email` namespace is now deprecated and will be removed with the next major release.
 - [___change:___] Unified `absolute:` and `relative:` to `file:`
@@ -72,11 +72,11 @@ More informations can be found [here][PGB_plugin].
 - [enhancement:] Support attachments on Windows Phone 8.1
 - [enhancement:] `open` supports callbacks
 - [enhancement:] `isHTML` can be used next `isHtml`
+- [enhancement:] Set mime type to binary if unknown
 - [bugfix:] Defaults were ignored
 
 #### Known issues
-- _res://_ attachments are not sent even they are present while editing the draft.
-- _\<img\>_ tags do not not work on Android.
+- _\<img\>_ tags do not work on Android.
 - Callbacks for WP8/Windows platform are called immediately.
 - _isAvailable_ does always return _true_ for WP8/Windows platform.
 - The plugin may crash on WP8.1/Windows if an attachmant does not exist.
@@ -314,7 +314,7 @@ clang: error: linker command failed with exit code 1 (use -v to see invocation)
 
 This software is released under the [Apache 2.0 License][apache2_license].
 
-© 2013-2014 appPlant UG, Inc. All rights reserved
+© 2013-2015 appPlant UG, Inc. All rights reserved
 
 
 [cordova]: https://cordova.apache.org
@@ -322,7 +322,7 @@ This software is released under the [Apache 2.0 License][apache2_license].
 [wp8_guide]: http://msdn.microsoft.com/en-us/library/windowsphone/develop/hh394003.aspx
 [CLI]: http://cordova.apache.org/docs/en/edge/guide_cli_index.md.html#The%20Command-line%20Interface
 [PGB]: http://docs.build.phonegap.com/en_US/index.html
-[PGB_plugin]: https://build.phonegap.com/plugins/705
+[PGB_plugin]: https://build.phonegap.com/plugins/2055
 [messageui_framework]: #compile-error-on-ios
 [changelog]: https://github.com/katzer/cordova-plugin-email-composer/blob/master/CHANGELOG.md
 [available]: #determine-if-the-device-is-capable-to-send-emails

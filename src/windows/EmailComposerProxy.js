@@ -1,5 +1,5 @@
 /*
-    Copyright 2013-2014 appPlant UG
+    Copyright 2013-2015 appPlant UG
 
     Licensed to the Apache Software Foundation (ASF) under one
     or more contributor license agreements.  See the NOTICE file
@@ -255,8 +255,9 @@ exports.getUriForResourcePath = function (path) {
  *      The URI including the given content
  */
 exports.getUriForBase64Content = function (content) {
-    var base64 = content.replace('base64:icon.png//', ''),
-        name   = content.match(/^base64:([^\/]+)/)[1],
+    var match = content.match(/^base64:([^\/]+)\/\/(.*)/),
+        base64 = match[2],
+        name = match[1],
         buffer = Windows.Security.Cryptography.CryptographicBuffer.decodeFromBase64String(base64),
         rwplus = Windows.Storage.CreationCollisionOption.openIfExists,
         folder = Windows.Storage.ApplicationData.current.temporaryFolder,

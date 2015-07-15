@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-    Copyright 2013-2014 appPlant UG
+    Copyright 2013-2015 appPlant UG
 
     Licensed to the Apache Software Foundation (ASF) under one
     or more contributor license agreements.  See the NOTICE file
@@ -24,7 +24,7 @@
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
         xmlns:android="http://schemas.android.com/apk/res/android"
         id="de.appplant.cordova.plugin.email-composer"
-        version="0.8.2dev">
+        version="0.8.3dev">
 
     <name>EmailComposer</name>
 
@@ -99,22 +99,11 @@
 
     </platform>
 
-    <!-- wp8 -->
-    <platform name="wp8">
-        <config-file target="config.xml" parent="/*">
-            <feature name="EmailComposer">
-                <param name="wp-package" value="EmailComposer"/>
-            </feature>
-        </config-file>
-
-        <source-file src="src/wp8/EmailComposer.cs" />
-        <source-file src="src/wp8/Options.cs" />
-    </platform>
-
     <!-- windows -->
     <platform name="windows">
         <js-module src="src/windows/EmailComposerProxy.js" name="EmailComposerProxy">
             <merges target="" />
         </js-module>
     </platform>
+
 </plugin>
