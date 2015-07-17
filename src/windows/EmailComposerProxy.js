@@ -44,12 +44,23 @@ exports.isAvailable = function (success, error, args) {
  *      Interface arguments
  */
 exports.open = function (success, error, args) {
-    var props = args[0],
-        email = exports.getDraftWithProperties(props);
+    var props = args[0];
 
-    Windows.ApplicationModel.Email.EmailManager
-        .showComposeNewEmailAsync(email)
-        .done(success());
+    try{
+        var email = exports.getDraftWithProperties(props);
+
+        Windows.ApplicationModel.Email.EmailManager
+            .showComposeNewEmailAsync(email)
+            .done(success());
+    } catch (e) {
+        var mailTo = exports.getMailTo(props);
+        Windows.System.Launcher.launchUriAsync(mailTo).then(
+           function (mailToSuccess) {
+               if (mailToSuccess) {
+                   success();
+               }
+           });
+    }
 };
 
 /**
@@ -77,6 +88,34 @@ exports.getDraftWithProperties = function (props) {
     exports.setAttachments(props.attachments, mail);
 
     return mail;
+};
+
+exports.getMailTo = function (props) {
+    // The URI to launch
+    var uriToLaunch = "mailto:" + props.to;
+
+    var options = '';
+    if (props.subject != '') {
+        options = options + '&subject=' + props.subject;
+    }
+    if (props.body != '') {
+        options = options + '&body=' + props.body;
+    }
+    if (props.cc != '') {
+        options = options + '&cc=' + props.cc;
+    }
+    if (props.bcc != '') {
+        options = options + '&bcc=' + props.bcc;
+    }
+    if (options != '') {
+        options = '?' + options.substring(1);
+        uriToLaunch = uriToLaunch + options;
+    }
+
+    // Create a Uri object from a URI string 
+    var uri = new Windows.Foundation.Uri(uriToLaunch);
+
+    return uri;
 };
 
 /**
