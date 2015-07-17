@@ -105,5 +105,19 @@
             <merges target="" />
         </js-module>
     </platform>
+	
+		<!-- browser -->
+    <platform name="browser">
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="EmailComposer">
+                <param name="browser-package"
+                       value="de.appplant.cordova.emailcomposer.EmailComposer"/>
+            </feature>
+		</config-file>
+			
+		<js-module src="src/browser/EmailComposerProxy.js" name="EmailComposerProxy">
+            <runs />
+        </js-module>
+    </platform>
 
 </plugin>
