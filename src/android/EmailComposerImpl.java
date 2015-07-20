@@ -23,6 +23,8 @@
 
 package de.appplant.cordova.emailcomposer;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -479,9 +481,23 @@ public class EmailComposerImpl {
         Uri uri           = Uri.fromParts("mailto", "max@mustermann.com", null);
         Intent intent     = new Intent(Intent.ACTION_SENDTO, uri);
         PackageManager pm = ctx.getPackageManager();
-        int mailApps      = pm.queryIntentActivities(intent, 0).size();
+        int apps          = pm.queryIntentActivities(intent, 0).size();
 
-        return mailApps > 0;
+        if (apps == 0) {
+            return false;
+        }
+
+        AccountManager am  = AccountManager.get(ctx);
+        int accounts;
+
+        try {
+            accounts = am.getAccounts().length;
+        } catch (Exception e) {
+            Log.e("EmailComposer", "Missing GET_ACCOUNTS permission.");
+            return true;
+        }
+
+        return accounts > 0;
     }
 
     /**
