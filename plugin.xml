@@ -57,6 +57,7 @@
 
     <!-- ios -->
     <platform name="ios">
+
         <config-file target="config.xml" parent="/*">
             <feature name="EmailComposer">
                 <param name="ios-package" value="APPEmailComposer"/>
@@ -67,10 +68,12 @@
         <source-file src="src/ios/APPEmailComposer.m" />
 
         <framework src="MessageUI.framework" weak="true" />
+
     </platform>
 
     <!-- android -->
     <platform name="android">
+
         <config-file target="res/xml/config.xml" parent="/*">
             <feature name="EmailComposer">
                 <param name="android-package"
@@ -86,6 +89,7 @@
 
 	<!-- amazon-fireos -->
     <platform name="amazon-fireos">
+
         <config-file target="res/xml/config.xml" parent="/*">
             <feature name="EmailComposer">
                 <param name="android-package"
@@ -101,23 +105,27 @@
 
     <!-- windows -->
     <platform name="windows">
+
         <js-module src="src/windows/EmailComposerProxy.js" name="EmailComposerProxy">
-            <merges target="" />
+            <runs />
         </js-module>
+
     </platform>
-	
-		<!-- browser -->
+
+	<!-- browser -->
     <platform name="browser">
+
         <config-file target="res/xml/config.xml" parent="/*">
             <feature name="EmailComposer">
                 <param name="browser-package"
                        value="de.appplant.cordova.emailcomposer.EmailComposer"/>
             </feature>
 		</config-file>
-			
+
 		<js-module src="src/browser/EmailComposerProxy.js" name="EmailComposerProxy">
             <runs />
         </js-module>
+
     </platform>
 
 </plugin>
