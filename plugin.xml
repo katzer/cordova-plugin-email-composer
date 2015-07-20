@@ -85,6 +85,10 @@
             src="src/android/EmailComposer.java"
             target-dir="src/de/appplant/cordova/emailcomposer" />
 
+        <source-file
+            src="src/android/EmailComposerImpl.java"
+            target-dir="src/de/appplant/cordova/emailcomposer" />
+
     </platform>
 
 	<!-- amazon-fireos -->
@@ -99,6 +103,10 @@
 
         <source-file
             src="src/android/EmailComposer.java"
+            target-dir="src/de/appplant/cordova/emailcomposer" />
+
+        <source-file
+            src="src/android/EmailComposerImpl.java"
             target-dir="src/de/appplant/cordova/emailcomposer" />
 
     </platform>
