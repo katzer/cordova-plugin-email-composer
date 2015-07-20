@@ -1,3 +1,5 @@
+/* globals Windows: true */
+
 /*
     Copyright 2013-2015 appPlant UG
 
@@ -95,24 +97,24 @@ exports.getMailTo = function (props) {
     var uriToLaunch = "mailto:" + props.to;
 
     var options = '';
-    if (props.subject != '') {
+    if (props.subject !== '') {
         options = options + '&subject=' + props.subject;
     }
-    if (props.body != '') {
+    if (props.body !== '') {
         options = options + '&body=' + props.body;
     }
-    if (props.cc != '') {
+    if (props.cc !== '') {
         options = options + '&cc=' + props.cc;
     }
-    if (props.bcc != '') {
+    if (props.bcc !== '') {
         options = options + '&bcc=' + props.bcc;
     }
-    if (options != '') {
+    if (options !== '') {
         options = '?' + options.substring(1);
         uriToLaunch = uriToLaunch + options;
     }
 
-    // Create a Uri object from a URI string 
+    // Create a Uri object from a URI string
     var uri = new Windows.Foundation.Uri(uriToLaunch);
 
     return uri;
