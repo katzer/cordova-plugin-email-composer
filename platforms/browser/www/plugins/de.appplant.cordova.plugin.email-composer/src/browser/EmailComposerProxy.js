@@ -48,23 +48,23 @@ exports.open = function (success, error, args) {
         mailto  = 'mailto:' + props.to,
         options = '';
 
-    if (props.subject != '') {
+    if (props.subject !== '') {
         options = options + '&subject=' + props.subject;
     }
 
-    if (props.body != '') {
+    if (props.body !== '') {
         options = options + '&body=' + props.body;
     }
 
-    if (props.cc != '') {
+    if (props.cc !== '') {
         options = options + '&cc=' + props.cc;
     }
 
-    if (props.bcc != '') {
+    if (props.bcc !== '') {
         options = options + '&bcc=' + props.bcc;
     }
 
-    if (options != '') {
+    if (options !== '') {
         mailto = mailto + '?' + options.substring(1);
     }
 

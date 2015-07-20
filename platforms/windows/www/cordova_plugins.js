@@ -1,16 +1,15 @@
 cordova.define('cordova/plugin_list', function(require, exports, module) {
 module.exports = [
     {
-        "file": "plugins/de.appplant.cordova.plugin.email-composer/www/email_composer.js",
-        "id": "de.appplant.cordova.plugin.email-composer.EmailComposer",
+        "file": "plugins/cordova-plugin-device/www/device.js",
+        "id": "cordova-plugin-device.device",
         "clobbers": [
-            "cordova.plugins.email",
-            "plugin.email"
+            "device"
         ]
     },
     {
-        "file": "plugins/de.appplant.cordova.plugin.email-composer/src/windows/EmailComposerProxy.js",
-        "id": "de.appplant.cordova.plugin.email-composer.EmailComposerProxy",
+        "file": "plugins/cordova-plugin-device/src/windows/DeviceProxy.js",
+        "id": "cordova-plugin-device.DeviceProxy",
         "merges": [
             ""
         ]
@@ -51,26 +50,25 @@ module.exports = [
         ]
     },
     {
-        "file": "plugins/cordova-plugin-device/www/device.js",
-        "id": "cordova-plugin-device.device",
+        "file": "plugins/de.appplant.cordova.plugin.email-composer/www/email_composer.js",
+        "id": "de.appplant.cordova.plugin.email-composer.EmailComposer",
         "clobbers": [
-            "device"
+            "cordova.plugins.email",
+            "plugin.email"
         ]
     },
     {
-        "file": "plugins/cordova-plugin-device/src/windows/DeviceProxy.js",
-        "id": "cordova-plugin-device.DeviceProxy",
-        "merges": [
-            ""
-        ]
+        "file": "plugins/de.appplant.cordova.plugin.email-composer/src/windows/EmailComposerProxy.js",
+        "id": "de.appplant.cordova.plugin.email-composer.EmailComposerProxy",
+        "runs": true
     }
 ];
 module.exports.metadata = 
 // TOP OF METADATA
 {
-    "de.appplant.cordova.plugin.email-composer": "0.8.3dev",
+    "cordova-plugin-device": "1.0.1",
     "cordova-plugin-camera": "1.2.0",
-    "cordova-plugin-device": "1.0.1"
+    "de.appplant.cordova.plugin.email-composer": "0.8.3dev"
 }
 // BOTTOM OF METADATA
 });

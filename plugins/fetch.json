@@ -1,8 +1,8 @@
 {
-    "de.appplant.cordova.plugin.email-composer": {
+    "cordova-plugin-device": {
         "source": {
-            "type": "local",
-            "path": "/Users/sebastian/Documents/github/cordova-plugin-email-composer"
+            "type": "registry",
+            "id": "cordova-plugin-device"
         },
         "is_top_level": true,
         "variables": {}
@@ -15,10 +15,10 @@
         "is_top_level": true,
         "variables": {}
     },
-    "cordova-plugin-device": {
+    "de.appplant.cordova.plugin.email-composer": {
         "source": {
-            "type": "registry",
-            "id": "cordova-plugin-device"
+            "type": "local",
+            "path": "/Users/sebastian/Documents/github/cordova-plugin-email-composer"
         },
         "is_top_level": true,
         "variables": {}

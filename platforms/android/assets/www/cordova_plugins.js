@@ -1,14 +1,6 @@
 cordova.define('cordova/plugin_list', function(require, exports, module) {
 module.exports = [
     {
-        "file": "plugins/de.appplant.cordova.plugin.email-composer/www/email_composer.js",
-        "id": "de.appplant.cordova.plugin.email-composer.EmailComposer",
-        "clobbers": [
-            "cordova.plugins.email",
-            "plugin.email"
-        ]
-    },
-    {
         "file": "plugins/cordova-plugin-camera/www/CameraConstants.js",
         "id": "cordova-plugin-camera.Camera",
         "clobbers": [
@@ -42,14 +34,22 @@ module.exports = [
         "clobbers": [
             "device"
         ]
+    },
+    {
+        "file": "plugins/de.appplant.cordova.plugin.email-composer/www/email_composer.js",
+        "id": "de.appplant.cordova.plugin.email-composer.EmailComposer",
+        "clobbers": [
+            "cordova.plugins.email",
+            "plugin.email"
+        ]
     }
 ];
 module.exports.metadata = 
 // TOP OF METADATA
 {
-    "de.appplant.cordova.plugin.email-composer": "0.8.3dev",
     "cordova-plugin-camera": "1.2.0",
-    "cordova-plugin-device": "1.0.1"
+    "cordova-plugin-device": "1.0.1",
+    "de.appplant.cordova.plugin.email-composer": "0.8.3dev"
 }
 // BOTTOM OF METADATA
 });
