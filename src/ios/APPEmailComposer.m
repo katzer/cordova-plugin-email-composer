@@ -81,16 +81,33 @@
     [self.commandDelegate runInBackground:^{
         NSArray* args = command.arguments;
         NSDictionary* properties = [args objectAtIndex:0];
-        MFMailComposeViewController* draft;
+        NSString* urlSheme = [properties objectForKey:@"app"];
+        
+        if (([urlSheme isEqualToString:@"abcmailto"])||([urlSheme length] == 0)) {
+            MFMailComposeViewController* draft;
 
-        draft = [self getDraftWithProperties:properties];
+            draft = [self getDraftWithProperties:properties];
+            
+            if (!draft) {
+                [self execCallback];
+                return;
+            }
 
-        if (!draft) {
-            [self execCallback];
-            return;
+            [self openDraft:draft];
+        } else {
+            NSString* sheme = [self getMailToWithProperties:properties ];
+            
+            NSURL *url = [NSURL URLWithString:sheme];
+            NSURL *absURL = [url absoluteURL];
+
+            [[UIApplication sharedApplication] openURL:absURL];
+            if([[UIApplication sharedApplication] canOpenURL:absURL]) {
+                [[UIApplication sharedApplication] openURL:absURL];
+            } else {
+                [self execCallback];
+                return;
+            }
         }
-
-        [self openDraft:draft];
     }];
 }
 
@@ -151,6 +168,51 @@
     draft.mailComposeDelegate = self;
 
     return draft;
+}
+
+/**
+ * Creates an mailto-url-sheme.
+ *
+ * @param properties
+ *      The email properties like subject, body, attachments
+ *
+ * @return
+ *      The configured mailto-sheme
+ */
+- (NSString*) getMailToWithProperties:(NSDictionary*)properties
+{
+    NSString* mailto = [properties objectForKey:@"app"];
+    NSString* subject = [properties objectForKey:@"subject"];
+    NSString* body = [properties objectForKey:@"body"];
+    NSString* toRecipients = [[properties objectForKey:@"to"] componentsJoinedByString:@"," ];
+    NSString* ccRecipients = [[properties objectForKey:@"cc"] componentsJoinedByString:@"," ];
+    NSString* bccRecipients = [[properties objectForKey:@"bcc"] componentsJoinedByString:@"," ];
+    
+    mailto = [mailto stringByAppendingString:@":"];
+    mailto = [mailto stringByAppendingString:toRecipients];
+    NSString* options = [[NSString alloc] init];
+    if ([body length] != 0){
+        options = [options stringByAppendingString:@"&body="];
+        options = [options stringByAppendingString:body];
+    }
+    if ([subject length] != 0){
+        options = [options stringByAppendingString:@"&subject="];
+        options = [options stringByAppendingString:subject];
+    }
+    if ([ccRecipients length] != 0){
+        options = [options stringByAppendingString:@"&cc="];
+        options = [options stringByAppendingString:ccRecipients];
+    }
+    if ([bccRecipients length] != 0){
+        options = [options stringByAppendingString:@"&bcc="];
+        options = [options stringByAppendingString:bccRecipients];
+    }
+    if ([options length] != 0){
+        options = [options stringByReplacingCharactersInRange:NSMakeRange(0,1) withString:@"?"];
+    }
+    mailto = [mailto stringByAppendingString:options];
+    
+    return mailto;
 }
 
 /**
