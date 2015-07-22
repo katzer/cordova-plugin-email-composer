@@ -35,7 +35,7 @@ exports.aliases = {
  */
 exports.getDefaults = function () {
     return {
-        app:         undefined,
+        app:         'mailto:',
         subject:     '',
         body:        '',
         to:          [],
