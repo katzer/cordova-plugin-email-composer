@@ -1,4 +1,6 @@
-cordova.define("de.appplant.cordova.plugin.email-composer.EmailComposerProxy", function(require, exports, module) { /*
+cordova.define("de.appplant.cordova.plugin.email-composer.EmailComposerProxy", function(require, exports, module) { /* globals Windows: true */
+
+/*
     Copyright 2013-2015 appPlant UG
 
     Licensed to the Apache Software Foundation (ASF) under one
@@ -29,7 +31,7 @@ cordova.define("de.appplant.cordova.plugin.email-composer.EmailComposerProxy", f
  * @param {Array} args
  *      Interface arguments
  */
-exports.isAvailable = function (success, error, args) {
+exports.isAvailable = function (success) {
     success(true);
 };
 
@@ -46,12 +48,22 @@ exports.isAvailable = function (success, error, args) {
 exports.open = function (success, error, args) {
     var props = args[0];
 
-    try{
+    try {
         var email = exports.getDraftWithProperties(props);
 
         Windows.ApplicationModel.Email.EmailManager
             .showComposeNewEmailAsync(email)
-            .done(success());
+            .done(function () {
+                if (Debug.debuggerEnabled) {
+                    success();
+                    console.log('degugmode');
+                } else {
+                    Windows.UI.WebUI.WebUIApplication.addEventListener("resuming", function () {
+                        success();
+                    }, false);
+                }
+                
+            });
     } catch (e) {
         var mailTo = exports.getMailTo(props);
         Windows.System.Launcher.launchUriAsync(mailTo).then(
@@ -79,11 +91,11 @@ exports.getDraftWithProperties = function (props) {
     // body
     exports.setBody(props.body, props.isHtml, mail);
     // To recipients
-    exports.setRecipients(props.to, mail);
+    exports.setRecipients(props.to, mail.to);
     // CC recipients
-    exports.setCcRecipients(props.cc, mail);
+    exports.setRecipients(props.cc, mail.cc);
     // BCC recipients
-    exports.setBccRecipients(props.bcc, mail);
+    exports.setRecipients(props.bcc, mail.bcc);
     // attachments
     exports.setAttachments(props.attachments, mail);
 
@@ -95,24 +107,24 @@ exports.getMailTo = function (props) {
     var uriToLaunch = "mailto:" + props.to;
 
     var options = '';
-    if (props.subject != '') {
+    if (props.subject !== '') {
         options = options + '&subject=' + props.subject;
     }
-    if (props.body != '') {
+    if (props.body !== '') {
         options = options + '&body=' + props.body;
     }
-    if (props.cc != '') {
+    if (props.cc !== '') {
         options = options + '&cc=' + props.cc;
     }
-    if (props.bcc != '') {
+    if (props.bcc !== '') {
         options = options + '&bcc=' + props.bcc;
     }
-    if (options != '') {
+    if (options !== '') {
         options = '?' + options.substring(1);
         uriToLaunch = uriToLaunch + options;
     }
 
-    // Create a Uri object from a URI string 
+    // Create a Uri object from a URI string
     var uri = new Windows.Foundation.Uri(uriToLaunch);
 
     return uri;
@@ -150,42 +162,12 @@ exports.setBody = function (body, isHTML, draft) {
  *
  * @param {String[]} recipients
  *      List of mail addresses
- * @param {Windows.ApplicationModel.Email.EmailMessage} draft
- *      The draft
+ * @param {Windows.ApplicationModel.Email.EmailMessage} draftAttribute
+ *      The draft.to / *.cc / *.bcc
  */
-exports.setRecipients = function (recipients, draft) {
+exports.setRecipients = function (recipients, draftAttribute) {
     recipients.forEach(function (address) {
-        draft.to.push(
-            new Windows.ApplicationModel.Email.EmailRecipient(address));
-    });
-};
-
-/**
- * Setter for the cc recipients.
- *
- * @param {String[]} recipients
- *      List of mail addresses
- * @param {Windows.ApplicationModel.Email.EmailMessage} draft
- *      The draft
- */
-exports.setCcRecipients = function (recipients, draft) {
-    recipients.forEach(function (address) {
-        draft.cc.push(
-            new Windows.ApplicationModel.Email.EmailRecipient(address));
-    });
-};
-
-/**
- * Setter for the bcc recipients.
- *
- * @param {String[]} recipients
- *      List of mail addresses
- * @param {Windows.ApplicationModel.Email.EmailMessage} draft
- *      The draft
- */
-exports.setBccRecipients = function (recipients, draft) {
-    recipients.forEach(function (address) {
-        draft.bcc.push(
+        draft.push(
             new Windows.ApplicationModel.Email.EmailRecipient(address));
     });
 };
@@ -258,12 +240,9 @@ exports.getUriForAbsolutePath = function (path) {
  *      The URI pointing to the given path
  */
 exports.getUriForAssetPath = function (path) {
-    var host     = document.location.host,
-        protocol = document.location.protocol,
-        resPath  = path.replace('file:/', '/www'),
-        rawUri   = protocol + '//' + host + resPath;
+    var resPath = path.replace('file:/', '/www');
 
-    return new Windows.Foundation.Uri(rawUri);
+    return exports.getUriForPathUtil(resPath);
 };
 
 /**
@@ -276,9 +255,23 @@ exports.getUriForAssetPath = function (path) {
  *      The URI pointing to the given path
  */
 exports.getUriForResourcePath = function (path) {
+    var resPath = path.replace('res:/', '/images');
+
+    return exports.getUriForPathUtil(resPath);
+};
+
+/**
+ * The URI for a path.
+ *
+ * @param {String} resPath
+ *      The given relative path
+ *
+ * @return
+ *      The URI pointing to the given path
+ */
+exports.getUriForPathUtil = function (resPath) {
     var host     = document.location.host,
         protocol = document.location.protocol,
-        resPath  = path.replace('res:/', '/images'),
         rawUri   = protocol + '//' + host + resPath;
 
     return new Windows.Foundation.Uri(rawUri);

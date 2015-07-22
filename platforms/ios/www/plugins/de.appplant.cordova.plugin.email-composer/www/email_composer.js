@@ -35,7 +35,7 @@ exports.aliases = {
  */
 exports.getDefaults = function () {
     return {
-        app:         undefined,
+        app:         'mailto:',
         subject:     '',
         body:        '',
         to:          [],
@@ -49,15 +49,24 @@ exports.getDefaults = function () {
 /**
  * Verifies if sending emails is supported on the device.
  *
+ * @param {String?} app
+ *      An optional app id or uri scheme. Defaults to mailto.
  * @param {Function} callback
  *      A callback function to be called with the result
  * @param {Object} scope
  *      The scope of the callback
  */
-exports.isAvailable = function (callback, scope) {
+exports.isAvailable = function (app, callback, scope) {
+
+    if (!(app instanceof String)) {
+        scope    = null;
+        callback = app;
+        app      = 'mailto:';
+    }
+
     var fn = this.createCallbackFn(callback, scope);
 
-    exec(fn, null, 'EmailComposer', 'isAvailable', []);
+    exec(fn, null, 'EmailComposer', 'isAvailable', [app]);
 };
 
 /**
@@ -88,7 +97,7 @@ exports.open = function (options, callback, scope) {
  */
 exports.addAlias = function (alias, package) {
     this.aliases[alias] = package;
-}
+};
 
 /**
  * @depreacted

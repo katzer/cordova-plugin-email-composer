@@ -23,7 +23,6 @@
 
 package de.appplant.cordova.emailcomposer;
 
-import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.content.Context;
 import android.content.Intent;
@@ -53,6 +52,11 @@ import java.util.ArrayList;
 public class EmailComposerImpl {
 
     /**
+     * The default mailto: scheme.
+     */
+    static private final String MAILTO_SCHEME = "mailto:";
+
+    /**
      * Path where to put tmp the attachments.
      */
     static private final String ATTACHMENT_FOLDER = "/email_composer";
@@ -79,6 +83,21 @@ public class EmailComposerImpl {
         } catch (Exception npe){
             Log.w("EmailComposer", "Missing external cache dir");
         }
+    }
+
+    /**
+     * Tells if the device has the capability to send emails.
+     *
+     * @param id
+     * The app id.
+     * @param ctx
+     * The application context.
+     */
+    public boolean canSendMail (String id, Context ctx) {
+        boolean hasAccount = isEmailAccountConfigured(ctx);
+
+        return (hasAccount && id.equals(MAILTO_SCHEME)) ||
+                isAppInstalled(id, ctx);
     }
 
     /**
@@ -111,7 +130,7 @@ public class EmailComposerImpl {
         if (params.has("attachments"))
             setAttachments(params.getJSONArray("attachments"), mail, ctx);
 
-        if (app != null && isAppInstalled(app, ctx)) {
+        if (!app.equals(MAILTO_SCHEME) && isAppInstalled(app, ctx)) {
             mail.setPackage(app);
         }
 
@@ -477,7 +496,7 @@ public class EmailComposerImpl {
      * @return
      * true if available, otherwise false
      */
-    public boolean isEmailAccountConfigured (Context ctx) {
+    private boolean isEmailAccountConfigured (Context ctx) {
         Uri uri           = Uri.fromParts("mailto", "max@mustermann.com", null);
         Intent intent     = new Intent(Intent.ACTION_SENDTO, uri);
         PackageManager pm = ctx.getPackageManager();
@@ -504,11 +523,11 @@ public class EmailComposerImpl {
      * Ask the package manager if the app is installed on the device.
      *
      * @param id
-     * The app id
+     * The app id.
      * @param ctx
      * The application context.
      * @return
-     * true if yes otherwise false
+     * true if yes otherwise false.
      */
     private boolean isAppInstalled(String id, Context ctx) {
         try {

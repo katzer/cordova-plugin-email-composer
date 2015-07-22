@@ -28,6 +28,7 @@ import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaInterface;
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CordovaWebView;
+import org.apache.cordova.LOG;
 import org.apache.cordova.PluginResult;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -82,7 +83,7 @@ public class EmailComposer extends CordovaPlugin {
         }
 
         if ("isAvailable".equalsIgnoreCase(action)) {
-            isAvailable();
+            isAvailable(args.getString(0));
             return true;
         }
 
@@ -97,11 +98,14 @@ public class EmailComposer extends CordovaPlugin {
 
     /**
      * Tells if the device has the capability to send emails.
+     *
+     * @param id
+     * The app id.
      */
-    private void isAvailable () {
+    private void isAvailable (final String id) {
         cordova.getThreadPool().execute(new Runnable() {
             public void run() {
-                Boolean available   = impl.isEmailAccountConfigured(getContext());
+                Boolean available   = impl.canSendMail(id, getContext());
                 PluginResult result = new PluginResult(PluginResult.Status.OK, available);
 
                 command.sendPluginResult(result);
@@ -118,6 +122,14 @@ public class EmailComposer extends CordovaPlugin {
      */
     private void open (JSONArray args) throws JSONException {
         JSONObject props = args.getJSONObject(0);
+        String appId     = props.getString("app");
+
+        if (!impl.canSendMail(appId, getContext())) {
+            LOG.i("EmailComposer",
+                    "Cannot send mail. No client or account found for.");
+            return;
+        }
+
         Intent draft     = impl.getDraftWithProperties(props, getContext());
         String header    = props.optString("chooserHeader", "Open with");
 
