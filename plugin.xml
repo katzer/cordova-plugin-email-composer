@@ -66,7 +66,7 @@
 
         <header-file src="src/ios/APPEmailComposer.h" />
         <source-file src="src/ios/APPEmailComposer.m" />
-        <source-file src="src/ios/APPEmailComposerImpl.h" />
+        <header-file src="src/ios/APPEmailComposerImpl.h" />
         <source-file src="src/ios/APPEmailComposerImpl.m" />
 
         <framework src="MessageUI.framework" weak="true" />
