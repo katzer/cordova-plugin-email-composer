@@ -35,7 +35,7 @@ exports.aliases = {
  */
 exports.getDefaults = function () {
     return {
-        app:         'mailto:',
+        app:         'mailto',
         subject:     '',
         body:        '',
         to:          [],
@@ -58,12 +58,11 @@ exports.getDefaults = function () {
  */
 exports.isAvailable = function (app, callback, scope) {
 
-    if (!(app instanceof String)) {
+    if(typeof callback != 'function'){
         scope    = null;
         callback = app;
-        app      = 'mailto:';
+        app      = 'mailto';
     }
-
     var fn = this.createCallbackFn(callback, scope);
 
     exec(fn, null, 'EmailComposer', 'isAvailable', [app]);
@@ -81,10 +80,22 @@ exports.isAvailable = function (app, callback, scope) {
  */
 exports.open = function (options, callback, scope) {
     var fn = this.createCallbackFn(callback, scope);
-
+    var isAndroidApp = this.aliases.hasOwnProperty(options.app);
     options = this.mergeWithDefaults(options || {});
 
-    exec(fn, null, 'EmailComposer', 'open', [options]);
+    var onAvailable = function(isPossible,withScheme) {
+        if (withScheme && options.app!=='mailto'
+                && !isAndroidApp){
+            this.registerCallbackForScheme(fn);
+            exec(fn, null, 'EmailComposer', 'open', [options]);
+        }else if(isPossible){
+            options.app = 'mailto';
+            exec(fn, null, 'EmailComposer', 'open', [options]);
+        }else {
+            fn();
+        }
+    }
+    exec(onAvailable, null, 'EmailComposer', 'isAvailable', [options.app]);
 };
 
 /**
@@ -192,4 +203,18 @@ exports.createCallbackFn = function (callbackFn, scope) {
     return function () {
         callbackFn.apply(scope || this, arguments);
     };
+};
+
+/**
+ *@private
+ *
+ * Register an Eventlistener on resume-Event to
+ * execute callback after open a draft.
+ */
+exports.registerCallbackForScheme = function(fn) {
+    var callback = function () {
+        fn();
+        document.removeEventListener("resume",callback);
+    }
+    document.addEventListener("resume", callback, false);
 };

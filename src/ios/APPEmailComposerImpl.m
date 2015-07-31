@@ -42,28 +42,29 @@
  * @param scheme
  * An URL scheme, that defaults to 'mailto:
  */
-- (BOOL) canSendMail:(NSString*)scheme
+- (NSArray*) canSendMail:(NSString*)scheme
 {
     bool canSendMail = [MFMailComposeViewController canSendMail];
 
-    if (!canSendMail)
-        return FALSE;
-
-    if (![scheme hasSuffix:@":"]) {
-        scheme = [scheme stringByAppendingString:@":"];
-    }
-
-    if (TARGET_IPHONE_SIMULATOR && [scheme hasPrefix:@"mailto:"]) {
-        return TRUE;
-    }
+    bool withScheme = false;
+    scheme = [[scheme stringByAppendingString:@":test@test.de"] 
+                stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding ];
 
     NSURL *url = [[NSURL URLWithString:scheme]
-                  absoluteURL];
+                    absoluteURL];
 
-    canSendMail = [[UIApplication sharedApplication]
+    withScheme = [[UIApplication sharedApplication]
                    canOpenURL:url];
 
-    return canSendMail;
+    if (TARGET_IPHONE_SIMULATOR && [scheme hasPrefix:@"mailto:"]) {
+        canSendMail = true;
+    } else {
+        canSendMail = canSendMail||withScheme;
+    }
+    
+    NSArray* resultArray = [NSArray arrayWithObjects:@(canSendMail),@(withScheme), nil];
+
+    return resultArray;
 }
 
 /**

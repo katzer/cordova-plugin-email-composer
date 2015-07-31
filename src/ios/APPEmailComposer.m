@@ -61,11 +61,11 @@
 {
     [self.commandDelegate runInBackground:^{
         NSString* scheme = command.arguments[0];
-        bool canSendMail = [_impl canSendMail:scheme];
+        NSArray* boolArray = [_impl canSendMail:scheme];
         CDVPluginResult* result;
 
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
-                                     messageAsBool:canSendMail];
+                                     messageAsMultipart:boolArray];
 
         [self.commandDelegate sendPluginResult:result
                                     callbackId:command.callbackId];
@@ -110,7 +110,6 @@
         else
         {
             [self openURLFromProperties:props];
-            [self execCallback];
         }
     }];
 }
@@ -173,7 +172,7 @@
  */
 - (BOOL) canUseAppleMail:(NSString*) scheme
 {
-    return [scheme hasPrefix:@"mailto:"];
+    return [scheme hasPrefix:@"mailto"];
 }
 
 /**

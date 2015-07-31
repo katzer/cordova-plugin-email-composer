@@ -32,7 +32,7 @@
  * @param scheme
  * An URL scheme, that defaults to 'mailto:
  */
-- (BOOL) canSendMail:(NSString*)scheme;
+- (NSArray*) canSendMail:(NSString*)scheme;
 
 /**
  * Instantiates an email composer view.
