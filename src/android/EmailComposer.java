@@ -34,6 +34,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @SuppressWarnings("Convert2Diamond")
 public class EmailComposer extends CordovaPlugin {
 
@@ -105,8 +108,13 @@ public class EmailComposer extends CordovaPlugin {
     private void isAvailable (final String id) {
         cordova.getThreadPool().execute(new Runnable() {
             public void run() {
-                Boolean available   = impl.canSendMail(id, getContext());
-                PluginResult result = new PluginResult(PluginResult.Status.OK, available);
+                boolean[] available   = impl.canSendMail(id, getContext());
+
+                List<PluginResult> messages = new ArrayList<PluginResult>();
+                messages.add(new PluginResult(PluginResult.Status.OK, available[0]));
+                messages.add(new PluginResult(PluginResult.Status.OK, available[1]));
+
+                PluginResult result = new PluginResult(PluginResult.Status.OK,messages);
 
                 command.sendPluginResult(result);
             }
@@ -124,7 +132,7 @@ public class EmailComposer extends CordovaPlugin {
         JSONObject props = args.getJSONObject(0);
         String appId     = props.getString("app");
 
-        if (!impl.canSendMail(appId, getContext())) {
+        if (!(impl.canSendMail(appId, getContext()))[0]) {
             LOG.i("EmailComposer",
                     "Cannot send mail. No client or account found for.");
             return;

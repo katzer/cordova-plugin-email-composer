@@ -54,7 +54,7 @@ public class EmailComposerImpl {
     /**
      * The default mailto: scheme.
      */
-    static private final String MAILTO_SCHEME = "mailto:";
+    static private final String MAILTO_SCHEME = "mailto";
 
     /**
      * Path where to put tmp the attachments.
@@ -93,11 +93,15 @@ public class EmailComposerImpl {
      * @param ctx
      * The application context.
      */
-    public boolean canSendMail (String id, Context ctx) {
-        boolean hasAccount = isEmailAccountConfigured(ctx);
+    public boolean[] canSendMail (String id, Context ctx) {
+        //is possible with specified app
+        boolean withScheme = isAppInstalled(id, ctx);
+        //is possible in general
+        boolean isPossible = isEmailAccountConfigured(ctx)||
+                withScheme;
+        boolean[] result = {isPossible,withScheme};
 
-        return (hasAccount && id.equals(MAILTO_SCHEME)) ||
-                isAppInstalled(id, ctx);
+        return result;
     }
 
     /**

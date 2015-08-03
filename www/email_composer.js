@@ -63,6 +63,11 @@ exports.isAvailable = function (app, callback, scope) {
         callback = app;
         app      = 'mailto';
     }
+
+    if(this.aliases.hasOwnProperty(app)){
+        app = this.aliases[app];
+    }
+
     var fn = this.createCallbackFn(callback, scope);
 
     exec(fn, null, 'EmailComposer', 'isAvailable', [app]);
