@@ -30,7 +30,7 @@
  *      Interface arguments
  */
 exports.isAvailable = function (success, error, args) {
-    success(true);
+    success(true,false);
 };
 
 /**
