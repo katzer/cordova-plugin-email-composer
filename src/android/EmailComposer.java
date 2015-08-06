@@ -164,7 +164,9 @@ public class EmailComposer extends CordovaPlugin {
      */
     @Override
     public void onActivityResult(int reqCode, int resCode, Intent intent) {
-        command.success();
+        if (null != command) {
+            command.success();   
+        }
     }
 
 }
