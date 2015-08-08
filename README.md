@@ -114,6 +114,16 @@ cordova.plugins.email.isAvailable(
 );
 ```
 
+If you want to open a draft in a specific application, just pass its uri scheme on iOS, or its name on Android as first parameter, to check whether the application is installed or not. The callback function will return a second parameter of type boolean then.
+
+```javascript
+cordova.plugins.email.isAvailable(
+    urischeme, function (isAvailable, withScheme) {
+        // alert('Service is not available') unless isAvailable;
+    }
+);
+```
+
 ### Open a pre-filled email draft
 A pre-filled email draft can be opened through the `email.open` or `email.openDraft` interface. The method takes a hash as an argument to specify the email's properties. All properties are optional. Further more it accepts an callback function to be called after the email view has been dismissed.
 
@@ -123,7 +133,7 @@ After opening the draft the user may have the possibilities to edit, delete or s
 - An [configured email account][available] is required to send emails.
 - Attachments can be either base64 encoded datas, files from the the device storage or assets from within the *www* folder.
 - The default value for *isHTML* is *true*.
-- Its possible to [specify][email_app] the email app on Android.
+- Its possible to [specify][email_app] the email app on Android and iOS.
 - See the [examples][examples] for how to create and show an email draft.
 
 ```javascript
@@ -223,13 +233,18 @@ cordova.plugins.email.open({
 });
 ```
 
-
-## Platform specifics
-
 ### Specify email app
-Its possible to specify the email app __on Android__ which shall open the draft for further editing. By default `email.open` does show a chooser with all available applications.
+Its possible to specify the email app which shall open the draft for further editing. Just pass its scheme name through the drafts app-attribute. If the phone isn´t able to handle the specified scheme it will fallback to standard.
 
-The app can be specified by either an alias or its package name. The alias _gmail_ is available by default.
+```javascript
+// Specify app by scheme name
+cordova.plugins.email.open({
+    app: 'mailto',
+    subject: 'Sent with mailto'
+})
+```
+
+On _Android_ the app can be specified by either an alias or its package name. The alias _gmail_ is available by default.
 
 ```javascript
 // Add app alias
