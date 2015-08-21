@@ -51,31 +51,93 @@ var proxy = require('de.appplant.cordova.plugin.email-composer.EmailComposerProx
 		},
 
 	getMailTo: function (props) {
-		// The URI to launch
-		var uriToLaunch = "mailto:" + props.to;
+        function appendParam(name, value)
+        {
+            if (value == null || value == '')
+                return '';
+            value = ([].concat(value)).join(",");
+            if (value == '')
+                return '';
+            return '&' + name + "=" + encodeURIComponent(value);
+        }
 
-		var options = '';
-		if (props.subject !== '') {
-			options = options + '&subject=' + props.subject;
-		}
-		if (props.body !== '') {
-			options = options + '&body=' + props.body;
-		}
-		if (props.cc !== '') {
-			options = options + '&cc=' + props.cc;
-		}
-		if (props.bcc !== '') {
-			options = options + '&bcc=' + props.bcc;
-		}
-		if (options !== '') {
-			options = '?' + options.substring(1);
-			uriToLaunch = uriToLaunch + options;
-		}
+        function toPlainText(markupText)
+        {
+            if (!markupText)
+                return null;
 
-		// Create a Uri object from a URI string
-		var uri = new Windows.Foundation.Uri(uriToLaunch);
+            function replaceBodyTag(markupText, tagName, replacement)
+            {
+                markupText = markupText.replace(new RegExp("<" + tagName
+                        + " ?[^>]*>", "g"), "");
+                markupText = markupText.replace(new RegExp("</" + tagName + ">",
+                        "g"), replacement);
+                return markupText;
+            }
 
-		return uri;
+            function replaceBrTag(markupText)
+            {
+                return markupText.replace(/\s*<br>\s*/g, "\n");
+            }
+
+            function replaceAnchorTag(markupText)
+            {
+                return markupText.replace(/<a [^>]*href="(.*)"[^>]*> *(.*) *<\/a>/g,
+                        function (all, href, content)
+                        {
+                            return content + " " + href + " ";
+                        });
+            }
+
+            markupText = markupText.replace(/\s*\n\s*/g, " ");
+            markupText = markupText.replace(/>\s*</g, "><");
+
+            markupText = replaceAnchorTag(markupText);
+            markupText = replaceBrTag(markupText);
+
+            markupText = replaceBodyTag(markupText, "h1", "\n\n\n");
+            markupText = replaceBodyTag(markupText, "h2", "\n\n");
+            markupText = replaceBodyTag(markupText, "p", "\n\n");
+
+            if($)
+            {
+                // use jquery to expand all entities and remove all tags
+                return $('<span>').html(markupText).text();
+            }
+            else
+            {
+                return markupText;
+            }
+        }
+
+
+        var body = props.body;
+        if (props.isHtml == true || props.isHtml == 'true')
+        {
+            // mailto links do not support markup text
+            body = toPlainText(body);
+        }
+
+        // The URI to launch
+        var uriToLaunch = "mailto:" + ([].concat(props.to)).join(",");
+
+        var options = '';
+        options = options + appendParam('subject', props.subject);
+        options = options + appendParam('cc', props.cc);
+        options = options + appendParam('bcc', props.bcc);
+        // append body as last param, as it may expire the uri max length
+        options = options + appendParam('body', body);
+
+        if (options !== '')
+        {
+            options = '?' + options.substring(1);
+            uriToLaunch = uriToLaunch + options;
+        }
+
+        // Create a Uri object from a URI string
+        var uri = new Windows.Foundation.Uri(uriToLaunch);
+
+        return uri;
 	},
 
 	/**
