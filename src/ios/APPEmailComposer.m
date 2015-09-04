@@ -98,7 +98,7 @@
             if (TARGET_IPHONE_SIMULATOR && !IsAtLeastiOSVersion(@"8.3"))
             {
                 [self informAboutIssueWithSimulators];
-                [self execCallback];
+                [self execCallback: NO];
                 return;
             }
             else
@@ -127,7 +127,7 @@
 {
     [controller dismissViewControllerAnimated:YES completion:nil];
 
-    [self execCallback];
+    [self execCallback: result == MFMailComposeResultSent];
 }
 
 #pragma mark -
@@ -191,11 +191,11 @@
 /**
  * Invokes the callback without any parameter.
  */
-- (void) execCallback
+- (void) execCallback:(BOOL) sent
 {
     CDVPluginResult *result = [CDVPluginResult
-                               resultWithStatus:CDVCommandStatus_OK];
-
+                               resultWithStatus:CDVCommandStatus_OK messageAsBool:sent];
+    
     [self.commandDelegate sendPluginResult:result
                                 callbackId:_command.callbackId];
 }
