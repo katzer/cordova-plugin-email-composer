@@ -32,22 +32,25 @@ var proxy = require('de.appplant.cordova.plugin.email-composer.EmailComposerProx
 		 *      The resulting email draft
 		 */
 		getDraftWithProperties: function (props) {
-			var mail = new Windows.ApplicationModel.Email.EmailMessage();
-
-			// subject
-			this.setSubject(props.subject, mail);
-			// body
-			this.setBody(props.body, props.isHtml, mail);
-			// To recipients
-			this.setRecipients(props.to, mail.to);
-			// CC recipients
-			this.setRecipients(props.cc, mail.cc);
-			// BCC recipients
-			this.setRecipients(props.bcc, mail.bcc);
-			// attachments
-			this.setAttachments(props.attachments, mail);
-
-			return mail;
+			var that = this;
+			return new WinJS.Promise(function (complete) {
+				var mail = new Windows.ApplicationModel.Email.EmailMessage();
+				// subject
+				that.setSubject(props.subject, mail);
+				// body
+				that.setBody(props.body, props.isHtml, mail);
+				// To recipients
+				that.setRecipients(props.to, mail.to);
+				// CC recipients
+				that.setRecipients(props.cc, mail.cc);
+				// BCC recipients
+				that.setRecipients(props.bcc, mail.bcc);
+				// attachments
+				that.setAttachments(props.attachments, mail)
+					.then(function () {
+						complete(mail);
+					});
+			})
 		},
 
 	getMailTo: function (props) {
@@ -129,17 +132,21 @@ var proxy = require('de.appplant.cordova.plugin.email-composer.EmailComposerProx
 	 *      The draft
 	 */
 	setAttachments: function (attachments, draft) {
-		attachments.forEach(function (path) {
-			var uri = proxy.attachmentUtil.getUriForPath(path),
-				name = uri.path.split('/').reverse()[0],
-				stream = Windows.Storage.Streams.RandomAccessStreamReference
-							.createFromUri(uri);
+		return new WinJS.Promise(function (complete) {
+			var promises = []
+			attachments.forEach(function (path) {
+				promises.push(proxy.attachmentUtil.getUriForPath(path))
+			});
 
-			draft.attachments.push(
-				new Windows.ApplicationModel.Email.
-					EmailAttachment(name, stream)
-			);
-		});
+			WinJS.Promise.thenEach(promises, function (uri) {
+				draft.attachments.push(
+					new Windows.ApplicationModel.Email.EmailAttachment(
+						uri.path.split('/').reverse()[0],
+						Windows.Storage.Streams.RandomAccessStreamReference.createFromUri(uri)
+					)
+				);
+			}).done(complete);
+		})
 	}
 };
 
@@ -155,17 +162,20 @@ proxy.attachmentUtil = {
 	 *      The URI pointing to the given path
 	 */
 	getUriForPath: function (path) {
-		if (path.match(/^res:/)) {
-			return this.getUriForResourcePath(path);
-		} else if (path.match(/^file:\/{3}/)) {
-			return this.getUriForAbsolutePath(path);
-		} else if (path.match(/^file:/)) {
-			return this.getUriForAssetPath(path);
-		} else if (path.match(/^base64:/)) {
-			return this.getUriForBase64Content(path);
-		}
-
-		return new Windows.Foundation.Uri(path);
+		var that = this;
+		return new WinJS.Promise(function (complete) {
+			if (path.match(/^res:/)) {
+				complete(that.getUriForResourcePath(path));
+			} else if (path.match(/^file:\/{3}/)) {
+				complete(that.getUriForAbsolutePath(path));
+			} else if (path.match(/^file:/)) {
+				complete(that.getUriForAssetPath(path));
+			} else if (path.match(/^base64:/)) {
+				that.getUriForBase64Content(path).then(complete);
+			} else {
+				complete(new Windows.Foundation.Uri(path));
+			}
+		})
 	},
 
 	/**
@@ -238,19 +248,21 @@ proxy.attachmentUtil = {
 	 *      The URI including the given content
 	 */
 	getUriForBase64Content: function (content) {
-		var match = content.match(/^base64:([^\/]+)\/\/(.*)/),
-			base64 = match[2],
-			name = match[1],
-			buffer = Windows.Security.Cryptography.CryptographicBuffer.decodeFromBase64String(base64),
-			rwplus = Windows.Storage.CreationCollisionOption.openIfExists,
-			folder = Windows.Storage.ApplicationData.current.temporaryFolder,
-			uri    = new Windows.Foundation.Uri('ms-appdata:///temp/' + name);
+		return new WinJS.Promise(function (complete) {
+			var match = content.match(/^base64:([^\/]+)\/\/(.*)/),
+				base64 = match[2],
+				name = match[1],
+				buffer = Windows.Security.Cryptography.CryptographicBuffer.decodeFromBase64String(base64),
+				rwplus = Windows.Storage.CreationCollisionOption.openIfExists,
+				folder = Windows.Storage.ApplicationData.current.temporaryFolder,
+				uri = new Windows.Foundation.Uri('ms-appdata:///temp/' + name);
 
-		folder.createFileAsync(name, rwplus).done(function (file) {
-			Windows.Storage.FileIO.writeBufferAsync(file, buffer);
+			folder.createFileAsync(name, rwplus).done(function (file) {
+				Windows.Storage.FileIO.writeBufferAsync(file, buffer).then(function () {
+					complete(uri);
+				});
+			});
 		});
-
-		return uri;
 	}
 
 
