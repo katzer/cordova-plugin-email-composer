@@ -21,8 +21,10 @@
 
 #import "APPEmailComposer.h"
 #import "APPEmailComposerImpl.h"
-#import "Cordova/NSData+Base64.h"
-#import "Cordova/CDVAvailability.h"
+#import <Cordova/CDVAvailability.h>
+#ifndef __CORDOVA_4_0_0
+    #import <Cordova/NSData+Base64.h>
+#endif
 #import <MobileCoreServices/MobileCoreServices.h>
 
 #include "TargetConditionals.h"
