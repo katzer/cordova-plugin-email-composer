@@ -97,8 +97,7 @@ public class EmailComposerImpl {
         //is possible with specified app
         boolean withScheme = isAppInstalled(id, ctx);
         //is possible in general
-        boolean isPossible = isEmailAccountConfigured(ctx)||
-                withScheme;
+        boolean isPossible = isEmailAccountConfigured(ctx);
         boolean[] result = {isPossible,withScheme};
 
         return result;
