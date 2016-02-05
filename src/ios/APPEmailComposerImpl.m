@@ -20,7 +20,6 @@
  */
 
 #import "APPEmailComposerImpl.h"
-#import "Cordova/NSData+Base64.h"
 #import "Cordova/CDVAvailability.h"
 #import <MessageUI/MFMailComposeViewController.h>
 #import <MobileCoreServices/MobileCoreServices.h>
@@ -47,7 +46,7 @@
     bool canSendMail = [MFMailComposeViewController canSendMail];
 
     bool withScheme = false;
-    scheme = [[scheme stringByAppendingString:@":test@test.de"] 
+    scheme = [[scheme stringByAppendingString:@":test@test.de"]
                 stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding ];
 
     NSURL *url = [[NSURL URLWithString:scheme]
@@ -61,7 +60,7 @@
     } else {
         canSendMail = canSendMail||withScheme;
     }
-    
+
     NSArray* resultArray = [NSArray arrayWithObjects:@(canSendMail),@(withScheme), nil];
 
     return resultArray;
@@ -415,11 +414,13 @@
                                                    range:NSMakeRange(0, length)
                                             withTemplate:@""];
 
-#ifndef __CORDOVA_3_8_0
+/*#ifndef __CORDOVA_3_8_0
     NSData* data = [NSData dataFromBase64String:dataString];
 #else
     NSData* data = [NSData cdv_dataFromBase64String:dataString];
 #endif
+ */
+    NSData * data = [[NSData alloc] initWithBase64EncodedString:dataString options:1];
 
     return data;
 }
