@@ -20,7 +20,7 @@
  */
 
 #import "APPEmailComposerImpl.h"
-#import "Cordova/NSData+Base64.h"
+// #import "Cordova/NSData+Base64.h"
 #import "Cordova/CDVAvailability.h"
 #import <MessageUI/MFMailComposeViewController.h>
 #import <MobileCoreServices/MobileCoreServices.h>
