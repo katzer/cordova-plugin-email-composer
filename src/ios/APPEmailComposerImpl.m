@@ -418,7 +418,7 @@
 #ifndef __CORDOVA_3_8_0
     NSData* data = [NSData dataFromBase64String:dataString];
 #else
-    NSData* data = [NSData cdv_dataFromBase64String:dataString];
+    NSData *data = [[NSData alloc] initWithBase64EncodedString:dataString options:NSDataBase64DecodingIgnoreUnknownCharacters];
 #endif
 
     return data;
