@@ -141,12 +141,15 @@
  */
 - (void) presentMailComposerFromProperties:(NSDictionary*)props
 {
-    MFMailComposeViewController* draft =
-    [_impl mailComposerFromProperties:props delegateTo:self];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        MFMailComposeViewController* draft =
+        [_impl mailComposerFromProperties:props delegateTo:self];
 
-    [self.viewController presentViewController:draft
-                                      animated:YES
-                                    completion:NULL];
+        [self.viewController presentViewController:draft
+                                          animated:YES
+                                        completion:NULL];
+    });
+
 }
 
 /**
