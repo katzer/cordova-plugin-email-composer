@@ -52,6 +52,11 @@ import java.util.ArrayList;
 public class EmailComposerImpl {
 
     /**
+     * The log tag for this plugin
+     */
+    static private final String LOG_TAG_EMAIL_COMPOSER = "EmailComposer";
+
+    /**
      * The default mailto: scheme.
      */
     static private final String MAILTO_SCHEME = "mailto";
@@ -81,7 +86,7 @@ public class EmailComposerImpl {
                 file.delete();
             }
         } catch (Exception npe){
-            Log.w("EmailComposer", "Missing external cache dir");
+            Log.w(LOG_TAG_EMAIL_COMPOSER, "Missing external cache dir");
         }
     }
 
@@ -299,7 +304,7 @@ public class EmailComposerImpl {
         File file      = new File(absPath);
 
         if (!file.exists()) {
-            Log.e("EmailComposer", "File not found: " + file.getAbsolutePath());
+            Log.e(LOG_TAG_EMAIL_COMPOSER, "File not found: " + file.getAbsolutePath());
         }
 
         return Uri.fromFile(file);
@@ -322,7 +327,7 @@ public class EmailComposerImpl {
         File dir        = ctx.getExternalCacheDir();
 
         if (dir == null) {
-            Log.e("EmailComposer", "Missing external cache dir");
+            Log.e(LOG_TAG_EMAIL_COMPOSER, "Missing external cache dir");
             return Uri.EMPTY;
         }
 
@@ -343,7 +348,7 @@ public class EmailComposerImpl {
             outStream.flush();
             outStream.close();
         } catch (Exception e) {
-            Log.e("EmailComposer", "File not found: assets/" + resPath);
+            Log.e(LOG_TAG_EMAIL_COMPOSER, "File not found: assets/" + resPath);
             e.printStackTrace();
         } finally {
             if (outStream != null) {
@@ -373,7 +378,7 @@ public class EmailComposerImpl {
         File dir         = ctx.getExternalCacheDir();
 
         if (dir == null) {
-            Log.e("EmailComposer", "Missing external cache dir");
+            Log.e(LOG_TAG_EMAIL_COMPOSER, "Missing external cache dir");
             return Uri.EMPTY;
         }
 
@@ -382,7 +387,7 @@ public class EmailComposerImpl {
         File file        = new File(storage, resName + extension);
 
         if (resId == 0) {
-            Log.e("EmailComposer", "File not found: " + resPath);
+            Log.e(LOG_TAG_EMAIL_COMPOSER, "File not found: " + resPath);
         }
 
         new File(storage).mkdir();
@@ -428,12 +433,12 @@ public class EmailComposerImpl {
         try {
             bytes = Base64.decode(resData, 0);
         } catch (Exception ignored) {
-            Log.e("EmailComposer", "Invalid Base64 string");
+            Log.e(LOG_TAG_EMAIL_COMPOSER, "Invalid Base64 string");
             return Uri.EMPTY;
         }
 
         if (dir == null) {
-            Log.e("EmailComposer", "Missing external cache dir");
+            Log.e(LOG_TAG_EMAIL_COMPOSER, "Missing external cache dir");
             return Uri.EMPTY;
         }
 
@@ -534,7 +539,7 @@ public class EmailComposerImpl {
         try {
             accounts = am.getAccounts().length;
         } catch (Exception e) {
-            Log.e("EmailComposer", "Missing GET_ACCOUNTS permission.");
+            Log.e(LOG_TAG_EMAIL_COMPOSER, "Missing GET_ACCOUNTS permission.");
             return true;
         }
 
@@ -574,7 +579,7 @@ public class EmailComposerImpl {
                 outStream.close();
                 return true;
             } catch (IOException e) {
-                Log.e("EmailComposer", "Error attempting to safely close resource: " + e.getMessage());
+                Log.e(LOG_TAG_EMAIL_COMPOSER, "Error attempting to safely close resource: " + e.getMessage());
             }
         }
         return false;
