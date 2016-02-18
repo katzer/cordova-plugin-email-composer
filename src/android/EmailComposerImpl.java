@@ -331,10 +331,12 @@ public class EmailComposerImpl {
 
         new File(storage).mkdir();
 
+        FileOutputStream outStream = null;
+
         try {
             AssetManager assets = ctx.getAssets();
 
-            FileOutputStream outStream = new FileOutputStream(file);
+            outStream = new FileOutputStream(file);
             InputStream inputStream    = assets.open(resPath);
 
             copyFile(inputStream, outStream);
@@ -343,6 +345,10 @@ public class EmailComposerImpl {
         } catch (Exception e) {
             Log.e("EmailComposer", "File not found: assets/" + resPath);
             e.printStackTrace();
+        } finally {
+            if (outStream != null) {
+                safeClose(outStream);
+            }
         }
 
         return Uri.fromFile(file);
@@ -381,9 +387,11 @@ public class EmailComposerImpl {
 
         new File(storage).mkdir();
 
+        FileOutputStream outStream = null;
+
         try {
             Resources res = ctx.getResources();
-            FileOutputStream outStream = new FileOutputStream(file);
+            outStream = new FileOutputStream(file);
             InputStream inputStream    = res.openRawResource(resId);
 
             copyFile(inputStream, outStream);
@@ -391,6 +399,10 @@ public class EmailComposerImpl {
             outStream.close();
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            if (outStream != null) {
+                safeClose(outStream);
+            }
         }
 
         return Uri.fromFile(file);
@@ -430,14 +442,20 @@ public class EmailComposerImpl {
 
         new File(storage).mkdir();
 
+        FileOutputStream outStream = null;
+
         try {
-            FileOutputStream outStream = new FileOutputStream(file);
+            outStream = new FileOutputStream(file);
 
             outStream.write(bytes);
             outStream.flush();
             outStream.close();
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            if (outStream != null) {
+                safeClose(outStream);
+            }
         }
 
         return Uri.fromFile(file);
@@ -540,6 +558,26 @@ public class EmailComposerImpl {
         } catch(PackageManager.NameNotFoundException e) {
             return false;
         }
+    }
+
+    /**
+     * Attempt to safely close the given stream.
+     * 
+     * @param outStream
+     * The stream to close.
+     * @return
+     * true if successful, false otherwise
+     */
+    private static boolean safeClose(final FileOutputStream outStream) {
+        if (outStream != null) {
+            try {
+                outStream.close();
+                return true;
+            } catch (IOException e) {
+                Log.e("EmailComposer", "Error attempting to safely close resource: " + e.getMessage());
+            }
+        }
+        return false;
     }
 
 }
