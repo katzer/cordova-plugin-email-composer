@@ -60,8 +60,6 @@
 
     if (TARGET_IPHONE_SIMULATOR && [scheme hasPrefix:@"mailto:"]) {
         canSendMail = true;
-    } else {
-        canSendMail = canSendMail||withScheme;
     }
     
     NSArray* resultArray = [NSArray arrayWithObjects:@(canSendMail),@(withScheme), nil];
