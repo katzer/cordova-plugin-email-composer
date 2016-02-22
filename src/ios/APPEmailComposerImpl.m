@@ -49,7 +49,7 @@
     bool canSendMail = [MFMailComposeViewController canSendMail];
 
     bool withScheme = false;
-    scheme = [[scheme stringByAppendingString:@":test@test.de"] 
+    scheme = [[scheme stringByAppendingString:@":test@test.de"]
                 stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding ];
 
     NSURL *url = [[NSURL URLWithString:scheme]
@@ -59,9 +59,9 @@
                    canOpenURL:url];
 
     if (TARGET_IPHONE_SIMULATOR && [scheme hasPrefix:@"mailto:"]) {
-        canSendMail = true;
+        canSendMail = withScheme = true;
     }
-    
+
     NSArray* resultArray = [NSArray arrayWithObjects:@(canSendMail),@(withScheme), nil];
 
     return resultArray;

@@ -19,9 +19,7 @@
  under the License.
  */
 
-
 #import <MessageUI/MFMailComposeViewController.h>
-
 
 @interface APPEmailComposerImpl : NSObject
 

@@ -97,7 +97,7 @@
         // iMail
         if ([self canUseAppleMail:scheme])
         {
-            if (TARGET_IPHONE_SIMULATOR && !IsAtLeastiOSVersion(@"8.3"))
+            if (TARGET_IPHONE_SIMULATOR)
             {
                 [self informAboutIssueWithSimulators];
                 [self execCallback];
@@ -186,11 +186,13 @@
  */
 - (void) informAboutIssueWithSimulators
 {
-    [[[UIAlertView alloc] initWithTitle:@"Email-Composer Plug-in"
-                               message:@"Plug-in cannot run on the iOS8 Simulator.\nPlease downgrade or use a physical device."
-                              delegate:nil
-                     cancelButtonTitle:@"OK"
-                     otherButtonTitles:nil] show];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [[[UIAlertView alloc] initWithTitle:@"Email-Composer"
+                                    message:@"Please use a physical device."
+                                   delegate:nil
+                          cancelButtonTitle:@"OK"
+                          otherButtonTitles:nil] show];
+    });
 }
 
 /**
