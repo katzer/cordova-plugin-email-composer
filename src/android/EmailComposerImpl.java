@@ -52,6 +52,11 @@ import java.util.ArrayList;
 public class EmailComposerImpl {
 
     /**
+     * The log tag for this plugin
+     */
+    static private final String LOG_TAG_EMAIL_COMPOSER = "EmailComposer";
+
+    /**
      * The default mailto: scheme.
      */
     static private final String MAILTO_SCHEME = "mailto";
@@ -81,7 +86,7 @@ public class EmailComposerImpl {
                 file.delete();
             }
         } catch (Exception npe){
-            Log.w("EmailComposer", "Missing external cache dir");
+            Log.w(LOG_TAG_EMAIL_COMPOSER, "Missing external cache dir");
         }
     }
 
@@ -97,8 +102,7 @@ public class EmailComposerImpl {
         //is possible with specified app
         boolean withScheme = isAppInstalled(id, ctx);
         //is possible in general
-        boolean isPossible = isEmailAccountConfigured(ctx)||
-                withScheme;
+        boolean isPossible = isEmailAccountConfigured(ctx);
         boolean[] result = {isPossible,withScheme};
 
         return result;
@@ -299,7 +303,7 @@ public class EmailComposerImpl {
         File file      = new File(absPath);
 
         if (!file.exists()) {
-            Log.e("EmailComposer", "File not found: " + file.getAbsolutePath());
+            Log.e(LOG_TAG_EMAIL_COMPOSER, "File not found: " + file.getAbsolutePath());
         }
 
         return Uri.fromFile(file);
@@ -322,7 +326,7 @@ public class EmailComposerImpl {
         File dir        = ctx.getExternalCacheDir();
 
         if (dir == null) {
-            Log.e("EmailComposer", "Missing external cache dir");
+            Log.e(LOG_TAG_EMAIL_COMPOSER, "Missing external cache dir");
             return Uri.EMPTY;
         }
 
@@ -331,18 +335,24 @@ public class EmailComposerImpl {
 
         new File(storage).mkdir();
 
+        FileOutputStream outStream = null;
+
         try {
             AssetManager assets = ctx.getAssets();
 
-            FileOutputStream outStream = new FileOutputStream(file);
+            outStream = new FileOutputStream(file);
             InputStream inputStream    = assets.open(resPath);
 
             copyFile(inputStream, outStream);
             outStream.flush();
             outStream.close();
         } catch (Exception e) {
-            Log.e("EmailComposer", "File not found: assets/" + resPath);
+            Log.e(LOG_TAG_EMAIL_COMPOSER, "File not found: assets/" + resPath);
             e.printStackTrace();
+        } finally {
+            if (outStream != null) {
+                safeClose(outStream);
+            }
         }
 
         return Uri.fromFile(file);
@@ -367,7 +377,7 @@ public class EmailComposerImpl {
         File dir         = ctx.getExternalCacheDir();
 
         if (dir == null) {
-            Log.e("EmailComposer", "Missing external cache dir");
+            Log.e(LOG_TAG_EMAIL_COMPOSER, "Missing external cache dir");
             return Uri.EMPTY;
         }
 
@@ -376,14 +386,16 @@ public class EmailComposerImpl {
         File file        = new File(storage, resName + extension);
 
         if (resId == 0) {
-            Log.e("EmailComposer", "File not found: " + resPath);
+            Log.e(LOG_TAG_EMAIL_COMPOSER, "File not found: " + resPath);
         }
 
         new File(storage).mkdir();
 
+        FileOutputStream outStream = null;
+
         try {
             Resources res = ctx.getResources();
-            FileOutputStream outStream = new FileOutputStream(file);
+            outStream = new FileOutputStream(file);
             InputStream inputStream    = res.openRawResource(resId);
 
             copyFile(inputStream, outStream);
@@ -391,6 +403,10 @@ public class EmailComposerImpl {
             outStream.close();
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            if (outStream != null) {
+                safeClose(outStream);
+            }
         }
 
         return Uri.fromFile(file);
@@ -416,12 +432,12 @@ public class EmailComposerImpl {
         try {
             bytes = Base64.decode(resData, 0);
         } catch (Exception ignored) {
-            Log.e("EmailComposer", "Invalid Base64 string");
+            Log.e(LOG_TAG_EMAIL_COMPOSER, "Invalid Base64 string");
             return Uri.EMPTY;
         }
 
         if (dir == null) {
-            Log.e("EmailComposer", "Missing external cache dir");
+            Log.e(LOG_TAG_EMAIL_COMPOSER, "Missing external cache dir");
             return Uri.EMPTY;
         }
 
@@ -430,14 +446,20 @@ public class EmailComposerImpl {
 
         new File(storage).mkdir();
 
+        FileOutputStream outStream = null;
+
         try {
-            FileOutputStream outStream = new FileOutputStream(file);
+            outStream = new FileOutputStream(file);
 
             outStream.write(bytes);
             outStream.flush();
             outStream.close();
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            if (outStream != null) {
+                safeClose(outStream);
+            }
         }
 
         return Uri.fromFile(file);
@@ -516,7 +538,7 @@ public class EmailComposerImpl {
         try {
             accounts = am.getAccounts().length;
         } catch (Exception e) {
-            Log.e("EmailComposer", "Missing GET_ACCOUNTS permission.");
+            Log.e(LOG_TAG_EMAIL_COMPOSER, "Missing GET_ACCOUNTS permission.");
             return true;
         }
 
@@ -540,6 +562,26 @@ public class EmailComposerImpl {
         } catch(PackageManager.NameNotFoundException e) {
             return false;
         }
+    }
+
+    /**
+     * Attempt to safely close the given stream.
+     * 
+     * @param outStream
+     * The stream to close.
+     * @return
+     * true if successful, false otherwise
+     */
+    private static boolean safeClose(final FileOutputStream outStream) {
+        if (outStream != null) {
+            try {
+                outStream.close();
+                return true;
+            } catch (IOException e) {
+                Log.e(LOG_TAG_EMAIL_COMPOSER, "Error attempting to safely close resource: " + e.getMessage());
+            }
+        }
+        return false;
     }
 
 }

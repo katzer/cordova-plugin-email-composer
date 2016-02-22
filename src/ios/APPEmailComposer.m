@@ -21,8 +21,10 @@
 
 #import "APPEmailComposer.h"
 #import "APPEmailComposerImpl.h"
-#import "Cordova/NSData+Base64.h"
-#import "Cordova/CDVAvailability.h"
+#import <Cordova/CDVAvailability.h>
+#ifndef __CORDOVA_4_0_0
+    #import <Cordova/NSData+Base64.h>
+#endif
 #import <MobileCoreServices/MobileCoreServices.h>
 
 #include "TargetConditionals.h"
@@ -141,12 +143,15 @@
  */
 - (void) presentMailComposerFromProperties:(NSDictionary*)props
 {
-    MFMailComposeViewController* draft =
-    [_impl mailComposerFromProperties:props delegateTo:self];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        MFMailComposeViewController* draft =
+        [_impl mailComposerFromProperties:props delegateTo:self];
 
-    [self.viewController presentViewController:draft
-                                      animated:YES
-                                    completion:NULL];
+        [self.viewController presentViewController:draft
+                                          animated:YES
+                                        completion:NULL];
+    });
+
 }
 
 /**
