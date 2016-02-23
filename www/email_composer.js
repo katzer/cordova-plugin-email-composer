@@ -58,19 +58,20 @@ exports.getDefaults = function () {
  */
 exports.isAvailable = function (app, callback, scope) {
 
-    if(typeof callback != 'function'){
+    if (typeof callback != 'function'){
         scope    = null;
         callback = app;
         app      = 'mailto';
     }
 
-    if(this.aliases.hasOwnProperty(app)){
+    if (this.aliases.hasOwnProperty(app)){
         app = this.aliases[app];
     }
 
-    var fn = this.createCallbackFn(callback, scope);
+    var fn = this.createCallbackFn(callback, scope),
+        failure = function () { fn(false, false); };
 
-    exec(fn, null, 'EmailComposer', 'isAvailable', [app]);
+    exec(fn, failure, 'EmailComposer', 'isAvailable', [app]);
 };
 
 /**
