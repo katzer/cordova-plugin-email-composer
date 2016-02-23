@@ -46,15 +46,12 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 
+import static de.appplant.cordova.emailcomposer.EmailComposer.LOG_TAG;
+
 /**
  * Implements the interface methods of the plugin.
  */
 public class EmailComposerImpl {
-
-    /**
-     * The log tag for this plugin
-     */
-    static private final String LOG_TAG_EMAIL_COMPOSER = "EmailComposer";
 
     /**
      * The default mailto: scheme.
@@ -86,7 +83,7 @@ public class EmailComposerImpl {
                 file.delete();
             }
         } catch (Exception npe){
-            Log.w(LOG_TAG_EMAIL_COMPOSER, "Missing external cache dir");
+            Log.w(LOG_TAG, "Missing external cache dir");
         }
     }
 
@@ -99,13 +96,12 @@ public class EmailComposerImpl {
      * The application context.
      */
     public boolean[] canSendMail (String id, Context ctx) {
-        //is possible with specified app
+        // is possible with specified app
         boolean withScheme = isAppInstalled(id, ctx);
-        //is possible in general
+        // is possible in general
         boolean isPossible = isEmailAccountConfigured(ctx);
-        boolean[] result = {isPossible,withScheme};
 
-        return result;
+        return new boolean[] { isPossible, withScheme };
     }
 
     /**
@@ -303,7 +299,7 @@ public class EmailComposerImpl {
         File file      = new File(absPath);
 
         if (!file.exists()) {
-            Log.e(LOG_TAG_EMAIL_COMPOSER, "File not found: " + file.getAbsolutePath());
+            Log.e(LOG_TAG, "File not found: " + file.getAbsolutePath());
         }
 
         return Uri.fromFile(file);
@@ -326,7 +322,7 @@ public class EmailComposerImpl {
         File dir        = ctx.getExternalCacheDir();
 
         if (dir == null) {
-            Log.e(LOG_TAG_EMAIL_COMPOSER, "Missing external cache dir");
+            Log.e(LOG_TAG, "Missing external cache dir");
             return Uri.EMPTY;
         }
 
@@ -347,7 +343,7 @@ public class EmailComposerImpl {
             outStream.flush();
             outStream.close();
         } catch (Exception e) {
-            Log.e(LOG_TAG_EMAIL_COMPOSER, "File not found: assets/" + resPath);
+            Log.e(LOG_TAG, "File not found: assets/" + resPath);
             e.printStackTrace();
         } finally {
             if (outStream != null) {
@@ -377,7 +373,7 @@ public class EmailComposerImpl {
         File dir         = ctx.getExternalCacheDir();
 
         if (dir == null) {
-            Log.e(LOG_TAG_EMAIL_COMPOSER, "Missing external cache dir");
+            Log.e(LOG_TAG, "Missing external cache dir");
             return Uri.EMPTY;
         }
 
@@ -386,7 +382,7 @@ public class EmailComposerImpl {
         File file        = new File(storage, resName + extension);
 
         if (resId == 0) {
-            Log.e(LOG_TAG_EMAIL_COMPOSER, "File not found: " + resPath);
+            Log.e(LOG_TAG, "File not found: " + resPath);
         }
 
         new File(storage).mkdir();
@@ -432,12 +428,12 @@ public class EmailComposerImpl {
         try {
             bytes = Base64.decode(resData, 0);
         } catch (Exception ignored) {
-            Log.e(LOG_TAG_EMAIL_COMPOSER, "Invalid Base64 string");
+            Log.e(LOG_TAG, "Invalid Base64 string");
             return Uri.EMPTY;
         }
 
         if (dir == null) {
-            Log.e(LOG_TAG_EMAIL_COMPOSER, "Missing external cache dir");
+            Log.e(LOG_TAG, "Missing external cache dir");
             return Uri.EMPTY;
         }
 
@@ -538,7 +534,7 @@ public class EmailComposerImpl {
         try {
             accounts = am.getAccounts().length;
         } catch (Exception e) {
-            Log.e(LOG_TAG_EMAIL_COMPOSER, "Missing GET_ACCOUNTS permission.");
+            Log.e(LOG_TAG, "Missing GET_ACCOUNTS permission.");
             return true;
         }
 
@@ -566,7 +562,7 @@ public class EmailComposerImpl {
 
     /**
      * Attempt to safely close the given stream.
-     * 
+     *
      * @param outStream
      * The stream to close.
      * @return
@@ -578,7 +574,7 @@ public class EmailComposerImpl {
                 outStream.close();
                 return true;
             } catch (IOException e) {
-                Log.e(LOG_TAG_EMAIL_COMPOSER, "Error attempting to safely close resource: " + e.getMessage());
+                Log.e(LOG_TAG, "Error attempting to safely close resource: " + e.getMessage());
             }
         }
         return false;

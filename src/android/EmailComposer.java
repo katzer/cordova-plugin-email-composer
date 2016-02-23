@@ -40,6 +40,11 @@ import java.util.List;
 @SuppressWarnings("Convert2Diamond")
 public class EmailComposer extends CordovaPlugin {
 
+    /**
+     * The log tag for this plugin
+     */
+    static protected final String LOG_TAG = "EmailComposer";
+
     // Implementation of the plugin.
     private final EmailComposerImpl impl = new EmailComposerImpl();
 
@@ -133,7 +138,7 @@ public class EmailComposer extends CordovaPlugin {
         String appId     = props.getString("app");
 
         if (!(impl.canSendMail(appId, getContext()))[0]) {
-            LOG.i("EmailComposer",
+            LOG.i(LOG_TAG,
                     "Cannot send mail. No client or account found for.");
             return;
         }
@@ -165,7 +170,7 @@ public class EmailComposer extends CordovaPlugin {
     @Override
     public void onActivityResult(int reqCode, int resCode, Intent intent) {
         if (null != command) {
-            command.success();   
+            command.success();
         }
     }
 
