@@ -153,9 +153,9 @@ exports.mergeWithDefaults = function (options) {
     }
 
     if (options.hasOwnProperty('app')) {
-        var package = this.aliases[options.app];
+        var app = this.aliases[options.app];
 
-        options.app = package || options.app;
+        options.app = app || options.app;
     }
 
     for (var key in defaults) {
@@ -212,15 +212,17 @@ exports.createCallbackFn = function (callbackFn, scope) {
 };
 
 /**
- *@private
+ * @private
  *
  * Register an Eventlistener on resume-Event to
  * execute callback after open a draft.
  */
-exports.registerCallbackForScheme = function(fn) {
+exports.registerCallbackForScheme = function (fn) {
+
     var callback = function () {
         fn();
         document.removeEventListener("resume",callback);
-    }
+    };
+
     document.addEventListener("resume", callback, false);
 };
