@@ -321,8 +321,7 @@
     absPath = [path stringByReplacingOccurrencesOfString:@"file://"
                                               withString:@""];
 
-    if (![fileManager fileExistsAtPath:absPath])
-    {
+    if (![fileManager fileExistsAtPath:absPath]) {
         NSLog(@"File not found: %@", absPath);
     }
 
@@ -341,22 +340,22 @@
  */
 - (NSData*) dataForResource:(NSString*)path
 {
-    NSFileManager* fileManager = [NSFileManager defaultManager];
-    NSString* absPath;
+    NSString* imgName = [[path pathComponents].lastObject
+                         stringByDeletingPathExtension];
 
-    NSBundle* mainBundle = [NSBundle mainBundle];
-    NSString* bundlePath = [[mainBundle bundlePath]
-                            stringByAppendingString:@"/"];
-
-    absPath = [path pathComponents].lastObject;
-
-    absPath = [bundlePath stringByAppendingString:absPath];
-
-    if (![fileManager fileExistsAtPath:absPath]){
-        NSLog(@"File not found: %@", absPath);
+#ifdef __CORDOVA_4_0_0
+    if ([imgName isEqualToString:@"icon"]) {
+        imgName = @"AppIcon60x60@3x";
+    }
+#endif
+    
+    UIImage* img = [UIImage imageNamed:imgName];
+    
+    if (img == NULL) {
+        NSLog(@"File not found: %@", path);
     }
 
-    NSData* data = [fileManager contentsAtPath:absPath];
+    NSData* data = UIImagePNGRepresentation(img);
 
     return data;
 }
@@ -383,7 +382,7 @@
 
     absPath = [bundlePath stringByAppendingString:absPath];
 
-    if (![fileManager fileExistsAtPath:absPath]){
+    if (![fileManager fileExistsAtPath:absPath]) {
         NSLog(@"File not found: %@", absPath);
     }
 
