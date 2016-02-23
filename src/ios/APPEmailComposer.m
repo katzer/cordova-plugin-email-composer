@@ -129,7 +129,37 @@
 {
     [controller dismissViewControllerAnimated:YES completion:nil];
 
-    [self execCallback];
+    BOOL commandStatus;
+    NSString* messageStatus;
+    switch (result)
+    {
+        case MFMailComposeResultCancelled:
+            commandStatus = NO;
+            messageStatus = @"MailCancelled";
+            break;
+        case MFMailComposeResultSaved:
+            commandStatus = YES;
+            messageStatus = @"MailSaved";
+            break;
+        case MFMailComposeResultSent:
+            commandStatus = YES;
+            messageStatus = @"MailSent";
+            break;
+        case MFMailComposeResultFailed:
+            commandStatus = NO;
+            messageStatus = @"MailError";
+            NSLog(@"Mail sent failure: %@", [error localizedDescription]);
+            break;
+        default:
+            break;
+    }
+    NSArray *resultArray = [NSArray arrayWithObjects:@(commandStatus), messageStatus, nil];
+    
+    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
+                                                   messageAsMultipart:resultArray];
+    
+    [self.commandDelegate sendPluginResult:pluginResult
+                                callbackId:self.command.callbackId];
 }
 
 #pragma mark -
