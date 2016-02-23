@@ -1,5 +1,5 @@
 /*
-Copyright 2013-2015 appPlant UG
+Copyright 2013-2016 appPlant UG
 
 Licensed to the Apache Software Foundation (ASF) under one
 or more contributor license agreements.  See the NOTICE file
@@ -22,7 +22,7 @@ under the License.
 var proxy = require('de.appplant.cordova.plugin.email-composer.EmailComposerProxy');
 
 	proxy.draftUtil = {
-	
+
 		/**
 		 * The Email with the containing properties.
 		 *

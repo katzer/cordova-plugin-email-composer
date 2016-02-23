@@ -1,7 +1,7 @@
 /* globals Windows: true */
 
 /*
-    Copyright 2013-2015 appPlant UG
+    Copyright 2013-2016 appPlant UG
 
     Licensed to the Apache Software Foundation (ASF) under one
     or more contributor license agreements.  See the NOTICE file
@@ -62,7 +62,7 @@ exports.open = function (success, error, args) {
                         success();
                     }, false);
                 }
-                
+
             });
     } else {
         var mailTo = exports.draftUtil.getMailTo(props);

@@ -1,5 +1,5 @@
 /*
- Copyright 2013-2015 appPlant UG
+ Copyright 2013-2016 appPlant UG
 
  Licensed to the Apache Software Foundation (ASF) under one
  or more contributor license agreements.  See the NOTICE file
@@ -348,9 +348,9 @@
         imgName = @"AppIcon60x60@3x";
     }
 #endif
-    
+
     UIImage* img = [UIImage imageNamed:imgName];
-    
+
     if (img == NULL) {
         NSLog(@"File not found: %@", path);
     }
