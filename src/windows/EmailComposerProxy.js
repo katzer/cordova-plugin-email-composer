@@ -48,22 +48,10 @@ exports.isAvailable = function (success) {
 exports.open = function (success, error, args) {
     var props = args[0];
 
-    if (!(Windows.ApplicationModel.Email==undefined)) {
-        var email = exports.draftUtil.getDraftWithProperties(props);
-
-        Windows.ApplicationModel.Email.EmailManager
-            .showComposeNewEmailAsync(email)
-            .done(function () {
-                if (Debug.debuggerEnabled) {
-                    success();
-                    console.log('degugmode');
-                } else {
-                    Windows.UI.WebUI.WebUIApplication.addEventListener("resuming", function () {
-                        success();
-                    }, false);
-                }
-                
-            });
+    if (!(Windows.ApplicationModel.Email == undefined)) {
+        exports.draftUtil.getDraftWithProperties(props)
+            .then(Windows.ApplicationModel.Email.EmailManager.showComposeNewEmailAsync)
+            .done(success, error)
     } else {
         var mailTo = exports.draftUtil.getMailTo(props);
         Windows.System.Launcher.launchUriAsync(mailTo).then(
