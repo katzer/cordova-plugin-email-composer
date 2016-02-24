@@ -25,7 +25,7 @@
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
         <link rel="stylesheet" type="text/css" href="css/index.css" />
         <meta name="msapplication-tap-highlight" content="no" />
-        <title>Email Example</title>
+        <title>Email Plugin</title>
 
         <style type="text/css">
         .button {
@@ -79,27 +79,55 @@
         }
         </style>
     </head>
-    <body ontouchstart="">
-        <div class="app">
-            <h1>Email Plugin</h1>
-            <div id="deviceready" class="blink">
-                <p class="event listening">Connecting to Device</p>
-                <p class="event received">Device is Ready</p>
+    <body>
+        <div>
+            <div class="app">
+                <h1>Email Example</h1>
+                <div id="deviceready" class="blink">
+                    <p class="event listening">Connecting to Device</p>
+                    <p class="event received">Device is Ready</p>
+                </div>
             </div>
 
-            <a href="#" class="button" onclick="isAvailable()">Can send mail<br/><span class="hint">email.isAvailable()</span></a>
-            <a href="#" class="button" onclick="emptyDraft()">Empty draft<br/><span class="hint">email.open()</span></a>
-            <a href="#" class="button" onclick="openDraft()">Sample plain draft<br/><span class="hint">email.open({})</span></a>
-            <a href="#" class="button" onclick="openDraft(true)">Sample HTML draft<br/><span class="hint">email.open({})</span></a>
-            <a href="#" class="button" onclick="sendAttachment()">Draft with attachments<br/><span class="hint">email.open({})</span></a>
-            <a href="#" class="button" onclick="chooseAttachment()">Choose attachment<br/><span class="hint">email.open({})</span></a>
+            <!-- accounts -->
+            <h2 class="section" style="padding-top:115px;">Accounts</h2>
+            <div class="container">
+                <div onclick="isAvailable('mailto')">Mail<br/><span>isAvailable()</span></div>
+                <div onclick="isAvailable('gmail')">GMail<br/><span>isAvailable (app:gmail)</span></div>
+            </div>
+
+            <!-- drafts -->
+            <h2 class="section">Drafts</h2>
+            <div class="container">
+                <div onclick="openDraft()">Plain<br/><span>open (to, subject, body)</span></div>
+                <div onclick="openDraft(true)">HTML<br/><span>open (html:true)</span></div>
+            </div>
+            <div class="container">
+                <div onclick="emptyDraft('mailto')">Mail<br/><span>open()</span></div>
+                <div onclick="emptyDraft('gmail')">GMail<br/><span>open (app:gmail)</span></div>
+            </div>
+
+            <!-- attachments -->
+            <h2 class="section">Attachments</h2>
+            <div class="container">
+                <div onclick="sendAttachment()">Assets<br/><span>open (attachments:[])</span></div>
+                <div onclick="chooseAttachment()">Camera<br/><span>open (attachments:[])</span></div>
+            </div>
+
+            <!-- copyright -->
+            <div class="copyright">
+                © 2013-2016 appPlant
+            </div>
         </div>
+
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
 
         <script type="text/javascript">
             app.initialize();
+        </script>
 
+        <script type="text/javascript">
             var callback = function () {
                     alert('finished or canceled');
                 };
@@ -112,14 +140,18 @@
                 }
             }, false);
 
-            isAvailable = function () {
-                plugin.email.isAvailable(function(availalbe){
-                    alert(availalbe);
+            getAppHandle = function  (app) {
+                return (app == 'gmail' && device.platform != 'Android') ? 'googlemail' : app;
+            };
+
+            isAvailable = function (app) {
+                plugin.email.isAvailable(getAppHandle(app), function(general, app_avail){
+                    alert(app_avail);
                 });
             };
 
-            emptyDraft = function () {
-                cordova.plugins.email.open({}, callback);
+            emptyDraft = function (app) {
+                cordova.plugins.email.open({ app:getAppHandle(app) }, callback);
             };
 
             openDraft = function (isHtml) {

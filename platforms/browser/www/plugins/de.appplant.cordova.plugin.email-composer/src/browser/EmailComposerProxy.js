@@ -30,7 +30,7 @@ cordova.define("de.appplant.cordova.plugin.email-composer.EmailComposerProxy", f
  *      Interface arguments
  */
 exports.isAvailable = function (success, error, args) {
-    success(true);
+    success(true,false);
 };
 
 /**

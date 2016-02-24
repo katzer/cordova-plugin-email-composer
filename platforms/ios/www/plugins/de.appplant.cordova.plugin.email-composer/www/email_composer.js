@@ -1,4 +1,5 @@
-cordova.define("de.appplant.cordova.plugin.email-composer.EmailComposer", function(require, exports, module) { /*
+cordova.define("de.appplant.cordova.plugin.email-composer.EmailComposer", function(require, exports, module) {
+/*
     Copyright 2013-2015 appPlant UG
 
     Licensed to the Apache Software Foundation (ASF) under one
@@ -19,13 +20,15 @@ cordova.define("de.appplant.cordova.plugin.email-composer.EmailComposer", functi
     under the License.
 */
 
-var exec = require('cordova/exec');
+var exec      = require('cordova/exec'),
+    isAndroid = navigator.userAgent.toLowerCase().indexOf('android') > -1,
+    mailto    = 'mailto:';
 
 /**
  * List of all registered mail app aliases.
  */
 exports.aliases = {
-    gmail: 'com.google.android.gm'
+    gmail: isAndroid ? 'com.google.android.gm' : 'googlemail:'
 };
 
 /**
@@ -35,7 +38,7 @@ exports.aliases = {
  */
 exports.getDefaults = function () {
     return {
-        app:         'mailto:',
+        app:         mailto,
         subject:     '',
         body:        '',
         to:          [],
@@ -58,10 +61,15 @@ exports.getDefaults = function () {
  */
 exports.isAvailable = function (app, callback, scope) {
 
-    if (!(app instanceof String)) {
+    if (typeof callback != 'function'){
         scope    = null;
         callback = app;
-        app      = 'mailto:';
+    }
+
+    app = app || mailto;
+
+    if (this.aliases.hasOwnProperty(app)){
+        app = this.aliases[app];
     }
 
     var fn = this.createCallbackFn(callback, scope);
@@ -80,11 +88,28 @@ exports.isAvailable = function (app, callback, scope) {
  *      The scope of the callback
  */
 exports.open = function (options, callback, scope) {
-    var fn = this.createCallbackFn(callback, scope);
+    var fn = this.createCallbackFn(callback, scope),
+        me = this;
 
     options = this.mergeWithDefaults(options || {});
 
-    exec(fn, null, 'EmailComposer', 'open', [options]);
+    var onAvailable = function (isPossible, withScheme) {
+
+        if (!isPossible)
+            return fn();
+
+        if (!withScheme) {
+            options.app = mailto;
+        }
+
+        if (!isAndroid && options.app != mailto) {
+            me.registerCallbackForScheme(fn);
+        }
+
+        exec(fn, null, 'EmailComposer', 'open', [options]);
+    };
+
+    exec(onAvailable, null, 'EmailComposer', 'isAvailable', [options.app]);
 };
 
 /**
@@ -194,4 +219,20 @@ exports.createCallbackFn = function (callbackFn, scope) {
     };
 };
 
+/**
+ * @private
+ *
+ * Register an Eventlistener on resume-Event to
+ * execute callback after open a draft.
+ */
+exports.registerCallbackForScheme = function(fn) {
+
+    var callback = function () {
+        fn();
+        alert(1);
+        document.removeEventListener('resume',callback);
+    };
+
+    document.addEventListener('resume', callback, false);
+};
 });

@@ -18,8 +18,10 @@
 */
 package org.apache.cordova.engine;
 
+import java.util.Arrays;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Context;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
@@ -36,6 +38,7 @@ import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebStorage;
 import android.webkit.WebView;
+import android.webkit.PermissionRequest;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -61,13 +64,15 @@ public class SystemWebChromeClient extends WebChromeClient {
     private View mVideoProgressView;
     
     private CordovaDialogsHelper dialogsHelper;
+    private Context appContext;
 
     private WebChromeClient.CustomViewCallback mCustomViewCallback;
     private View mCustomView;
 
     public SystemWebChromeClient(SystemWebViewEngine parentEngine) {
         this.parentEngine = parentEngine;
-        dialogsHelper = new CordovaDialogsHelper(parentEngine.webView.getContext());
+        appContext = parentEngine.webView.getContext();
+        dialogsHelper = new CordovaDialogsHelper(appContext);
     }
 
     /**
@@ -172,12 +177,21 @@ public class SystemWebChromeClient extends WebChromeClient {
     /**
      * Instructs the client to show a prompt to ask the user to set the Geolocation permission state for the specified origin.
      *
+     * This also checks for the Geolocation Plugin and requests permission from the application  to use Geolocation.
+     *
      * @param origin
      * @param callback
      */
     public void onGeolocationPermissionsShowPrompt(String origin, Callback callback) {
         super.onGeolocationPermissionsShowPrompt(origin, callback);
         callback.invoke(origin, true, false);
+        //Get the plugin, it should be loaded
+        CordovaPlugin geolocation = parentEngine.pluginManager.getPlugin("Geolocation");
+        if(geolocation != null && !geolocation.hasPermisssion())
+        {
+            geolocation.requestPermissions(0);
+        }
+
     }
     
     // API level 7 is required for this, see if we could lower this using something else
@@ -264,6 +278,13 @@ public class SystemWebChromeClient extends WebChromeClient {
             filePathsCallback.onReceiveValue(null);
         }
         return true;
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    @Override
+    public void onPermissionRequest(final PermissionRequest request) {
+        Log.d(LOG_TAG, "onPermissionRequest: " + Arrays.toString(request.getResources()));
+        request.grant(request.getResources());
     }
 
     public void destroyLastDialog(){
