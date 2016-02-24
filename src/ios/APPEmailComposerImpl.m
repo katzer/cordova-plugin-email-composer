@@ -47,10 +47,14 @@
 - (NSArray*) canSendMail:(NSString*)scheme
 {
     bool canSendMail = [MFMailComposeViewController canSendMail];
-
-    bool withScheme = false;
-    scheme = [[scheme stringByAppendingString:@":test@test.de"]
-                stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding ];
+    bool withScheme  = false;
+    
+    if (![scheme hasSuffix:@":"]) {
+        scheme = [scheme stringByAppendingString:@":"];
+    }
+    
+    scheme = [[scheme stringByAppendingString:@"test@test.de"]
+                stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 
     NSURL *url = [[NSURL URLWithString:scheme]
                     absoluteURL];
