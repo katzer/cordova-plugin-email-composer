@@ -98,6 +98,7 @@ exports.open = function (options, callback, scope) {
             return fn();
 
         if (!withScheme) {
+            if (window.console) { console.log('Cannot open app'); }
             options.app = mailto;
         }
 

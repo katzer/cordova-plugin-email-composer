@@ -21,34 +21,34 @@ under the License.
 
 var proxy = require('de.appplant.cordova.plugin.email-composer.EmailComposerProxy');
 
-	proxy.draftUtil = {
+proxy.draftUtil = {
 
-		/**
-		 * The Email with the containing properties.
-		 *
-		 * @param {Object} props
-		 *      The email properties like subject or body
-		 * @return {Windows.ApplicationModel.Email.EmailMessage}
-		 *      The resulting email draft
-		 */
-		getDraftWithProperties: function (props) {
-			var mail = new Windows.ApplicationModel.Email.EmailMessage();
+	/**
+	 * The Email with the containing properties.
+	 *
+	 * @param {Object} props
+	 *      The email properties like subject or body
+	 * @return {Windows.ApplicationModel.Email.EmailMessage}
+	 *      The resulting email draft
+	 */
+	getDraftWithProperties: function (props) {
+		var mail = new Windows.ApplicationModel.Email.EmailMessage();
 
-			// subject
-			this.setSubject(props.subject, mail);
-			// body
-			this.setBody(props.body, props.isHtml, mail);
-			// To recipients
-			this.setRecipients(props.to, mail.to);
-			// CC recipients
-			this.setRecipients(props.cc, mail.cc);
-			// BCC recipients
-			this.setRecipients(props.bcc, mail.bcc);
-			// attachments
-			this.setAttachments(props.attachments, mail);
+		// subject
+		this.setSubject(props.subject, mail);
+		// body
+		this.setBody(props.body, props.isHtml, mail);
+		// To recipients
+		this.setRecipients(props.to, mail.to);
+		// CC recipients
+		this.setRecipients(props.cc, mail.cc);
+		// BCC recipients
+		this.setRecipients(props.bcc, mail.bcc);
+		// attachments
+		this.setAttachments(props.attachments, mail);
 
-			return mail;
-		},
+		return mail;
+	},
 
 	getMailTo: function (props) {
 		// The URI to launch

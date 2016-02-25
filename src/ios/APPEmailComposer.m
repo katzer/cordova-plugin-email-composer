@@ -89,29 +89,17 @@
     [self.commandDelegate runInBackground:^{
         NSString* scheme = [props objectForKey:@"app"];
 
-        if (![_impl canSendMail:scheme]) {
-            NSLog(@"Dont know how to handle %@. Using iMail instead.", scheme);
-            scheme = @"mailto:";
+        if (![self canUseAppleMail:scheme]) {
+            [self openURLFromProperties:props];
+            return;
         }
 
-        // iMail
-        if ([self canUseAppleMail:scheme])
-        {
-            if (TARGET_IPHONE_SIMULATOR)
-            {
-                [self informAboutIssueWithSimulators];
-                [self execCallback];
-                return;
-            }
-            else
-            {
-                [self presentMailComposerFromProperties:props];
-            }
+        if (TARGET_IPHONE_SIMULATOR) {
+            [self informAboutIssueWithSimulators];
+            [self execCallback];
         }
-        // URL scheme
-        else
-        {
-            [self openURLFromProperties:props];
+        else {
+            [self presentMailComposerFromProperties:props];
         }
     }];
 }
@@ -127,7 +115,7 @@
            didFinishWithResult:(MFMailComposeResult)result
                          error:(NSError*)error
 {
-    [controller dismissViewControllerAnimated:YES completion:nil];
+    [controller dismissViewControllerAnimated:YES completion:NULL];
 
     [self execCallback];
 }
@@ -189,9 +177,9 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         [[[UIAlertView alloc] initWithTitle:@"Email-Composer"
                                     message:@"Please use a physical device."
-                                   delegate:nil
+                                   delegate:NULL
                           cancelButtonTitle:@"OK"
-                          otherButtonTitles:nil] show];
+                          otherButtonTitles:NULL] show];
     });
 }
 
