@@ -110,10 +110,10 @@ var proxy = require('de.appplant.cordova.plugin.email-composer.EmailComposerProx
 	 *
 	 * @param {String[]} recipients
 	 *      List of mail addresses
-	 * @param {Windows.ApplicationModel.Email.EmailMessage} draftAttribute
+	 * @param {Windows.ApplicationModel.Email.EmailMessage} draft
 	 *      The draft.to / *.cc / *.bcc
 	 */
-	setRecipients: function (recipients, draftAttribute) {
+	setRecipients: function (recipients, draft) {
 		recipients.forEach(function (address) {
 			draft.push(
 				new Windows.ApplicationModel.Email.EmailRecipient(address));
