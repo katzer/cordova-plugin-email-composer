@@ -45,6 +45,19 @@ module.exports = [
         "runs": true
     },
     {
+        "file": "plugins/cordova-plugin-x-toast/www/Toast.js",
+        "id": "cordova-plugin-x-toast.Toast",
+        "pluginId": "cordova-plugin-x-toast",
+        "clobbers": [
+            "window.plugins.toast"
+        ]
+    },
+    {
+        "file": "plugins/cordova-plugin-x-toast/test/tests.js",
+        "id": "cordova-plugin-x-toast.tests",
+        "pluginId": "cordova-plugin-x-toast"
+    },
+    {
         "file": "plugins/de.appplant.cordova.plugin.email-composer/www/email_composer.js",
         "id": "de.appplant.cordova.plugin.email-composer.EmailComposer",
         "pluginId": "de.appplant.cordova.plugin.email-composer",
@@ -58,19 +71,6 @@ module.exports = [
         "id": "de.appplant.cordova.plugin.email-composer.EmailComposerProxy",
         "pluginId": "de.appplant.cordova.plugin.email-composer",
         "runs": true
-    },
-    {
-        "file": "plugins/cordova-plugin-x-toast/www/Toast.js",
-        "id": "cordova-plugin-x-toast.Toast",
-        "pluginId": "cordova-plugin-x-toast",
-        "clobbers": [
-            "window.plugins.toast"
-        ]
-    },
-    {
-        "file": "plugins/cordova-plugin-x-toast/test/tests.js",
-        "id": "cordova-plugin-x-toast.tests",
-        "pluginId": "cordova-plugin-x-toast"
     }
 ];
 module.exports.metadata = 
@@ -78,8 +78,8 @@ module.exports.metadata =
 {
     "cordova-plugin-device": "1.1.1",
     "cordova-plugin-camera": "2.1.0",
-    "de.appplant.cordova.plugin.email-composer": "0.8.3-dev",
-    "cordova-plugin-x-toast": "2.4.2"
+    "cordova-plugin-x-toast": "2.4.2",
+    "de.appplant.cordova.plugin.email-composer": "0.8.3-dev"
 }
 // BOTTOM OF METADATA
 });

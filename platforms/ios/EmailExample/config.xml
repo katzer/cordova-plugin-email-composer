@@ -35,11 +35,11 @@
         <param name="ios-package" value="CDVCamera" />
     </feature>
     <preference name="CameraUsesGeolocation" value="false" />
-    <feature name="EmailComposer">
-        <param name="ios-package" value="APPEmailComposer" />
-    </feature>
     <feature name="Toast">
         <param name="ios-package" value="Toast" />
+    </feature>
+    <feature name="EmailComposer">
+        <param name="ios-package" value="APPEmailComposer" />
     </feature>
     <name>EmailExample</name>
     <description>
@@ -50,4 +50,5 @@
     </author>
     <content src="index.html" />
     <access origin="*" />
+    <preference name="windows-target-version" value="10.0" />
 </widget>

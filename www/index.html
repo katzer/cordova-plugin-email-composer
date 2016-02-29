@@ -98,7 +98,7 @@
             <!-- native client -->
             <h2 class="section">Mail Client</h2>
             <div class="container">
-                <div onclick="isAvailable()">Installed?<br/><span>isAvailable()</span></div>
+                <div onclick="isAvailable('mailto:')">Installed?<br/><span>isAvailable()</span></div>
                 <div onclick="emptyDraft()">Open<br/><span>open()</span></div>
             </div>
 
@@ -140,7 +140,7 @@
             var dialog;
 
             showToast = function (text) {
-                text = text === null ? 'finished or canceled' : text;
+                text = text == null ? 'finished or canceled' : text;
 
                 setTimeout(function () {
                     if (window.Windows !== undefined) {
@@ -180,8 +180,8 @@
             }, false);
 
             isAvailable = function (app) {
-                plugin.email.isAvailable(app, function(isSetup, isAvail){
-                    showToast(app === null ? isSetup : isAvail);
+                plugin.email.isAvailable(app, function(isSetup, isAvail) {
+                    showToast(app ? isAvail : isSetup);
                 });
             };
 

@@ -21,11 +21,11 @@
 		CEF4B06B80AE45B68F788213 /* CDVDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 16948DFE5A2C498C9C9FE72C /* CDVDevice.m */; };
 		DF7205D9D49240E09A327FEF /* CDVJpegHeaderWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 78947867FC3B4940A483533F /* CDVJpegHeaderWriter.m */; };
 		DFEA01C090E5480583D7EF3F /* UIImage+CropScaleOrientation.m in Sources */ = {isa = PBXBuildFile; fileRef = 816198911AD245AFB811C182 /* UIImage+CropScaleOrientation.m */; };
-		DF469964FBCA40C6BF91D6BC /* APPEmailComposer.m in Sources */ = {isa = PBXBuildFile; fileRef = 8173CD4401954849A2983C2D /* APPEmailComposer.m */; };
-		AE68AC94C3D44DF680D2E7BB /* APPEmailComposerImpl.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F9EF3FD15394704B08CFB74 /* APPEmailComposerImpl.m */; };
 		6680A15C0D2C4D19B8D4E0E7 /* Toast+UIView.m in Sources */ = {isa = PBXBuildFile; fileRef = ACA9A5FB9E684B47B9304021 /* Toast+UIView.m */; };
 		D97E11341FE446A4BF7E8E1C /* Toast.m in Sources */ = {isa = PBXBuildFile; fileRef = CDAAB813EA9F4757856DBE27 /* Toast.m */; };
 		0AAF450926E846588648703A /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BEC4A0C773F4EF6AD4574E6 /* QuartzCore.framework */; };
+		ED3A2DB436A64C0BAB7F619B /* APPEmailComposer.m in Sources */ = {isa = PBXBuildFile; fileRef = EC151E6DAED84A4CA6AEDA88 /* APPEmailComposer.m */; };
+		93EB13FA930F4B77BC11CF69 /* APPEmailComposerImpl.m in Sources */ = {isa = PBXBuildFile; fileRef = 975AEF237AA94298854816AB /* APPEmailComposerImpl.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -79,15 +79,15 @@
 		ED33DF2A687741AEAF9F8254 /* Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Bridging-Header.h"; sourceTree = "<group>"; };
 		F351CE356A9B4C7D95E28DC1 /* UIImage+CropScaleOrientation.h */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.c.h; name = "UIImage+CropScaleOrientation.h"; path = "cordova-plugin-camera/UIImage+CropScaleOrientation.h"; sourceTree = "<group>"; };
 		F840E1F0165FE0F500CFE078 /* config.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = config.xml; path = EmailExample/config.xml; sourceTree = "<group>"; };
-		8173CD4401954849A2983C2D /* APPEmailComposer.m */ = {isa = PBXFileReference; name = "APPEmailComposer.m"; path = "../../../../../cordova-plugin-email-composer/src/ios/APPEmailComposer.m"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; explicitFileType = undefined; includeInIndex = 0; };
-		9F9EF3FD15394704B08CFB74 /* APPEmailComposerImpl.m */ = {isa = PBXFileReference; name = "APPEmailComposerImpl.m"; path = "../../../../../cordova-plugin-email-composer/src/ios/APPEmailComposerImpl.m"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; explicitFileType = undefined; includeInIndex = 0; };
-		2086933EB1374E40803D837E /* APPEmailComposer.h */ = {isa = PBXFileReference; name = "APPEmailComposer.h"; path = "../../../../../cordova-plugin-email-composer/src/ios/APPEmailComposer.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
-		6AEFE110EB18428EA52B9D33 /* APPEmailComposerImpl.h */ = {isa = PBXFileReference; name = "APPEmailComposerImpl.h"; path = "../../../../../cordova-plugin-email-composer/src/ios/APPEmailComposerImpl.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
 		ACA9A5FB9E684B47B9304021 /* Toast+UIView.m */ = {isa = PBXFileReference; name = "Toast+UIView.m"; path = "cordova-plugin-x-toast/Toast+UIView.m"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; explicitFileType = undefined; includeInIndex = 0; };
 		CDAAB813EA9F4757856DBE27 /* Toast.m */ = {isa = PBXFileReference; name = "Toast.m"; path = "cordova-plugin-x-toast/Toast.m"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; explicitFileType = undefined; includeInIndex = 0; };
 		70723D02BEDF4F3D8D01906E /* Toast+UIView.h */ = {isa = PBXFileReference; name = "Toast+UIView.h"; path = "cordova-plugin-x-toast/Toast+UIView.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
 		EB0375E45B02498AA451A77B /* Toast.h */ = {isa = PBXFileReference; name = "Toast.h"; path = "cordova-plugin-x-toast/Toast.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
 		4BEC4A0C773F4EF6AD4574E6 /* QuartzCore.framework */ = {isa = PBXFileReference; name = "QuartzCore.framework"; path = "System/Library/Frameworks/QuartzCore.framework"; sourceTree = SDKROOT; fileEncoding = undefined; lastKnownFileType = wrapper.framework; explicitFileType = undefined; includeInIndex = 0; };
+		EC151E6DAED84A4CA6AEDA88 /* APPEmailComposer.m */ = {isa = PBXFileReference; name = "APPEmailComposer.m"; path = "../../../../../cordova-plugin-email-composer/src/ios/APPEmailComposer.m"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; explicitFileType = undefined; includeInIndex = 0; };
+		975AEF237AA94298854816AB /* APPEmailComposerImpl.m */ = {isa = PBXFileReference; name = "APPEmailComposerImpl.m"; path = "../../../../../cordova-plugin-email-composer/src/ios/APPEmailComposerImpl.m"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; explicitFileType = undefined; includeInIndex = 0; };
+		071CBBC3DAB64DE18D962365 /* APPEmailComposer.h */ = {isa = PBXFileReference; name = "APPEmailComposer.h"; path = "../../../../../cordova-plugin-email-composer/src/ios/APPEmailComposer.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
+		D68275B422A042799D50BAFF /* APPEmailComposerImpl.h */ = {isa = PBXFileReference; name = "APPEmailComposerImpl.h"; path = "../../../../../cordova-plugin-email-composer/src/ios/APPEmailComposerImpl.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -211,14 +211,14 @@
 				B6FF9AD94E2D4C28883602E6 /* CDVCamera.h */,
 				9B27CE6D5B9A4B3789C5B871 /* CDVJpegHeaderWriter.h */,
 				14BC7152938E4C2C9D0A92B1 /* CDVExif.h */,
-				8173CD4401954849A2983C2D /* APPEmailComposer.m */,
-				9F9EF3FD15394704B08CFB74 /* APPEmailComposerImpl.m */,
-				2086933EB1374E40803D837E /* APPEmailComposer.h */,
-				6AEFE110EB18428EA52B9D33 /* APPEmailComposerImpl.h */,
 				ACA9A5FB9E684B47B9304021 /* Toast+UIView.m */,
 				CDAAB813EA9F4757856DBE27 /* Toast.m */,
 				70723D02BEDF4F3D8D01906E /* Toast+UIView.h */,
 				EB0375E45B02498AA451A77B /* Toast.h */,
+				EC151E6DAED84A4CA6AEDA88 /* APPEmailComposer.m */,
+				975AEF237AA94298854816AB /* APPEmailComposerImpl.m */,
+				071CBBC3DAB64DE18D962365 /* APPEmailComposer.h */,
+				D68275B422A042799D50BAFF /* APPEmailComposerImpl.h */,
 			);
 			name = Plugins;
 			path = EmailExample/Plugins;
@@ -337,10 +337,10 @@
 				DFEA01C090E5480583D7EF3F /* UIImage+CropScaleOrientation.m in Sources */,
 				3C29611544BA49BB863FFE5B /* CDVCamera.m in Sources */,
 				DF7205D9D49240E09A327FEF /* CDVJpegHeaderWriter.m in Sources */,
-				DF469964FBCA40C6BF91D6BC /* APPEmailComposer.m in Sources */,
-				AE68AC94C3D44DF680D2E7BB /* APPEmailComposerImpl.m in Sources */,
 				6680A15C0D2C4D19B8D4E0E7 /* Toast+UIView.m in Sources */,
 				D97E11341FE446A4BF7E8E1C /* Toast.m in Sources */,
+				ED3A2DB436A64C0BAB7F619B /* APPEmailComposer.m in Sources */,
+				93EB13FA930F4B77BC11CF69 /* APPEmailComposerImpl.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

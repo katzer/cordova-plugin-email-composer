@@ -99,6 +99,7 @@ exports.open = function (options, callback, scope) {
             return fn();
 
         if (!withScheme) {
+            if (window.console) { console.log('Cannot open app'); }
             options.app = mailto;
         }
 
@@ -229,10 +230,10 @@ exports.registerCallbackForScheme = function(fn) {
 
     var callback = function () {
         fn();
-        alert(1);
         document.removeEventListener('resume',callback);
     };
 
     document.addEventListener('resume', callback, false);
 };
+
 });
