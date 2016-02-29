@@ -21,6 +21,9 @@
     under the License.
 */
 
+var WinLauncher = Windows.System.Launcher,
+    WinMail     = Windows.ApplicationModel.Email;
+
 /**
  * Verifies if sending emails is supported on the device.
  *
@@ -31,8 +34,8 @@
  * @param {Array} args
  *      Interface arguments
  */
-exports.isAvailable = function (success) {
-    success(true,false);
+exports.isAvailable = function (success, error, args) {
+    success(true);
 };
 
 /**
@@ -46,32 +49,19 @@ exports.isAvailable = function (success) {
  *      Interface arguments
  */
 exports.open = function (success, error, args) {
-    var props = args[0];
+    var props = args[0],
+        impl  = exports.impl;
 
-    if (!(Windows.ApplicationModel.Email==undefined)) {
-        var email = exports.draftUtil.getDraftWithProperties(props);
-
-        Windows.ApplicationModel.Email.EmailManager
-            .showComposeNewEmailAsync(email)
-            .done(function () {
-                if (Debug.debuggerEnabled) {
-                    success();
-                    console.log('degugmode');
-                } else {
-                    Windows.UI.WebUI.WebUIApplication.addEventListener("resuming", function () {
-                        success();
-                    }, false);
-                }
-
-            });
+    if (WinMail) {
+        impl.getDraftWithProperties(props)
+            .then(WinMail.EmailManager.showComposeNewEmailAsync)
+            .done(success, error);
     } else {
-        var mailTo = exports.draftUtil.getMailTo(props);
-        Windows.System.Launcher.launchUriAsync(mailTo).then(
-           function (mailToSuccess) {
-               if (mailToSuccess) {
-                   success();
-               }
-           });
+        var mailTo = impl.getMailTo(props);
+
+        WinLauncher
+            .launchUriAsync(mailTo)
+            .done(success, error);
     }
 };
 
