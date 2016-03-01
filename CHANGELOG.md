@@ -1,6 +1,6 @@
 ## ChangeLog
-#### Version 0.8.3 (not yet released)
-- 63 commits including bug fixes and enhancements
+#### Version 0.8.3 (01.03.2016)
+63 commits including bug fixes and enhancements:
 - [___change:___] New plugin ID: _cordova-plugin-email-composer_
 - [enhancement:] Published on npm
 - [enhancement:] Allowed the chooser header text to be configured (#113)
@@ -12,7 +12,7 @@
 - [bugfix:] Crash on iOS when presenting view controller from background (#169)
 - [bugfix:] Crash on iOS when no email account is setup
 - [bugfix:] Resolved issues with attachments on all platforms
-- See the commits for more
+- ...
 
 #### Version 0.8.2 (01.03.2015)
 - Added new namespace `cordova.plugins.email`<br>

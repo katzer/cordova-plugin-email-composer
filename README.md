@@ -61,7 +61,7 @@ Add the following xml to your config.xml to always use the latest version of thi
 
 
 ## ChangeLog
-#### Version 0.8.3 (not yet released)
+#### Version 0.8.3 (01.03.2016)
 63 commits including bug fixes and enhancements:
 - [___change:___] New plugin ID: _cordova-plugin-email-composer_
 - [enhancement:] Published on npm
