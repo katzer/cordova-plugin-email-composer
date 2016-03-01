@@ -104,7 +104,7 @@
 
     </platform>
 
-	<!-- amazon-fireos -->
+    <!-- amazon-fireos -->
     <platform name="amazon-fireos">
 
         <config-file target="res/xml/config.xml" parent="/*">
