@@ -1,5 +1,5 @@
 {
-  "name": "de.appplant.cordova.plugin.email-composer",
+  "name": "cordova-plugin-email-composer",
   "version": "0.8.3-dev",
   "description": "Provides access to the standard interface that manages the editing and sending an email message",
   "cordova": {
@@ -19,8 +19,6 @@
   "keywords": [
     "appplant",
     "email",
-    "composer",
-	"emailcomposer",
     "cordova",
     "ecosystem:cordova",
     "cordova-ios",
