@@ -1,10 +1,10 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="de.appplant.cordova.plugin.emailcomposer.example" version="0.8.2" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <feature name="Device">
-        <param name="browser-package" value="Device" />
-    </feature>
     <feature name="Camera">
         <param name="browser-package" value="Camera" />
+    </feature>
+    <feature name="Device">
+        <param name="browser-package" value="Device" />
     </feature>
     <name>EmailExample</name>
     <description>

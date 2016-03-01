@@ -18,6 +18,9 @@
         },
         "de.appplant.cordova.plugin.email-composer": {
             "PACKAGE_NAME": "de.appplant.cordova.plugin.emailcomposer.example"
+        },
+        "cordova-plugin-email-composer": {
+            "PACKAGE_NAME": "de.appplant.cordova.plugin.emailcomposer.example"
         }
     },
     "dependent_plugins": {}

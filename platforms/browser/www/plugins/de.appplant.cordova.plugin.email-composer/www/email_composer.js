@@ -63,6 +63,7 @@ exports.isAvailable = function (app, callback, scope) {
     if (typeof callback != 'function'){
         scope    = null;
         callback = app;
+        app      = mailto;
     }
 
     app = app || mailto;
@@ -211,6 +212,7 @@ exports.mergeWithDefaults = function (options) {
  *      The new callback function
  */
 exports.createCallbackFn = function (callbackFn, scope) {
+
     if (typeof callbackFn != 'function')
         return;
 

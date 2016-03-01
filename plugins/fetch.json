@@ -23,7 +23,7 @@
         "is_top_level": true,
         "variables": {}
     },
-    "de.appplant.cordova.plugin.email-composer": {
+    "cordova-plugin-email-composer": {
         "source": {
             "type": "local",
             "path": "/Users/sebastian/Documents/github/cordova-plugin-email-composer"

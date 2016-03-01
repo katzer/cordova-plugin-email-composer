@@ -11,7 +11,7 @@ Cordova Email Plugin - Example
 cordova run [ios|android|windows]
 ```
 
-These will lunch the simulator or any plugged in device and start the example application as seen below in the screenshots. Its also possible to open the project with [Xcode][xcode], [Android Studio][studio] or [Eclipse][eclipse].
+These will lunch the simulator or any plugged in device and start the example application as seen below in the screenshots. Its also possible to open the project with [Xcode][xcode], [Android Studio][studio] or [Visual Studio][vs].
 
 <p align="center">
     <img src="images/overview.png"></img>
@@ -48,7 +48,7 @@ Please read the plugin's [README][readme] for further requirements and informati
 
 This software is released under the [Apache 2.0 License][apache2_license].
 
-© 2013-2014 appPlant UG, Inc. All rights reserved
+© 2013-2016 appPlant UG, Inc. All rights reserved
 
 
 [cordova]: https://cordova.apache.org
@@ -56,6 +56,6 @@ This software is released under the [Apache 2.0 License][apache2_license].
 [zip]: https://github.com/katzer/cordova-plugin-email-composer/archive/example.zip
 [xcode]: https://developer.apple.com/xcode/
 [studio]: https://developer.android.com/sdk/installing/studio.html
-[eclipse]: https://developer.android.com/sdk/index.html
+[vs]: https://www.visualstudio.com
 [apache2_license]: http://opensource.org/licenses/Apache-2.0
 
