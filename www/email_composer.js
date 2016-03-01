@@ -1,5 +1,5 @@
 /*
-    Copyright 2013-2015 appPlant UG
+    Copyright 2013-2016 appPlant UG
 
     Licensed to the Apache Software Foundation (ASF) under one
     or more contributor license agreements.  See the NOTICE file
@@ -37,14 +37,15 @@ exports.aliases = {
  */
 exports.getDefaults = function () {
     return {
-        app:         mailto,
-        subject:     '',
-        body:        '',
-        to:          [],
-        cc:          [],
-        bcc:         [],
-        attachments: [],
-        isHtml:      true
+        app:           mailto,
+        subject:       '',
+        body:          '',
+        to:            [],
+        cc:            [],
+        bcc:           [],
+        attachments:   [],
+        isHtml:        true,
+        chooserHeader: 'Open with'
     };
 };
 
@@ -212,6 +213,7 @@ exports.mergeWithDefaults = function (options) {
  *      The new callback function
  */
 exports.createCallbackFn = function (callbackFn, scope) {
+
     if (typeof callbackFn != 'function')
         return;
 
