@@ -63,6 +63,7 @@ exports.isAvailable = function (app, callback, scope) {
     if (typeof callback != 'function'){
         scope    = null;
         callback = app;
+        app      = mailto;
     }
 
     app = app || mailto;
