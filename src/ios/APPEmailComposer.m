@@ -127,8 +127,6 @@
            didFinishWithResult:(MFMailComposeResult)result
                          error:(NSError*)error
 {
-    [controller dismissViewControllerAnimated:YES completion:nil];
-
     BOOL commandStatus;
     NSString* messageStatus;
     switch (result)
@@ -154,12 +152,15 @@
             break;
     }
     NSArray *resultArray = [NSArray arrayWithObjects:@(commandStatus), messageStatus, nil];
+
     
-    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
-                                                   messageAsMultipart:resultArray];
-    
-    [self.commandDelegate sendPluginResult:pluginResult
-                                callbackId:self.command.callbackId];
+    [controller dismissViewControllerAnimated:YES completion:^{
+        CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
+                                                       messageAsMultipart:resultArray];
+        
+        [self.commandDelegate sendPluginResult:pluginResult
+                                    callbackId:self.command.callbackId];
+    }];
 }
 
 #pragma mark -
