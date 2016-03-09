@@ -111,7 +111,7 @@
         </config-file>
 
         <config-file target="AndroidManifest.xml" parent="/manifest">
-            <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+	        <permission-group android:name="android.permission.GET_ACCOUNTS" />
         </config-file>
 
         <source-file
