@@ -519,8 +519,6 @@ public class EmailComposerImpl {
             Log.e(LOG_TAG, "Missing GET_ACCOUNTS permission.");
             return true;
         }
-
-        return false;
     }
 
     /**
