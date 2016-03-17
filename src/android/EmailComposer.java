@@ -21,8 +21,11 @@
 
 package de.appplant.cordova.emailcomposer;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.util.Log;
 
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaInterface;
@@ -50,6 +53,15 @@ public class EmailComposer extends CordovaPlugin {
 
     // The callback context used when calling back into JavaScript
     private CallbackContext command;
+
+    // arguments to call with exec()
+    private JSONArray args;
+
+    // actions to be called in exec()
+    private static final int OPEN = 0;
+    private static final int IS_AVAILABLE = 1;
+
+    private final static String [] permissions = { Manifest.permission.GET_ACCOUNTS };
 
     /**
      * Delete externalCacheDirectory on appstart
@@ -83,19 +95,53 @@ public class EmailComposer extends CordovaPlugin {
     public boolean execute (String action, JSONArray args,
                             CallbackContext callback) throws JSONException {
 
+        this.args = args;
         this.command = callback;
 
         if ("open".equalsIgnoreCase(action)) {
-            open(args);
+            if(cordova.hasPermission(Manifest.permission.GET_ACCOUNTS)) {
+                open(args);
+            } else {
+                cordova.requestPermissions(this, OPEN, permissions);
+            }
+
             return true;
         }
 
         if ("isAvailable".equalsIgnoreCase(action)) {
-            isAvailable(args.getString(0));
+            if(cordova.hasPermission(Manifest.permission.GET_ACCOUNTS)) {
+                isAvailable(args.getString(0));
+            } else {
+                cordova.requestPermissions(this, IS_AVAILABLE, permissions);
+            }
+
             return true;
         }
 
         return false;
+    }
+
+    @Override
+    public void onRequestPermissionResult(int requestCode, String[] permissions,
+                                          int[] grantResults) throws JSONException
+    {
+        for(int r:grantResults)
+        {
+            if(r == PackageManager.PERMISSION_DENIED) {
+                Log.d(LOG_TAG, "permission denied");
+                return;
+            }
+        }
+
+        switch(requestCode)
+        {
+            case OPEN:
+                open(this.args);
+                break;
+            case IS_AVAILABLE:
+                isAvailable(this.args.getString(0));
+                break;
+        }
     }
 
     /**
