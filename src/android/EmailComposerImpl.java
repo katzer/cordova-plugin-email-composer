@@ -46,6 +46,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
+import android.util.Patterns;
 
 import static de.appplant.cordova.emailcomposer.EmailComposer.LOG_TAG;
 
