@@ -45,6 +45,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 import static de.appplant.cordova.emailcomposer.EmailComposer.LOG_TAG;
 
@@ -514,8 +515,9 @@ public class EmailComposerImpl {
         AccountManager am  = AccountManager.get(ctx);
 
         try {
+            Pattern mailPattern = Patterns.EMAIL_ADDRESS;
             for (Account account : am.getAccounts()) {
-                if (account.type.endsWith("mail")) {
+                if (mailPattern.matcher(account.name).matches()) {
                     return true;
                 }
             }
