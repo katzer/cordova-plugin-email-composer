@@ -31,23 +31,26 @@
 
 @interface APPEmailComposer ()
 
-@property (nonatomic, retain) CDVInvokedUrlCommand* command;
+@property (nonatomic, strong) CDVInvokedUrlCommand* command;
 
 /**
  * Implements the plugin functionality.
  */
-@property (nonatomic, retain) APPEmailComposerImpl* impl;
+@property (nonatomic, strong) APPEmailComposerImpl* impl;
 
 @end
 
 @implementation APPEmailComposer
+
+@synthesize command;
+@synthesize impl;
 
 #pragma mark -
 #pragma mark Lifecycle
 
 - (void)pluginInitialize
 {
-    _impl = [[APPEmailComposerImpl alloc] init];
+    self.impl = [[APPEmailComposerImpl alloc] init];
 }
 
 #pragma mark -
@@ -63,7 +66,7 @@
 {
     [self.commandDelegate runInBackground:^{
         NSString* scheme = command.arguments[0];
-        NSArray* boolArray = [_impl canSendMail:scheme];
+        NSArray* boolArray = [self.impl canSendMail:scheme];
         CDVPluginResult* result;
 
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
@@ -84,7 +87,7 @@
 {
     NSDictionary* props = command.arguments[0];
 
-    _command = command;
+    self.command = command;
 
     [self.commandDelegate runInBackground:^{
         NSString* scheme = [props objectForKey:@"app"];
@@ -133,7 +136,7 @@
 {
     dispatch_async(dispatch_get_main_queue(), ^{
         MFMailComposeViewController* draft =
-        [_impl mailComposerFromProperties:props delegateTo:self];
+        [self.impl mailComposerFromProperties:props delegateTo:self];
 
         [self.viewController presentViewController:draft
                                           animated:YES
@@ -150,7 +153,7 @@
  */
 - (void) openURLFromProperties:(NSDictionary*)props
 {
-    NSURL* url = [_impl urlFromProperties:props];
+    NSURL* url = [self.impl urlFromProperties:props];
 
     [[UIApplication sharedApplication] openURL:url];
 }
@@ -192,7 +195,7 @@
                                resultWithStatus:CDVCommandStatus_OK];
 
     [self.commandDelegate sendPluginResult:result
-                                callbackId:_command.callbackId];
+                                callbackId:self.command.callbackId];
 }
 
 @end
