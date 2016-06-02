@@ -21,6 +21,7 @@
 
 package de.appplant.cordova.emailcomposer;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 
@@ -59,6 +60,10 @@ public class EmailComposer extends CordovaPlugin {
      */
     @Override
     public void initialize(CordovaInterface cordova, CordovaWebView webView) {
+        if( !cordova.hasPermission(Manifest.permission.GET_ACCOUNTS) ) {
+            String [] permissions = { Manifest.permission.GET_ACCOUNTS };
+            cordova.requestPermissions(this, 0, permissions);
+        }
         super.initialize(cordova, webView);
         impl.cleanupAttachmentFolder(getContext());
     }

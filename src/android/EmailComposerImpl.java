@@ -45,6 +45,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.regex.Pattern;
+import android.util.Patterns;
 
 import static de.appplant.cordova.emailcomposer.EmailComposer.LOG_TAG;
 
@@ -511,20 +513,23 @@ public class EmailComposerImpl {
      * true if available, otherwise false
      */
     private boolean isEmailAccountConfigured (Context ctx) {
+
         AccountManager am  = AccountManager.get(ctx);
 
         try {
-            for (Account account : am.getAccounts()) {
-                if (account.type.endsWith("mail")) {
+            Account[] accounts = am.getAccounts();
+            for (Account account : accounts) {
+                if (account.type.endsWith("com.google")) {
+                    return true;
+                } else if(account.type.endsWith("mail")) {
                     return true;
                 }
             }
-        } catch (Exception e) {
-            Log.e(LOG_TAG, "Missing GET_ACCOUNTS permission.");
-            return true;
-        }
-
-        return false;
+            return false;
+            } catch (Exception e) {
+                Log.e(LOG_TAG, "Missing GET_ACCOUNTS permission.");
+                return true;
+            }
     }
 
     /**
