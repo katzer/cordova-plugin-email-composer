@@ -1,5 +1,5 @@
 /*
-    Copyright 2013-2015 appPlant UG
+    Copyright 2013-2016 appPlant UG
 
     Licensed to the Apache Software Foundation (ASF) under one
     or more contributor license agreements.  See the NOTICE file
@@ -39,6 +39,11 @@ import java.util.List;
 
 @SuppressWarnings("Convert2Diamond")
 public class EmailComposer extends CordovaPlugin {
+
+    /**
+     * The log tag for this plugin
+     */
+    static protected final String LOG_TAG = "EmailComposer";
 
     // Implementation of the plugin.
     private final EmailComposerImpl impl = new EmailComposerImpl();
@@ -90,7 +95,6 @@ public class EmailComposer extends CordovaPlugin {
             return true;
         }
 
-        // Returning false results in a "MethodNotFound" error.
         return false;
     }
 
@@ -108,13 +112,14 @@ public class EmailComposer extends CordovaPlugin {
     private void isAvailable (final String id) {
         cordova.getThreadPool().execute(new Runnable() {
             public void run() {
-                boolean[] available   = impl.canSendMail(id, getContext());
-
+                boolean[] available = impl.canSendMail(id, getContext());
                 List<PluginResult> messages = new ArrayList<PluginResult>();
+
                 messages.add(new PluginResult(PluginResult.Status.OK, available[0]));
                 messages.add(new PluginResult(PluginResult.Status.OK, available[1]));
 
-                PluginResult result = new PluginResult(PluginResult.Status.OK,messages);
+                PluginResult result = new PluginResult(
+                        PluginResult.Status.OK, messages);
 
                 command.sendPluginResult(result);
             }
@@ -133,13 +138,12 @@ public class EmailComposer extends CordovaPlugin {
         String appId     = props.getString("app");
 
         if (!(impl.canSendMail(appId, getContext()))[0]) {
-            LOG.i("EmailComposer",
-                    "Cannot send mail. No client or account found for.");
+            LOG.i(LOG_TAG, "No client or account found for.");
             return;
         }
 
-        Intent draft     = impl.getDraftWithProperties(props, getContext());
-        String header    = props.optString("chooserHeader", "Open with");
+        Intent draft  = impl.getDraftWithProperties(props, getContext());
+        String header = props.optString("chooserHeader", "Open with");
 
         final Intent chooser = Intent.createChooser(draft, header);
         final EmailComposer plugin = this;
@@ -164,8 +168,8 @@ public class EmailComposer extends CordovaPlugin {
      */
     @Override
     public void onActivityResult(int reqCode, int resCode, Intent intent) {
-        if (null != command) {
-            command.success();   
+        if (command != null) {
+            command.success();
         }
     }
 

@@ -1,7 +1,7 @@
 /* globals Windows: true */
 
 /*
-    Copyright 2013-2015 appPlant UG
+    Copyright 2013-2016 appPlant UG
 
     Licensed to the Apache Software Foundation (ASF) under one
     or more contributor license agreements.  See the NOTICE file
@@ -21,6 +21,9 @@
     under the License.
 */
 
+var WinLauncher = Windows.System.Launcher,
+    WinMail     = Windows.ApplicationModel.Email;
+
 /**
  * Verifies if sending emails is supported on the device.
  *
@@ -31,8 +34,8 @@
  * @param {Array} args
  *      Interface arguments
  */
-exports.isAvailable = function (success) {
-    success(true,false);
+exports.isAvailable = function (success, error, args) {
+    success(true);
 };
 
 /**
@@ -46,33 +49,45 @@ exports.isAvailable = function (success) {
  *      Interface arguments
  */
 exports.open = function (success, error, args) {
-    var props = args[0];
+    var props = args[0],
+        impl  = exports.impl;
 
-    if (!(Windows.ApplicationModel.Email==undefined)) {
-        var email = exports.draftUtil.getDraftWithProperties(props);
-
-        Windows.ApplicationModel.Email.EmailManager
-            .showComposeNewEmailAsync(email)
-            .done(function () {
-                if (Debug.debuggerEnabled) {
-                    success();
-                    console.log('degugmode');
-                } else {
-                    Windows.UI.WebUI.WebUIApplication.addEventListener("resuming", function () {
-                        success();
-                    }, false);
-                }
-                
-            });
-    } else {
-        var mailTo = exports.draftUtil.getMailTo(props);
-        Windows.System.Launcher.launchUriAsync(mailTo).then(
-           function (mailToSuccess) {
-               if (mailToSuccess) {
-                   success();
-               }
-           });
-    }
+    if (WinMail) {
+            impl.getDraftWithProperties(props)
+                .then(WinMail.EmailManager.showComposeNewEmailAsync)
+                .done(success, error);
+    } else{
+    
+            function launchFile(launchInfo)
+            {
+                Windows.System.Launcher.launchFileAsync(
+                                launchInfo.file, launchInfo.options).then(
+                   function (launchSuccess) {
+                       launchInfo.close();
+                       if (launchSuccess) {
+                           success();
+                       }
+                   });
+            }
+    
+            function launchUri(launchInfo)
+            {
+                Windows.System.Launcher.launchUriAsync(
+                                launchInfo.uri, launchInfo.options).then(
+                   function (launchSuccess) {
+                       launchInfo.close();
+                       if (launchSuccess) {
+                           success();
+                       }
+                   });
+    
+            }
+    
+            if(impl.supportsEMLFile(props))
+                impl.getEMLFile(props, launchFile);
+            else
+                impl.getMailToUri(props, launchUri);
+        }
 };
 
 require('cordova/exec/proxy').add('EmailComposer', exports);

@@ -1,4 +1,19 @@
 ## ChangeLog
+#### Version 0.8.3 (01.03.2016)
+63 commits including bug fixes and enhancements:
+- [___change:___] New plugin ID: _cordova-plugin-email-composer_
+- [enhancement:] Published on npm
+- [enhancement:] Allowed the chooser header text to be configured (#113)
+- [enhancement:] Plain mailto: support
+- [enhancement:] Specify email client using `app:` flag
+- [enhancement:] More samples in Sample-App
+- [bugfix:] Build issues with iOS and Android
+- [bugfix:] Compatibility with newest OS and cordova platform versions
+- [bugfix:] Crash on iOS when presenting view controller from background (#169)
+- [bugfix:] Crash on iOS when no email account is setup
+- [bugfix:] Resolved issues with attachments on all platforms
+- ...
+
 #### Version 0.8.2 (01.03.2015)
 - Added new namespace `cordova.plugins.email`<br>
   **Note:** The former `plugin.email` namespace is now deprecated and will be removed with the next major release.

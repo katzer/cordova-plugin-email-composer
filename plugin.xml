@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <!--
-    Copyright 2013-2015 appPlant UG
+    Copyright 2013-2016 appPlant UG
 
     Licensed to the Apache Software Foundation (ASF) under one
     or more contributor license agreements.  See the NOTICE file
@@ -20,11 +21,10 @@
     under the License.
 -->
 
-
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
         xmlns:android="http://schemas.android.com/apk/res/android"
-        id="de.appplant.cordova.plugin.email-composer"
-        version="0.8.3dev">
+        id="cordova-plugin-email-composer"
+        version="0.8.3">
 
     <name>EmailComposer</name>
 
@@ -33,13 +33,9 @@
         the editing and sending an email message
     </description>
 
-    <repo>
-        https://github.com/katzer/cordova-plugin-email-composer.git
-    </repo>
+    <repo>https://github.com/katzer/cordova-plugin-email-composer.git</repo>
 
-    <keywords>
-        appplant, email
-    </keywords>
+    <keywords>appplant, email</keywords>
 
     <license>Apache 2.0</license>
 
@@ -64,12 +60,19 @@
             </feature>
         </config-file>
 
+        <config-file target="*-Info.plist" parent="LSApplicationQueriesSchemes">
+            <array>
+                <string>mailto</string>
+            </array>
+        </config-file>
+
         <header-file src="src/ios/APPEmailComposer.h" />
         <source-file src="src/ios/APPEmailComposer.m" />
         <header-file src="src/ios/APPEmailComposerImpl.h" />
         <source-file src="src/ios/APPEmailComposerImpl.m" />
 
-        <framework src="MessageUI.framework" weak="true" />
+        <framework src="MessageUI.framework" />
+        <framework src="MobileCoreServices.framework" />
 
     </platform>
 
@@ -97,7 +100,7 @@
 
     </platform>
 
-	<!-- amazon-fireos -->
+    <!-- amazon-fireos -->
     <platform name="amazon-fireos">
 
         <config-file target="res/xml/config.xml" parent="/*">
@@ -127,13 +130,16 @@
         <js-module src="src/windows/EmailComposerProxy.js" name="EmailComposerProxy">
             <runs />
         </js-module>
-		<js-module src="src/windows/EmailComposerProxyImpl.js" name="EmailComposerProxyImpl">
+        <js-module src="src/windows/EmailComposerProxyImpl.js" name="EmailComposerProxyImpl">
+            <runs />
+        </js-module>
+        <js-module src="src/EmailComposerUtil.js" name="EmailComposerUtil">
             <runs />
         </js-module>
 
     </platform>
 
-	<!-- browser -->
+    <!-- browser -->
     <platform name="browser">
 
         <config-file target="res/xml/config.xml" parent="/*">
@@ -141,9 +147,13 @@
                 <param name="browser-package"
                        value="de.appplant.cordova.emailcomposer.EmailComposer"/>
             </feature>
-		</config-file>
+        </config-file>
 
-		<js-module src="src/browser/EmailComposerProxy.js" name="EmailComposerProxy">
+        <js-module src="src/browser/EmailComposerProxy.js" name="EmailComposerProxy">
+            <runs />
+        </js-module>
+
+        <js-module src="src/EmailComposerUtil.js" name="EmailComposerUtil">
             <runs />
         </js-module>
 

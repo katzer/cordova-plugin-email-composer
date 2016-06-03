@@ -1,5 +1,5 @@
 /*
- Copyright 2013-2015 appPlant UG
+ Copyright 2013-2016 appPlant UG
 
  Licensed to the Apache Software Foundation (ASF) under one
  or more contributor license agreements.  See the NOTICE file
@@ -21,8 +21,10 @@
 
 #import "APPEmailComposer.h"
 #import "APPEmailComposerImpl.h"
-#import "Cordova/NSData+Base64.h"
-#import "Cordova/CDVAvailability.h"
+#import <Cordova/CDVAvailability.h>
+#ifndef __CORDOVA_4_0_0
+    #import <Cordova/NSData+Base64.h>
+#endif
 #import <MobileCoreServices/MobileCoreServices.h>
 
 #include "TargetConditionals.h"
@@ -87,29 +89,17 @@
     [self.commandDelegate runInBackground:^{
         NSString* scheme = [props objectForKey:@"app"];
 
-        if (![_impl canSendMail:scheme]) {
-            NSLog(@"Dont know how to handle %@. Using iMail instead.", scheme);
-            scheme = @"mailto:";
+        if (![self canUseAppleMail:scheme]) {
+            [self openURLFromProperties:props];
+            return;
         }
 
-        // iMail
-        if ([self canUseAppleMail:scheme])
-        {
-            if (TARGET_IPHONE_SIMULATOR && !IsAtLeastiOSVersion(@"8.3"))
-            {
-                [self informAboutIssueWithSimulators];
-                [self execCallback];
-                return;
-            }
-            else
-            {
-                [self presentMailComposerFromProperties:props];
-            }
+        if (TARGET_IPHONE_SIMULATOR) {
+            [self informAboutIssueWithSimulators];
+            [self execCallback];
         }
-        // URL scheme
-        else
-        {
-            [self openURLFromProperties:props];
+        else {
+            [self presentMailComposerFromProperties:props];
         }
     }];
 }
@@ -125,7 +115,7 @@
            didFinishWithResult:(MFMailComposeResult)result
                          error:(NSError*)error
 {
-    [controller dismissViewControllerAnimated:YES completion:nil];
+    [controller dismissViewControllerAnimated:YES completion:NULL];
 
     [self execCallback];
 }
@@ -141,12 +131,15 @@
  */
 - (void) presentMailComposerFromProperties:(NSDictionary*)props
 {
-    MFMailComposeViewController* draft =
-    [_impl mailComposerFromProperties:props delegateTo:self];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        MFMailComposeViewController* draft =
+        [_impl mailComposerFromProperties:props delegateTo:self];
 
-    [self.viewController presentViewController:draft
-                                      animated:YES
-                                    completion:NULL];
+        [self.viewController presentViewController:draft
+                                          animated:YES
+                                        completion:NULL];
+    });
+
 }
 
 /**
@@ -181,11 +174,13 @@
  */
 - (void) informAboutIssueWithSimulators
 {
-    [[[UIAlertView alloc] initWithTitle:@"Email-Composer Plug-in"
-                               message:@"Plug-in cannot run on the iOS8 Simulator.\nPlease downgrade or use a physical device."
-                              delegate:nil
-                     cancelButtonTitle:@"OK"
-                     otherButtonTitles:nil] show];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [[[UIAlertView alloc] initWithTitle:@"Email-Composer"
+                                    message:@"Please use a physical device."
+                                   delegate:NULL
+                          cancelButtonTitle:@"OK"
+                          otherButtonTitles:NULL] show];
+    });
 }
 
 /**
