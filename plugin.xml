@@ -133,6 +133,9 @@
         <js-module src="src/windows/EmailComposerProxyImpl.js" name="EmailComposerProxyImpl">
             <runs />
         </js-module>
+        <js-module src="src/EmailComposerUtil.js" name="EmailComposerUtil">
+            <runs />
+        </js-module>
 
     </platform>
 
@@ -147,6 +150,10 @@
         </config-file>
 
         <js-module src="src/browser/EmailComposerProxy.js" name="EmailComposerProxy">
+            <runs />
+        </js-module>
+
+        <js-module src="src/EmailComposerUtil.js" name="EmailComposerUtil">
             <runs />
         </js-module>
 
