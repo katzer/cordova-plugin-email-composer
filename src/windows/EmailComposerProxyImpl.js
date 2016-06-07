@@ -19,7 +19,7 @@ specific language governing permissions and limitations
 under the License.
 */
 
-var proxy = require('de.appplant.cordova.plugin.email-composer.EmailComposerProxy'),
+var proxy = require('cordova-plugin-email-composer.EmailComposerProxy'),
     impl  = proxy.impl = {},
     WinMail = Windows.ApplicationModel.Email;
 
