@@ -250,8 +250,8 @@ public class EmailComposerImpl {
             return;
 
         draft.setAction(Intent.ACTION_SEND_MULTIPLE)
-             .setType("message/rfc822")
-             .putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris);
+                .setType("message/rfc822")
+                .putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris);
     }
 
     /**
@@ -512,10 +512,10 @@ public class EmailComposerImpl {
      */
     private boolean isEmailAccountConfigured (Context ctx) {
         AccountManager am  = AccountManager.get(ctx);
-
+        CharSequence atSign = "@";
         try {
             for (Account account : am.getAccounts()) {
-                if (account.type.endsWith("mail")) {
+                if (account.name.contains(atSign)) {
                     return true;
                 }
             }
