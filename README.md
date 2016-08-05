@@ -198,7 +198,7 @@ The code below shows how to attach an base64 encoded image which will be added a
 ```javascript
 cordova.plugins.email.open({
     subject:     'Cordova Icon',
-    attachments: 'base64:icon.png//iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAYAAAA6/...'
+    attachments: ['base64:icon.png//iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAYAAAA6...']
 });
 ```
 
