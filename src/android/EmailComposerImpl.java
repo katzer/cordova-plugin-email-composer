@@ -511,11 +511,12 @@ public class EmailComposerImpl {
      * true if available, otherwise false
      */
     private boolean isEmailAccountConfigured (Context ctx) {
+        Pattern emailPattern = Patterns.EMAIL_ADDRESS; 
         AccountManager am  = AccountManager.get(ctx);
 
         try {
             for (Account account : am.getAccounts()) {
-                if (account.type.endsWith("mail")) {
+                if (emailPattern.matcher(account.name).matches()) {
                     return true;
                 }
             }
