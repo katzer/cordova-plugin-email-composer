@@ -21,8 +21,12 @@
 
 package de.appplant.cordova.emailcomposer;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaInterface;
@@ -38,18 +42,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("Convert2Diamond")
-public class EmailComposer extends CordovaPlugin {
+public class EmailComposer extends CordovaPlugin implements ActivityCompat.OnRequestPermissionsResultCallback {
 
     /**
      * The log tag for this plugin
      */
     static protected final String LOG_TAG = "EmailComposer";
 
+    // request code for runtime permission
+    static private final int REQUEST_CODE_ASK_PERMISSIONS = 123;
+
     // Implementation of the plugin.
     private final EmailComposerImpl impl = new EmailComposerImpl();
 
     // The callback context used when calling back into JavaScript
     private CallbackContext command;
+
+    // mail app id
+    private String mailAppId;
+
 
     /**
      * Delete externalCacheDirectory on appstart
@@ -112,18 +123,33 @@ public class EmailComposer extends CordovaPlugin {
     private void isAvailable (final String id) {
         cordova.getThreadPool().execute(new Runnable() {
             public void run() {
-                boolean[] available = impl.canSendMail(id, getContext());
-                List<PluginResult> messages = new ArrayList<PluginResult>();
+                mailAppId = id;
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                    int hasAccountPermission = ContextCompat.checkSelfPermission(getContext(), Manifest.permission.GET_ACCOUNTS);
 
-                messages.add(new PluginResult(PluginResult.Status.OK, available[0]));
-                messages.add(new PluginResult(PluginResult.Status.OK, available[1]));
-
-                PluginResult result = new PluginResult(
-                        PluginResult.Status.OK, messages);
-
-                command.sendPluginResult(result);
+                    if (hasAccountPermission != PackageManager.PERMISSION_GRANTED) {
+                        ActivityCompat.requestPermissions(cordova.getActivity(), new String[] {Manifest.permission.GET_ACCOUNTS}, REQUEST_CODE_ASK_PERMISSIONS);
+                    } else {
+                        checkMailClient();
+                    }
+                } else {
+                    checkMailClient();
+                }
             }
         });
+    }
+
+    private void checkMailClient() {
+        boolean[] available = impl.canSendMail(mailAppId, getContext());
+        List<PluginResult> messages = new ArrayList<PluginResult>();
+
+        messages.add(new PluginResult(PluginResult.Status.OK, available[0]));
+        messages.add(new PluginResult(PluginResult.Status.OK, available[1]));
+
+        PluginResult result = new PluginResult(
+                PluginResult.Status.OK, messages);
+
+        command.sendPluginResult(result);
     }
 
     /**
@@ -170,6 +196,25 @@ public class EmailComposer extends CordovaPlugin {
     public void onActivityResult(int reqCode, int resCode, Intent intent) {
         if (command != null) {
             command.success();
+        }
+    }
+
+    /**
+     * Called when user granted or denied permission
+     * @param requestCode  request code
+     * @param permissions  array of all asked permissions
+     * @param grantResults array of all results
+     */
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_CODE_ASK_PERMISSIONS:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    checkMailClient();
+                }
+                break;
+            default:
+                break;
         }
     }
 

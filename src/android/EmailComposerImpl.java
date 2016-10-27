@@ -64,6 +64,11 @@ public class EmailComposerImpl {
     static private final String ATTACHMENT_FOLDER = "/email_composer";
 
     /**
+     * Account type substring, to check if account is a mail account.
+     */
+    static private final String ACCOUNT_TYPE_IDENTIFIER_SUBSTRING = "mail";
+
+    /**
      * Cleans the attachment folder.
      *
      * @param ctx
@@ -515,7 +520,7 @@ public class EmailComposerImpl {
 
         try {
             for (Account account : am.getAccounts()) {
-                if (account.type.endsWith("mail")) {
+                if (account.type.toLowerCase().contains(ACCOUNT_TYPE_IDENTIFIER_SUBSTRING.toLowerCase())) {
                     return true;
                 }
             }
