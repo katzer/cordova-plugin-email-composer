@@ -518,17 +518,11 @@ class EmailComposerImpl {
         AccountManager am  = AccountManager.get(ctx);
 
         try {
-            for (Account account : am.getAccounts()) {
-                if (account.type.endsWith("mail")) {
-                    return true;
-                }
-            }
+            return am.getAccounts().length > 0;
         } catch (Exception e) {
             Log.e(LOG_TAG, "Missing GET_ACCOUNTS permission.");
             return true;
         }
-
-        return false;
     }
 
     /**
