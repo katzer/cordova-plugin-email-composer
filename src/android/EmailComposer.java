@@ -34,7 +34,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @SuppressWarnings("Convert2Diamond")
@@ -43,7 +45,7 @@ public class EmailComposer extends CordovaPlugin {
     /**
      * The log tag for this plugin
      */
-    static protected final String LOG_TAG = "EmailComposer";
+    static final String LOG_TAG = "EmailComposer";
 
     // Implementation of the plugin.
     private final EmailComposerImpl impl = new EmailComposerImpl();
@@ -120,6 +122,14 @@ public class EmailComposer extends CordovaPlugin {
 
                 PluginResult result = new PluginResult(
                         PluginResult.Status.OK, messages);
+
+                try {
+                    Field field = result.getClass().getDeclaredField("encodedMessage");
+                    field.setAccessible(true);
+                    field.set(result, String.format("%b,%b", available[0], available[1]));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
                 command.sendPluginResult(result);
             }
