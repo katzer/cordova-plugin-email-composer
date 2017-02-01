@@ -518,8 +518,12 @@ class EmailComposerImpl {
         AccountManager am  = AccountManager.get(ctx);
 
         try {
-            for (Account account : am.getAccounts()) {
-                if (account.type.endsWith("mail")) {
+            Account[] accounts = am.getAccounts();
+                for (Account account : accounts) {
+                String type = account.type;
+                if (type.endsWith("com.google")) {
+                    return true; /* for gmail */
+                } else if(type.endsWith("mail")) {
                     return true;
                 }
             }
