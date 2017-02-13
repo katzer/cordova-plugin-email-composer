@@ -21,8 +21,10 @@
 
 package de.appplant.cordova.emailcomposer;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaInterface;
@@ -49,6 +51,14 @@ public class EmailComposer extends CordovaPlugin {
 
     // Implementation of the plugin.
     private final EmailComposerImpl impl = new EmailComposerImpl();
+
+    //Permissions references
+    public static final String GET_ACCOUNTS = Manifest.permission.GET_ACCOUNTS;
+    public static final int ACCOUNTS_REQ_CODE = 0;
+
+    //Reference to current action for use after permissions resolution
+    public static String currentAction = "";
+    private static JSONArray currentArgs = null;
 
     // The callback context used when calling back into JavaScript
     private CallbackContext command;
@@ -86,15 +96,22 @@ public class EmailComposer extends CordovaPlugin {
                             CallbackContext callback) throws JSONException {
 
         this.command = callback;
+        this.currentAction = action;
+        this.currentArgs = args;
 
-        if ("open".equalsIgnoreCase(action)) {
-            open(args);
-            return true;
-        }
+        if(cordova.hasPermission(GET_ACCOUNTS)){
+            if ("open".equalsIgnoreCase(action)) {
+                open(args);
+                return true;
+            }
 
-        if ("isAvailable".equalsIgnoreCase(action)) {
-            isAvailable(args.getString(0));
-            return true;
+            if ("isAvailable".equalsIgnoreCase(action)) {
+                isAvailable(args.getString(0));
+                return true;
+            }
+        }else{
+            getAccountPermissions(ACCOUNTS_REQ_CODE);
+            return false;
         }
 
         return false;
@@ -180,6 +197,35 @@ public class EmailComposer extends CordovaPlugin {
     public void onActivityResult(int reqCode, int resCode, Intent intent) {
         if (command != null) {
             command.success();
+        }
+    }
+
+    public void getAccountPermissions(int requestCode){
+        cordova.requestPermission(this, requestCode, GET_ACCOUNTS);
+    }
+
+    public void onRequestPermissionResult(int requestCode, String[] permissions,
+                                          int[] grantResults) throws JSONException
+    {
+        for(int r:grantResults)
+        {
+            if(r == PackageManager.PERMISSION_DENIED)
+            {
+                this.command.sendPluginResult(new PluginResult(PluginResult.Status.ERROR, "Permission Denied"));
+                return;
+            }
+        }
+        switch(requestCode)
+        {
+            case ACCOUNTS_REQ_CODE:
+                if("open".equalsIgnoreCase(currentAction))
+                {
+                    open(currentArgs);
+                }else if("isAvailable".equalsIgnoreCase(currentAction))
+                {
+                    isAvailable(currentArgs.getString(0));
+                }
+                break;
         }
     }
 
