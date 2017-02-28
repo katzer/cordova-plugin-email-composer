@@ -34,6 +34,7 @@ import android.net.Uri;
 import android.text.Html;
 import android.util.Base64;
 import android.util.Log;
+import android.util.Patterns;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -45,6 +46,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 import static de.appplant.cordova.emailcomposer.EmailComposer.LOG_TAG;
 
@@ -518,8 +520,9 @@ class EmailComposerImpl {
         AccountManager am  = AccountManager.get(ctx);
 
         try {
+            Pattern emailPattern = Patterns.EMAIL_ADDRESS;
             for (Account account : am.getAccounts()) {
-                if (account.type.endsWith("mail")) {
+                if (emailPattern.matcher(account.name).matches()) {
                     return true;
                 }
             }
