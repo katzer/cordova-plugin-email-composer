@@ -89,14 +89,17 @@ exports.isAvailable = function (app, callback, scope) {
  *      The scope of the callback
  */
 exports.open = function (options, callback, scope) {
-    var fn = this.createCallbackFn(callback, scope),
-        me = this;
+    var fn = undefined, me = this;
+
+    if(typeof(callback) == "function")
+        fn = this.createCallbackFn(callback, scope);
+    
 
     options = this.mergeWithDefaults(options || {});
 
     var onAvailable = function (isPossible, withScheme) {
 
-        if (!isPossible)
+        if (!isPossible && fn)
             return fn();
 
         if (!withScheme) {
