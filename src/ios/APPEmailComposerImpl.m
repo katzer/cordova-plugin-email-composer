@@ -48,8 +48,10 @@
 {
     bool canSendMail = [MFMailComposeViewController canSendMail];
     bool withScheme  = false;
-    
-    if (![scheme hasSuffix:@":"]) {
+   
+    if(scheme == [NSNull null]) {
+        scheme = @"mailto:";
+    } else if (![scheme hasSuffix:@":"]) {
         scheme = [scheme stringByAppendingString:@":"];
     }
     
