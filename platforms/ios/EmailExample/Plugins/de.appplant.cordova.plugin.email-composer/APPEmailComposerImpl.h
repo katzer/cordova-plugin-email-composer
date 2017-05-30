@@ -1,1 +1,0 @@
-../../../../../../cordova-plugin-email-composer/src/ios/APPEmailComposerImpl.h

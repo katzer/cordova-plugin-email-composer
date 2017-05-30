@@ -1,6 +1,6 @@
 {
-    "ios": "latest",
-    "android": "latest",
     "windows": "latest",
-    "browser": "latest"
+    "android": "latest",
+    "browser": "latest",
+    "ios": "latest"
 }

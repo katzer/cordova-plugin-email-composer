@@ -42,12 +42,17 @@ var buildOpts = nopt({
     'codeSignIdentity': String,
     'codeSignResourceRules': String,
     'provisioningProfile': String,
+    'developmentTeam': String,
+    'packageType': String,
     'buildConfig' : String,
+    'buildFlag' : [String, Array],
     'noSign' : Boolean
-}, {'-r': '--release'}, args);
+}, { '-r': '--release', 'd' : '--verbose' }, args);
 
 // Make buildOptions compatible with PlatformApi build method spec
 buildOpts.argv = buildOpts.argv.remain;
+
+require('./loggingHelper').adjustLoggerLevel(buildOpts);
 
 new Api().build(buildOpts).done(function() {
         console.log('** BUILD SUCCEEDED **');

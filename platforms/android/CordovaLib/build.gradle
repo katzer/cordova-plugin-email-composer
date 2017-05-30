@@ -21,15 +21,16 @@
 buildscript {
     repositories {
         mavenCentral()
+        jcenter();
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:1.5.0'
+        classpath 'com.android.tools.build:gradle:2.2.3'
     }
 
 }
 
-apply plugin: 'android-library'
+apply plugin: 'com.android.library'
 
 ext {
     apply from: 'cordova.gradle'

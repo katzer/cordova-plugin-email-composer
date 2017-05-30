@@ -1,14 +1,10 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="de.appplant.cordova.plugin.emailcomposer.example" version="0.8.2" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <preference name="loglevel" value="DEBUG" />
     <feature name="Device">
         <param name="android-package" value="org.apache.cordova.device.Device" />
     </feature>
     <feature name="Camera">
         <param name="android-package" value="org.apache.cordova.camera.CameraLauncher" />
-    </feature>
-    <feature name="Toast">
-        <param name="android-package" value="nl.xservices.plugins.Toast" />
     </feature>
     <feature name="EmailComposer">
         <param name="android-package" value="de.appplant.cordova.emailcomposer.EmailComposer" />
@@ -22,5 +18,6 @@
     </author>
     <content src="index.html" />
     <access origin="*" />
+    <preference name="loglevel" value="DEBUG" />
     <preference name="windows-target-version" value="10.0" />
 </widget>

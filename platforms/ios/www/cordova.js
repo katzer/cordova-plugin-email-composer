@@ -1,5 +1,5 @@
 // Platform: ios
-// ded62dda172755defaf75378ed007dc05730ec22
+// a3732cb71d9b1dd590338e8cf44196f366d46da3
 /*
  Licensed to the Apache Software Foundation (ASF) under one
  or more contributor license agreements.  See the NOTICE file
@@ -19,7 +19,7 @@
  under the License.
 */
 ;(function() {
-var PLATFORM_VERSION_BUILD_LABEL = '4.0.1';
+var PLATFORM_VERSION_BUILD_LABEL = '4.3.1';
 // file: src/scripts/require.js
 
 /*jshint -W079 */
@@ -697,8 +697,13 @@ var Channel = function(type, sticky) {
         }
     };
 
-function forceFunction(f) {
-    if (typeof f != 'function') throw "Function required as first argument!";
+function checkSubscriptionArgument(argument) {
+    if (typeof argument !== "function" && typeof argument.handleEvent !== "function") {
+        throw new Error(
+                "Must provide a function or an EventListener object " +
+                "implementing the handleEvent interface."
+        );
+    }
 }
 
 /**
@@ -708,28 +713,39 @@ function forceFunction(f) {
  * and a guid that can be used to stop subscribing to the channel.
  * Returns the guid.
  */
-Channel.prototype.subscribe = function(f, c) {
-    // need a function to call
-    forceFunction(f);
+Channel.prototype.subscribe = function(eventListenerOrFunction, eventListener) {
+    checkSubscriptionArgument(eventListenerOrFunction);
+    var handleEvent, guid;
+
+    if (eventListenerOrFunction && typeof eventListenerOrFunction === "object") {
+        // Received an EventListener object implementing the handleEvent interface
+        handleEvent = eventListenerOrFunction.handleEvent;
+        eventListener = eventListenerOrFunction;
+    } else {
+        // Received a function to handle event
+        handleEvent = eventListenerOrFunction;
+    }
+
     if (this.state == 2) {
-        f.apply(c || this, this.fireArgs);
+        handleEvent.apply(eventListener || this, this.fireArgs);
         return;
     }
 
-    var func = f,
-        guid = f.observer_guid;
-    if (typeof c == "object") { func = utils.close(c, f); }
+    guid = eventListenerOrFunction.observer_guid;
+    if (typeof eventListener === "object") {
+        handleEvent = utils.close(eventListener, handleEvent);
+    }
 
     if (!guid) {
-        // first time any channel has seen this subscriber
+        // First time any channel has seen this subscriber
         guid = '' + nextGuid++;
     }
-    func.observer_guid = guid;
-    f.observer_guid = guid;
+    handleEvent.observer_guid = guid;
+    eventListenerOrFunction.observer_guid = guid;
 
     // Don't add the same handler more than once.
     if (!this.handlers[guid]) {
-        this.handlers[guid] = func;
+        this.handlers[guid] = handleEvent;
         this.numHandlers++;
         if (this.numHandlers == 1) {
             this.onHasSubscribersChange && this.onHasSubscribersChange();
@@ -740,12 +756,20 @@ Channel.prototype.subscribe = function(f, c) {
 /**
  * Unsubscribes the function with the given guid from the channel.
  */
-Channel.prototype.unsubscribe = function(f) {
-    // need a function to unsubscribe
-    forceFunction(f);
+Channel.prototype.unsubscribe = function(eventListenerOrFunction) {
+    checkSubscriptionArgument(eventListenerOrFunction);
+    var handleEvent, guid, handler;
 
-    var guid = f.observer_guid,
-        handler = this.handlers[guid];
+    if (eventListenerOrFunction && typeof eventListenerOrFunction === "object") {
+        // Received an EventListener object implementing the handleEvent interface
+        handleEvent = eventListenerOrFunction.handleEvent;
+    } else {
+        // Received a function to handle event
+        handleEvent = eventListenerOrFunction;
+    }
+
+    guid = handleEvent.observer_guid;
+    handler = this.handlers[guid];
     if (handler) {
         delete this.handlers[guid];
         this.numHandlers--;
@@ -817,7 +841,7 @@ module.exports = channel;
 
 });
 
-// file: /Users/shaz/Documents/Git/Apache/cordova-ios/cordova-js-src/exec.js
+// file: /Users/shazron/Documents/git/apache/cordova-ios/cordova-js-src/exec.js
 define("cordova/exec", function(require, exports, module) {
 
 /*global require, module, atob, document */
@@ -935,9 +959,18 @@ function iOSExec() {
     }
 }
 
+// CB-10530
+function proxyChanged() {
+    var cexec = cordovaExec();
+       
+    return (execProxy !== cexec && // proxy objects are different
+            iOSExec !== cexec      // proxy object is not the current iOSExec
+            );
+}
+
 // CB-10106
 function handleBridgeChange() {
-    if (execProxy !== cordovaExec()) {
+    if (proxyChanged()) {
         var commandString = commandQueue.shift();
         while(commandString) {
             var command = JSON.parse(commandString);
@@ -1536,7 +1569,7 @@ exports.reset();
 
 });
 
-// file: /Users/shaz/Documents/Git/Apache/cordova-ios/cordova-js-src/platform.js
+// file: /Users/shazron/Documents/git/apache/cordova-ios/cordova-js-src/platform.js
 define("cordova/platform", function(require, exports, module) {
 
 module.exports = {
@@ -1818,7 +1851,10 @@ utils.clone = function(obj) {
 
     retVal = {};
     for(i in obj){
-        if(!(i in retVal) || retVal[i] != obj[i]) {
+        // https://issues.apache.org/jira/browse/CB-11522 'unknown' type may be returned in
+        // custom protocol activation case on Windows Phone 8.1 causing "No such interface supported" exception
+        // on cloning.
+        if((!(i in retVal) || retVal[i] != obj[i]) && typeof obj[i] != 'undefined' && typeof obj[i] != 'unknown') {
             retVal[i] = utils.clone(obj[i]);
         }
     }

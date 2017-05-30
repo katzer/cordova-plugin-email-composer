@@ -10,4 +10,8 @@
     <content src="index.html" />
     <access origin="*" />
     <preference name="windows-target-version" value="10.0" />
+    <plugin name="cordova-plugin-camera" spec="https://github.com/apache/cordova-plugin-camera">
+        <variable name="CAMERA_USAGE_DESCRIPTION" value=" " />
+        <variable name="PHOTOLIBRARY_USAGE_DESCRIPTION" value=" " />
+    </plugin>
 </widget>
