@@ -53,16 +53,41 @@ exports.open = function (success, error, args) {
         impl  = exports.impl;
 
     if (WinMail) {
-        impl.getDraftWithProperties(props)
-            .then(WinMail.EmailManager.showComposeNewEmailAsync)
-            .done(success, error);
-    } else {
-        var mailTo = impl.getMailTo(props);
-
-        WinLauncher
-            .launchUriAsync(mailTo)
-            .done(success, error);
-    }
+            impl.getDraftWithProperties(props)
+                .then(WinMail.EmailManager.showComposeNewEmailAsync)
+                .done(success, error);
+    } else{
+    
+            function launchFile(launchInfo)
+            {
+                Windows.System.Launcher.launchFileAsync(
+                                launchInfo.file, launchInfo.options).then(
+                   function (launchSuccess) {
+                       launchInfo.close();
+                       if (launchSuccess) {
+                           success();
+                       }
+                   });
+            }
+    
+            function launchUri(launchInfo)
+            {
+                Windows.System.Launcher.launchUriAsync(
+                                launchInfo.uri, launchInfo.options).then(
+                   function (launchSuccess) {
+                       launchInfo.close();
+                       if (launchSuccess) {
+                           success();
+                       }
+                   });
+    
+            }
+    
+            if(impl.supportsEMLFile(props))
+                impl.getEMLFile(props, launchFile);
+            else
+                impl.getMailToUri(props, launchUri);
+        }
 };
 
 require('cordova/exec/proxy').add('EmailComposer', exports);

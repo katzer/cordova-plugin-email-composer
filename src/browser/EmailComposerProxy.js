@@ -44,31 +44,10 @@ exports.isAvailable = function (success, error, args) {
  *      Interface arguments
  */
 exports.open = function (success, error, args) {
-    var props   = args[0],
-        mailto  = 'mailto:' + props.to,
-        options = '';
+    var props   = args[0];
 
-    if (props.subject !== '') {
-        options = options + '&subject=' + props.subject;
-    }
-
-    if (props.body !== '') {
-        options = options + '&body=' + props.body;
-    }
-
-    if (props.cc !== '') {
-        options = options + '&cc=' + props.cc;
-    }
-
-    if (props.bcc !== '') {
-        options = options + '&bcc=' + props.bcc;
-    }
-
-    if (options !== '') {
-        mailto = mailto + '?' + options.substring(1);
-    }
-
-    window.location.href = mailto;
+    var mailTo = exports.commonUtil.getMailToUri(props);
+    window.location.href = mailTo.uri;
 
     success();
 };
