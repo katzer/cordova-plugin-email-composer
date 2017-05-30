@@ -42,6 +42,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -272,6 +273,8 @@ class EmailComposerImpl {
     private Uri getUriForPath (String path, Context ctx) {
         if (path.startsWith("res:")) {
             return getUriForResourcePath(path, ctx);
+        } else if (path.startsWith("app://")) {
+            return getUriForAppInternalFilePath(path, ctx);
         } else if (path.startsWith("file:///")) {
             return getUriForAbsolutePath(path);
         } else if (path.startsWith("file://")) {
@@ -346,6 +349,49 @@ class EmailComposerImpl {
             if (outStream != null) {
                 safeClose(outStream);
             }
+        }
+
+        return Uri.fromFile(file);
+    }
+
+    /**
+     * The URI for an asset.
+     *
+     * @param path
+     * The given asset path.
+     * @param ctx
+     * The application context.
+     * @return
+     * The URI pointing to the given path.
+     */
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    private Uri getUriForAppInternalFilePath (String path, Context ctx) {
+        String resPath  = path.replaceFirst("app:/", "");
+        String fileName = resPath.substring(resPath.lastIndexOf('/') + 1);
+        File dir        = ctx.getExternalCacheDir();
+
+        if (dir == null) {
+            Log.e("EmailComposer", "Missing external cache dir");
+            return Uri.EMPTY;
+        }
+
+        String storage  = dir.toString() + ATTACHMENT_FOLDER;
+        File file       = new File(storage, fileName);
+
+        new File(storage).mkdir();
+            File privateDir = ctx.getFilesDir();
+        String privatePath = privateDir.getAbsolutePath()+"/.."+resPath;
+
+        try {
+            FileOutputStream outStream = new FileOutputStream(file);
+            InputStream inputStream    = new FileInputStream(privatePath);
+
+            copyFile(inputStream, outStream);
+            outStream.flush();
+            outStream.close();
+        } catch (Exception e) {
+            Log.e("EmailComposer", "File not found: " + privatePath);
+            e.printStackTrace();
         }
 
         return Uri.fromFile(file);
