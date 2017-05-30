@@ -23,6 +23,7 @@
 
 package de.appplant.cordova.emailcomposer;
 
+import android.Manifest;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.content.Context;
@@ -45,10 +46,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.security.Permission;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 import static de.appplant.cordova.emailcomposer.EmailComposer.LOG_TAG;
+import static de.appplant.cordova.emailcomposer.EmailComposer.neededPermission;
 
 /**
  * Implements the interface methods of the plugin.
@@ -252,8 +255,8 @@ class EmailComposerImpl {
             return;
 
         draft.setAction(Intent.ACTION_SEND_MULTIPLE)
-             .setType("message/rfc822")
-             .putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris);
+                .setType("message/rfc822")
+                .putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris);
     }
 
     /**
@@ -518,7 +521,6 @@ class EmailComposerImpl {
      */
     private boolean isEmailAccountConfigured (Context ctx) {
         AccountManager am  = AccountManager.get(ctx);
-
         try {
             Pattern emailPattern = Patterns.EMAIL_ADDRESS;
             for (Account account : am.getAccounts()) {

@@ -237,3 +237,50 @@ exports.registerCallbackForScheme = function(fn) {
 
     document.addEventListener('resume', callback, false);
 };
+
+/**
+* Informs if the app has the needed permission.
+*
+* @param {Function} callback
+* The function to be exec as the callback
+* @param {Object?} scope
+* The callback function's scope
+*/
+exports.hasPermission = function(callback, scope) {
+
+    var fn = this.createCallbackFn(callback, scope);
+
+    if(!navigator.userAgent.toLowerCase().includes('android')) {
+        fn(true);
+        return
+    }
+
+    exec(fn, null, 'EmailComposer','hasPermission', []);
+ };
+
+/**
+* Request permission if not already granted.
+*
+* @param {Function} callback
+* The function to be exec as the callback
+* @param {Object?} scope
+* The callback function's scope
+*/
+
+exports.requestPermission = function(callback, scope) {
+    var fn = this.createCallbackFn(callback, scope)
+
+    if (this._checked) {
+        return this.hasPermission (callback, scope);
+    }
+
+    if(!navigator.userAgent.toLowerCase().includes('android')) {
+    fn(true);
+    return
+   }
+
+    exec(fn, null, 'EmailComposer','requestPermission', []);
+};
+
+
+
