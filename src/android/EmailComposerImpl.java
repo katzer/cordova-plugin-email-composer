@@ -520,6 +520,7 @@ class EmailComposerImpl {
      * true if available, otherwise false
      */
     private boolean isEmailAccountConfigured (Context ctx) {
+        Pattern emailPattern = Patterns.EMAIL_ADDRESS; 
         AccountManager am  = AccountManager.get(ctx);
         try {
             Pattern emailPattern = Patterns.EMAIL_ADDRESS;
