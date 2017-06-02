@@ -19,17 +19,13 @@
 -->
 <html>
     <head>
-        <meta charset="utf-8" />
-        <meta name="format-detection" content="telephone=no" />
-        <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
-        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
-        <link rel="stylesheet" type="text/css" href="css/index.css" />
-        <meta name="msapplication-tap-highlight" content="no" />
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+        <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com ws://echo.websocket.org 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">
+        <meta name="format-detection" content="telephone=no">
+        <meta name="msapplication-tap-highlight" content="no">
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+        <link rel="stylesheet" type="text/css" href="css/index.css">
         <title>Email Plugin</title>
-
-        <style type="text/css">
-
-        </style>
     </head>
     <body>
         <div>
@@ -40,58 +36,41 @@
                     <p class="event received">Device is Ready</p>
                 </div>
             </div>
-
-            <!-- permission -->
-            <h2 class="section" style="padding-top:30px;">Android API 23 (Permission)</h2>
+            <h2 class="section">Permissions</h2>
             <div class="container">
-                <div onclick="hasPermission()">Granted<br/><span>hasPermission()</span></div>
-                <div onclick="requestPermission()">Request<br/><span>requestPermission()</span></div>
+                <a id="granted"      href="#" class="button grey">Granted?</a>
+                <a id="request"      href="#" class="button orange">Request</a>
             </div>
-
-            <!-- account -->
             <h2 class="section">Accounts</h2>
             <div class="container">
-                <div onclick="hasAccount()">Set up?<br/><span>isAvailable()</span></div>
+                <a id="avail"        href="#" class="button grey">Setup?</a>
             </div>
-
-            <!-- native client -->
             <h2 class="section">Mail Client</h2>
             <div class="container">
-                <div onclick="hasMailApp('mailto:')">Installed?<br/><span>isAvailable()</span></div>
-                <div onclick="emptyDraft()">Open<br/><span>open()</span></div>
+                <a id="installed"    href="#" class="button grey">Installed?</a>
+                <a id="open"         href="#" class="button orange">Open</a>
             </div>
-
-            <!-- Open -->
             <h2 class="section">GMail Client</h2>
             <div class="container">
-                <div onclick="hasMailApp('gmail')">Installed?<br/><span>isAvailable (app:gmail)</span></div>
-                <div onclick="emptyDraft('gmail')">Open<br/><span>open (app:gmail)</span></div>
+                <a id="gm-installed" href="#" class="button grey">Installed?</a>
+                <a id="gm-open"      href="#" class="button orange">Open</a>
             </div>
-
-            <!-- Open -->
             <h2 class="section">Body</h2>
             <div class="container">
-                <div onclick="openDraft()">Plain<br/><span>open (to, subject, body)</span></div>
-                <div onclick="openDraft(true)">HTML<br/><span>open (html:true)</span></div>
+                <a id="plain"        href="#" class="button orange">Plain</a>
+                <a id="html"         href="#" class="button orange">HTML</a>
             </div>
-
-            <!-- attachments -->
             <h2 class="section">Attachments</h2>
             <div class="container">
-                <div onclick="sendAttachment()">Assets<br/><span>open (attachments:[])</span></div>
-                <div onclick="chooseAttachment()">Camera<br/><span>open (attachments:[])</span></div>
+                <a id="assets"       href="#" class="button orange">Assets</a>
+                <a id="camera"       href="#" class="button orange">Camera</a>
             </div>
-
-            <!-- copyright -->
             <div class="copyright">
-                © 2013-2016 appPlant
+                © 2013 appPlant<br/>
+                Made with <g-emoji alias="yum" fallback-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f60b.png">😋</g-emoji> from Leipzig
             </div>
         </div>
-
         <script type="text/javascript" src="cordova.js"></script>
-        <script type="text/javascript" src="js/index.js">
-            app.initialize();
-        </script>
-
+        <script type="text/javascript" src="js/index.js"></script>
     </body>
 </html>

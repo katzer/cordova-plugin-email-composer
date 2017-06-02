@@ -1,6 +1,4 @@
 /*
- Copyright 2013-2016 appPlant UG
-
  Licensed to the Apache Software Foundation (ASF) under one
  or more contributor license agreements.  See the NOTICE file
  distributed with this work for additional information
@@ -48,11 +46,11 @@
 {
     bool canSendMail = [MFMailComposeViewController canSendMail];
     bool withScheme  = false;
-    
+
     if (![scheme hasSuffix:@":"]) {
         scheme = [scheme stringByAppendingString:@":"];
     }
-    
+
     scheme = [[scheme stringByAppendingString:@"test@test.de"]
                 stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 
