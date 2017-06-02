@@ -154,6 +154,34 @@ exports.open = function (options, callback, scope) {
 };
 
 /**
+ * Displays the email composer pre-filled with data.
+ *
+ * @param {Object} options
+ *      Different properties of the email like the body, subject
+ * @param {Function} callback
+ *      A callback function to be called with the result
+ * @param {Object?} scope
+ *      The scope of the callback
+ */
+exports.forceOpen = function (options, callback, scope) {
+
+    if (typeof options == 'function') {
+        scope    = callback;
+        callback = options;
+        options  = {};
+    }
+
+    var fn  = this.createCallbackFn(callback, scope);
+    options = this.mergeWithDefaults(options || {});
+
+    if (!isAndroid && options.app != mailto && fn) {
+        this.registerCallbackForScheme(fn);
+    }
+
+    exec(fn, null, 'EmailComposer', 'open', [options]);
+};
+
+/**
  * Adds a new mail app alias.
  *
  * @param {String} alias
