@@ -30,7 +30,19 @@
   "engines": [
     {
       "name": "cordova",
-      "version": ">=3.0.0"
+      "version": ">=6.0.0"
+    },
+    {
+      "name": "cordova-android",
+      "version": ">=5.0.0"
+    },
+    {
+      "name": "cordova-ios",
+      "version": ">=4.0.0"
+    },
+    {
+      "name": "cordova-windows",
+      "version": ">=4.3.0"
     }
   ],
   "author": "Sebastián Katzer",
