@@ -2,27 +2,32 @@
 Cordova Email Plugin - Example
 ==============================
 
+<img height="470px" align="right" src="images/overview.png">
+
 [Cordova][cordova] plugin to access the specific email composition API on various mobile platforms including iOS, Android and Windows Phone.
 
+
 ## Instructions
-[Download][zip] or clone the _example_ branch and run the following command:
 
-```bash
-cordova run [ios|android|windows]
-```
+Clone the _example_ branch:
 
-These will lunch the simulator or any plugged in device and start the example application as seen below in the screenshots. Its also possible to open the project with [Xcode][xcode], [Android Studio][studio] or [Visual Studio][vs].
+    git clone -b example https://github.com/katzer/cordova-plugin-email.git
 
-<p align="center">
-    <img src="images/overview.png"></img>
-</p>
+And then execute:
 
-A click on the _"Draft with attachments"_ button will present the email composition controller to send the draft and for further editing.
+    cordova run [android|browser|ios|windows]
+
+These will lunch the simulator or any plugged in device and start the example application as seen below in the screenshots.
+
+Its also possible to open the project with [Xcode][xcode], [Android Studio][studio] or [Visual Studio][vs].
+
+A click on the _"Open"_ button will open the email client to further edit the draft and finally send to someone.
 
 ```javascript
 cordova.plugins.email.open({
     subject: 'Cordova Icons',
     recipients: 'max@mustermann.de',
+    cc: ['john@doe.com', 'jane@doe.com'],
     attachments: [
         'file://img/logo.png',
         'res://icon.png',
@@ -48,7 +53,9 @@ Please read the plugin's [README][readme] for further requirements and informati
 
 This software is released under the [Apache 2.0 License][apache2_license].
 
-© 2013-2016 appPlant UG, Inc. All rights reserved
+Made with :yum: from Leipzig
+
+© 2017 [appPlant GmbH][appplant]
 
 
 [cordova]: https://cordova.apache.org
@@ -58,4 +65,4 @@ This software is released under the [Apache 2.0 License][apache2_license].
 [studio]: https://developer.android.com/sdk/installing/studio.html
 [vs]: https://www.visualstudio.com
 [apache2_license]: http://opensource.org/licenses/Apache-2.0
-
+[appplant]: www.appplant.de

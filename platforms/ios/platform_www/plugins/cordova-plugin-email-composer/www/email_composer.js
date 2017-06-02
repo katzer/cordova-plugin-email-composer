@@ -1,24 +1,22 @@
 cordova.define("cordova-plugin-email-composer.EmailComposer", function(require, exports, module) {
 /*
-    Copyright 2013-2016 appPlant UG
+ Licensed to the Apache Software Foundation (ASF) under one
+ or more contributor license agreements.  See the NOTICE file
+ distributed with this work for additional information
+ regarding copyright ownership.  The ASF licenses this file
+ to you under the Apache License, Version 2.0 (the
+ "License"); you may not use this file except in compliance
+ with the License.  You may obtain a copy of the License at
 
-    Licensed to the Apache Software Foundation (ASF) under one
-    or more contributor license agreements.  See the NOTICE file
-    distributed with this work for additional information
-    regarding copyright ownership.  The ASF licenses this file
-    to you under the Apache License, Version 2.0 (the
-    "License"); you may not use this file except in compliance
-    with the License.  You may obtain a copy of the License at
+ http://www.apache.org/licenses/LICENSE-2.0
 
-     http://www.apache.org/licenses/LICENSE-2.0
-
-    Unless required by applicable law or agreed to in writing,
-    software distributed under the License is distributed on an
-    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-    KIND, either express or implied.  See the License for the
-    specific language governing permissions and limitations
-    under the License.
-*/
+ Unless required by applicable law or agreed to in writing,
+ software distributed under the License is distributed on an
+ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ KIND, either express or implied.  See the License for the
+ specific language governing permissions and limitations
+ under the License.
+ */
 
 var exec      = require('cordova/exec'),
     isAndroid = navigator.userAgent.toLowerCase().indexOf('android') > -1,
@@ -51,6 +49,42 @@ exports.getDefaults = function () {
 };
 
 /**
+* Informs if the app has the needed permission.
+*
+* @param {Function} callback
+*       The function to be exec as the callback
+* @param {Object?} scope
+*       The callback function's scope
+*/
+exports.hasPermission = function(callback, scope) {
+    var fn = this.createCallbackFn(callback, scope);
+
+    if (!isAndroid)
+        return fn(true);
+
+    exec(fn, null, 'EmailComposer','hasPermission', []);
+ };
+
+/**
+* Request permission if not already granted.
+*
+* @param {Function} callback
+*       The function to be exec as the callback
+* @param {Object?} scope
+*       The callback function's scope
+*/
+exports.requestPermission = function(callback, scope) {
+    var fn = this.createCallbackFn(callback, scope);
+
+    if (!isAndroid) {
+        if (fn) fn(true);
+        return;
+    }
+
+    exec(fn, null, 'EmailComposer','requestPermission', []);
+};
+
+/**
  * Verifies if sending emails is supported on the device.
  *
  * @param {String?} app
@@ -62,19 +96,18 @@ exports.getDefaults = function () {
  */
 exports.isAvailable = function (app, callback, scope) {
 
-    if (typeof callback != 'function'){
+    if (typeof callback != 'function') {
         scope    = null;
         callback = app;
         app      = mailto;
     }
 
-    app = app || mailto;
+    var fn  = this.createCallbackFn(callback, scope);
+        app = app || mailto;
 
     if (this.aliases.hasOwnProperty(app)){
         app = this.aliases[app];
     }
-
-    var fn = this.createCallbackFn(callback, scope);
 
     exec(fn, null, 'EmailComposer', 'isAvailable', [app]);
 };
@@ -90,29 +123,21 @@ exports.isAvailable = function (app, callback, scope) {
  *      The scope of the callback
  */
 exports.open = function (options, callback, scope) {
-    var fn = this.createCallbackFn(callback, scope),
-        me = this;
 
-    options = this.mergeWithDefaults(options || {});
+    if (typeof options == 'function') {
+        scope    = callback;
+        callback = options;
+        options  = {};
+    }
 
-    var onAvailable = function (isPossible, withScheme) {
+    var fn      = this.createCallbackFn(callback, scope);
+        options = this.mergeWithDefaults(options || {});
 
-        if (!isPossible)
-            return fn();
+    if (!isAndroid && options.app != mailto && fn) {
+        this.registerCallbackForScheme(fn);
+    }
 
-        if (!withScheme) {
-            if (window.console) { console.log('Cannot open app'); }
-            options.app = mailto;
-        }
-
-        if (!isAndroid && options.app != mailto) {
-            me.registerCallbackForScheme(fn);
-        }
-
-        exec(fn, null, 'EmailComposer', 'open', [options]);
-    };
-
-    exec(onAvailable, null, 'EmailComposer', 'isAvailable', [options.app]);
+    exec(fn, null, 'EmailComposer', 'open', [options]);
 };
 
 /**
@@ -165,7 +190,6 @@ exports.mergeWithDefaults = function (options) {
 
     if (options.hasOwnProperty('app')) {
         var package = this.aliases[options.app];
-
         options.app = package || options.app;
     }
 
@@ -184,15 +208,14 @@ exports.mergeWithDefaults = function (options) {
             continue;
         }
 
-        if (typeof default_ != typeof custom_) {
+        if (typeof default_ == typeof custom_)
+            continue;
 
-            if (typeof default_ == 'string') {
-                options[key] = custom_.join('');
-            }
-
-            else if (typeof default_ == 'object') {
-                options[key] = [custom_.toString()];
-            }
+        if (typeof default_ == 'string') {
+            options[key] = custom_.join('');
+        } else
+        if (typeof default_ == 'object') {
+            options[key] = [custom_.toString()];
         }
     }
 
@@ -229,7 +252,7 @@ exports.createCallbackFn = function (callbackFn, scope) {
  * Register an Eventlistener on resume-Event to
  * execute callback after open a draft.
  */
-exports.registerCallbackForScheme = function(fn) {
+exports.registerCallbackForScheme = function (fn) {
 
     var callback = function () {
         fn();
@@ -238,52 +261,5 @@ exports.registerCallbackForScheme = function(fn) {
 
     document.addEventListener('resume', callback, false);
 };
-
-/**
-* Informs if the app has the needed permission.
-*
-* @param {Function} callback
-* The function to be exec as the callback
-* @param {Object?} scope
-* The callback function's scope
-*/
-exports.hasPermission = function(callback, scope) {
-
-    var fn = this.createCallbackFn(callback, scope);
-
-    if(!navigator.userAgent.toLowerCase().includes('android')) {
-        fn(true);
-        return
-    }
-
-    exec(fn, null, 'EmailComposer','hasPermission', []);
- };
-
-/**
-* Request permission if not already granted.
-*
-* @param {Function} callback
-* The function to be exec as the callback
-* @param {Object?} scope
-* The callback function's scope
-*/
-
-exports.requestPermission = function(callback, scope) {
-    var fn = this.createCallbackFn(callback, scope)
-
-    if (this._checked) {
-        return this.hasPermission (callback, scope);
-    }
-
-    if(!navigator.userAgent.toLowerCase().includes('android')) {
-    fn(true);
-    return
-   }
-
-    exec(fn, null, 'EmailComposer','requestPermission', []);
-};
-
-
-
 
 });

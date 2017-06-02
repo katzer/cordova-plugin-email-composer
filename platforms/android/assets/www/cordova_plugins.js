@@ -41,15 +41,6 @@ module.exports = [
         ]
     },
     {
-        "id": "cordova-plugin-email-composer.EmailComposer",
-        "file": "plugins/cordova-plugin-email-composer/www/email_composer.js",
-        "pluginId": "cordova-plugin-email-composer",
-        "clobbers": [
-            "cordova.plugins.email",
-            "plugin.email"
-        ]
-    },
-    {
         "id": "cordova-plugin-x-toast.Toast",
         "file": "plugins/cordova-plugin-x-toast/www/Toast.js",
         "pluginId": "cordova-plugin-x-toast",
@@ -61,6 +52,15 @@ module.exports = [
         "id": "cordova-plugin-x-toast.tests",
         "file": "plugins/cordova-plugin-x-toast/test/tests.js",
         "pluginId": "cordova-plugin-x-toast"
+    },
+    {
+        "id": "cordova-plugin-email-composer.EmailComposer",
+        "file": "plugins/cordova-plugin-email-composer/www/email_composer.js",
+        "pluginId": "cordova-plugin-email-composer",
+        "clobbers": [
+            "cordova.plugins.email",
+            "plugin.email"
+        ]
     }
 ];
 module.exports.metadata = 
@@ -69,8 +69,8 @@ module.exports.metadata =
     "cordova-plugin-compat": "1.1.0",
     "cordova-plugin-camera": "2.4.1",
     "cordova-plugin-device": "1.1.6",
-    "cordova-plugin-email-composer": "0.8.3",
-    "cordova-plugin-x-toast": "2.6.0"
+    "cordova-plugin-x-toast": "2.6.0",
+    "cordova-plugin-email-composer": "0.8.3"
 };
 // BOTTOM OF METADATA
 });

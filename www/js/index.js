@@ -96,11 +96,11 @@ var app = {
     },
     // Open draft with plain body
     openPlainDraft: function () {
-        app.openDraft(showToast);
+        app.openDraft(false);
     },
     // Open draft with HTML body
     openRichDraft: function () {
-        app.openDraft(true, showToast);
+        app.openDraft(true);
     },
     // Open draft
     openDraft: function (isHtml) {
@@ -118,7 +118,6 @@ var app = {
             subject: isHtml ? 'Body with HTML and CSS3' : 'Body with plain text',
             body:    app.getBody(isHtml),
             isHTML:  isHtml,
-            app:     'gmail'
         }, showToast);
     },
     // Open draft with attachments
@@ -135,11 +134,11 @@ var app = {
         };
 
         cordova.plugins.email.open({
-            subject:     'Cordova Icons',
-            body:        attachments.map(mapFn).join("\n\n"),
-            attachments: attachments,
-            isHtml:      false,
-            app:         'gmail'
+            subject:       'Cordova Icons',
+            body:          attachments.map(mapFn).join("\n\n"),
+            attachments:   attachments,
+            chooserHeader: 'Öffnen mit',
+            isHtml:        false
         }, showToast);
     },
     // Open draft with a picture taken from cam
@@ -249,7 +248,7 @@ var app = {
 var dialog;
 
 showToast = function (text) {
-    text = text === null ? 'finished or canceled' : text;
+    text = text == null ? 'finished or canceled' : text;
 
     setTimeout(function () {
         if (window.Windows !== undefined) {
@@ -261,7 +260,7 @@ showToast = function (text) {
         else {
             alert(text);
         }
-    }, 100);
+    }, 500);
 };
 
 showWinDialog = function (text) {

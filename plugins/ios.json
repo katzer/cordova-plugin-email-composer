@@ -18,10 +18,10 @@
         "cordova-plugin-device": {
             "PACKAGE_NAME": "de.appplant.cordova.plugin.emailcomposer.example"
         },
-        "cordova-plugin-email-composer": {
+        "cordova-plugin-x-toast": {
             "PACKAGE_NAME": "de.appplant.cordova.plugin.emailcomposer.example"
         },
-        "cordova-plugin-x-toast": {
+        "cordova-plugin-email-composer": {
             "PACKAGE_NAME": "de.appplant.cordova.plugin.emailcomposer.example"
         }
     },
