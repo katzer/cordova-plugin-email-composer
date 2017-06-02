@@ -20,12 +20,10 @@
 #import "APPEmailComposerImpl.h"
 #import <Cordova/CDVAvailability.h>
 #ifndef __CORDOVA_4_0_0
-    #import <Cordova/NSData+Base64.h>
+# import <Cordova/NSData+Base64.h>
 #endif
 #import <MessageUI/MFMailComposeViewController.h>
 #import <MobileCoreServices/MobileCoreServices.h>
-
-#include "TargetConditionals.h"
 
 /**
  * Implements the interface methods of the plugin.
@@ -51,18 +49,15 @@
         scheme = [scheme stringByAppendingString:@":"];
     }
 
+    NSCharacterSet *set = [NSCharacterSet URLFragmentAllowedCharacterSet];
     scheme = [[scheme stringByAppendingString:@"test@test.de"]
-                stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+                stringByAddingPercentEncodingWithAllowedCharacters:set];
 
     NSURL *url = [[NSURL URLWithString:scheme]
                     absoluteURL];
 
     withScheme = [[UIApplication sharedApplication]
                    canOpenURL:url];
-
-    if (TARGET_IPHONE_SIMULATOR && [scheme hasPrefix:@"mailto:"]) {
-        canSendMail = withScheme = true;
-    }
 
     NSArray* resultArray = [NSArray arrayWithObjects:@(canSendMail),@(withScheme), nil];
 

@@ -19,13 +19,6 @@
 
 #import "APPEmailComposer.h"
 #import "APPEmailComposerImpl.h"
-#import <Cordova/CDVAvailability.h>
-#ifndef __CORDOVA_4_0_0
-    #import <Cordova/NSData+Base64.h>
-#endif
-#import <MobileCoreServices/MobileCoreServices.h>
-
-#include "TargetConditionals.h"
 
 @interface APPEmailComposer ()
 
@@ -92,13 +85,7 @@
             return;
         }
 
-        if (TARGET_IPHONE_SIMULATOR) {
-            [self informAboutIssueWithSimulators];
-            [self execCallback];
-        }
-        else {
-            [self presentMailComposerFromProperties:props];
-        }
+        [self presentMailComposerFromProperties:props];
     }];
 }
 
@@ -164,21 +151,6 @@
 - (BOOL) canUseAppleMail:(NSString*) scheme
 {
     return [scheme hasPrefix:@"mailto"];
-}
-
-/**
- * Presents a dialog to the user to inform him about an issue with the iOS8
- * simulator in combination with the mail library.
- */
-- (void) informAboutIssueWithSimulators
-{
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [[[UIAlertView alloc] initWithTitle:@"Email-Composer"
-                                    message:@"Please use a physical device."
-                                   delegate:NULL
-                          cancelButtonTitle:@"OK"
-                          otherButtonTitles:NULL] show];
-    });
 }
 
 /**
