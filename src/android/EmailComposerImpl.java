@@ -464,6 +464,7 @@ class EmailComposerImpl {
      */
     private boolean isEmailAccountConfigured (Context ctx) {
         AccountManager am  = AccountManager.get(ctx);
+
         try {
             Pattern emailPattern = Patterns.EMAIL_ADDRESS;
             for (Account account : am.getAccounts()) {
@@ -472,8 +473,7 @@ class EmailComposerImpl {
                 }
             }
         } catch (Exception e) {
-            Log.e(LOG_TAG, "Missing GET_ACCOUNTS permission.");
-            return true;
+            Log.i(LOG_TAG, "Missing GET_ACCOUNTS permission.");
         }
 
         return false;
