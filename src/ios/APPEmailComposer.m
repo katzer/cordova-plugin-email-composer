@@ -53,10 +53,10 @@
  * @param callbackId
  *      The ID of the JS function to be called with the result
  */
-- (void) isAvailable:(CDVInvokedUrlCommand*)command
+- (void) isAvailable:(CDVInvokedUrlCommand*)cmd
 {
     [self.commandDelegate runInBackground:^{
-        NSString* scheme = command.arguments[0];
+        NSString* scheme = cmd.arguments[0];
         NSArray* boolArray = [self.impl canSendMail:scheme];
         CDVPluginResult* result;
 
@@ -64,7 +64,7 @@
                                      messageAsMultipart:boolArray];
 
         [self.commandDelegate sendPluginResult:result
-                                    callbackId:command.callbackId];
+                                    callbackId:cmd.callbackId];
     }];
 }
 
@@ -74,11 +74,11 @@
  * @param properties
  *      The email properties like subject, body, attachments
  */
-- (void) open:(CDVInvokedUrlCommand*)command
+- (void) open:(CDVInvokedUrlCommand*)cmd
 {
-    NSDictionary* props = command.arguments[0];
+    NSDictionary* props = cmd.arguments[0];
 
-    self.command = command;
+    self.command = cmd;
 
     [self.commandDelegate runInBackground:^{
         NSString* scheme = [props objectForKey:@"app"];
