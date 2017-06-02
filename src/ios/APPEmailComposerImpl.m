@@ -432,18 +432,21 @@
  */
 - (NSString*) getMimeTypeFromFileExtension:(NSString*)extension
 {
-    if (!extension) {
+    if (!extension)
         return nil;
-    }
 
     // Get the UTI from the file's extension
-    CFStringRef ext = (CFStringRef)CFBridgingRetain(extension);
+    CFStringRef ext  = (CFStringRef)CFBridgingRetain(extension);
     CFStringRef type = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, ext, NULL);
 
-    ext = NULL;
-
     // Converting UTI to a mime type
-    return (NSString*)CFBridgingRelease(UTTypeCopyPreferredTagWithClass(type, kUTTagClassMIMEType));
+    NSString *result = (NSString*)
+    CFBridgingRelease(UTTypeCopyPreferredTagWithClass(type, kUTTagClassMIMEType));
+
+    CFRelease(ext);
+    CFRelease(type);
+    
+    return result;
 }
 
 /**
