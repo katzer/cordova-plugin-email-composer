@@ -1,23 +1,21 @@
 /*
-    Copyright 2013-2016 appPlant UG
+ Licensed to the Apache Software Foundation (ASF) under one
+ or more contributor license agreements.  See the NOTICE file
+ distributed with this work for additional information
+ regarding copyright ownership.  The ASF licenses this file
+ to you under the Apache License, Version 2.0 (the
+ "License"); you may not use this file except in compliance
+ with the License.  You may obtain a copy of the License at
 
-    Licensed to the Apache Software Foundation (ASF) under one
-    or more contributor license agreements.  See the NOTICE file
-    distributed with this work for additional information
-    regarding copyright ownership.  The ASF licenses this file
-    to you under the Apache License, Version 2.0 (the
-    "License"); you may not use this file except in compliance
-    with the License.  You may obtain a copy of the License at
+ http://www.apache.org/licenses/LICENSE-2.0
 
-     http://www.apache.org/licenses/LICENSE-2.0
-
-    Unless required by applicable law or agreed to in writing,
-    software distributed under the License is distributed on an
-    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-    KIND, either express or implied.  See the License for the
-    specific language governing permissions and limitations
-    under the License.
-*/
+ Unless required by applicable law or agreed to in writing,
+ software distributed under the License is distributed on an
+ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ KIND, either express or implied.  See the License for the
+ specific language governing permissions and limitations
+ under the License.
+ */
 
 var exec      = require('cordova/exec'),
     isAndroid = navigator.userAgent.toLowerCase().indexOf('android') > -1,
@@ -61,7 +59,7 @@ exports.getDefaults = function () {
  */
 exports.isAvailable = function (app, callback, scope) {
 
-    if (typeof callback != 'function'){
+    if (typeof callback != 'function') {
         scope    = null;
         callback = app;
         app      = mailto;
@@ -69,7 +67,7 @@ exports.isAvailable = function (app, callback, scope) {
 
     app = app || mailto;
 
-    if (this.aliases.hasOwnProperty(app)){
+    if (this.aliases.hasOwnProperty(app)) {
         app = this.aliases[app];
     }
 
@@ -89,6 +87,13 @@ exports.isAvailable = function (app, callback, scope) {
  *      The scope of the callback
  */
 exports.open = function (options, callback, scope) {
+
+    if (typeof options == 'function') {
+        scope    = callback;
+        callback = options;
+        options  = {};
+    }
+
     var fn = this.createCallbackFn(callback, scope),
         me = this;
 
@@ -124,16 +129,6 @@ exports.open = function (options, callback, scope) {
  */
 exports.addAlias = function (alias, package) {
     this.aliases[alias] = package;
-};
-
-/**
- * @depreacted
- */
-exports.isServiceAvailable = function () {
-    console.log('`email.isServiceAvailable` is deprecated.' +
-                ' Please use `email.isAvailable` instead.');
-
-    this.isAvailable.apply(this, arguments);
 };
 
 /**
@@ -225,8 +220,8 @@ exports.createCallbackFn = function (callbackFn, scope) {
 /**
  * @private
  *
- * Register an Eventlistener on resume-Event to
- * execute callback after open a draft.
+ * Register an Eventlistener on resume-Event to execute callback after
+ * open a draft.
  */
 exports.registerCallbackForScheme = function(fn) {
 
@@ -242,45 +237,33 @@ exports.registerCallbackForScheme = function(fn) {
 * Informs if the app has the needed permission.
 *
 * @param {Function} callback
-* The function to be exec as the callback
+*       The function to be exec as the callback
 * @param {Object?} scope
-* The callback function's scope
+*       The callback function's scope
 */
 exports.hasPermission = function(callback, scope) {
 
     var fn = this.createCallbackFn(callback, scope);
 
-    if(!navigator.userAgent.toLowerCase().includes('android')) {
-        fn(true);
-        return
-    }
+    if (!navigator.userAgent.toLowerCase().includes('android'))
+        return fn(true);
 
     exec(fn, null, 'EmailComposer','hasPermission', []);
- };
+};
 
 /**
 * Request permission if not already granted.
 *
 * @param {Function} callback
-* The function to be exec as the callback
+*       The function to be exec as the callback
 * @param {Object?} scope
-* The callback function's scope
+*       The callback function's scope
 */
-
 exports.requestPermission = function(callback, scope) {
-    var fn = this.createCallbackFn(callback, scope)
+    var fn = this.createCallbackFn(callback, scope);
 
-    if (this._checked) {
-        return this.hasPermission (callback, scope);
-    }
-
-    if(!navigator.userAgent.toLowerCase().includes('android')) {
-    fn(true);
-    return
-   }
+    if(!navigator.userAgent.toLowerCase().includes('android'))
+        return fn(true);
 
     exec(fn, null, 'EmailComposer','requestPermission', []);
 };
-
-
-
