@@ -58,11 +58,11 @@ exports.getDefaults = function () {
 exports.hasPermission = function(callback, scope) {
     var fn = this.createCallbackFn(callback, scope);
 
-    if (!navigator.userAgent.toLowerCase().includes('android'))
+    if (!isAndroid)
         return fn(true);
 
     exec(fn, null, 'EmailComposer','hasPermission', []);
-};
+ };
 
 /**
 * Request permission if not already granted.
@@ -75,8 +75,10 @@ exports.hasPermission = function(callback, scope) {
 exports.requestPermission = function(callback, scope) {
     var fn = this.createCallbackFn(callback, scope);
 
-    if(!navigator.userAgent.toLowerCase().includes('android'))
-        return fn(true);
+    if (!isAndroid) {
+        if (fn) fn(true);
+        return;
+    }
 
     exec(fn, null, 'EmailComposer','requestPermission', []);
 };
@@ -99,13 +101,12 @@ exports.isAvailable = function (app, callback, scope) {
         app      = mailto;
     }
 
-    app = app || mailto;
+    var fn  = this.createCallbackFn(callback, scope);
+        app = app || mailto;
 
-    if (this.aliases.hasOwnProperty(app)) {
+    if (this.aliases.hasOwnProperty(app)){
         app = this.aliases[app];
     }
-
-    var fn = this.createCallbackFn(callback, scope);
 
     exec(fn, null, 'EmailComposer', 'isAvailable', [app]);
 };
@@ -128,51 +129,8 @@ exports.open = function (options, callback, scope) {
         options  = {};
     }
 
-    var fn = this.createCallbackFn(callback, scope),
-        me = this;
-
-    options = this.mergeWithDefaults(options || {});
-
-    var onAvailable = function (isPossible, withScheme) {
-
-        if (!isPossible && fn)
-            return fn();
-
-        if (!withScheme) {
-            if (window.console) { console.log('Cannot open app'); }
-            options.app = mailto;
-        }
-
-        if (!isAndroid && options.app != mailto && fn) {
-            me.registerCallbackForScheme(fn);
-        }
-
-        exec(fn, null, 'EmailComposer', 'open', [options]);
-    };
-
-    exec(onAvailable, null, 'EmailComposer', 'isAvailable', [options.app]);
-};
-
-/**
- * Displays the email composer pre-filled with data.
- *
- * @param {Object} options
- *      Different properties of the email like the body, subject
- * @param {Function} callback
- *      A callback function to be called with the result
- * @param {Object?} scope
- *      The scope of the callback
- */
-exports.forceOpen = function (options, callback, scope) {
-
-    if (typeof options == 'function') {
-        scope    = callback;
-        callback = options;
-        options  = {};
-    }
-
-    var fn  = this.createCallbackFn(callback, scope);
-    options = this.mergeWithDefaults(options || {});
+    var fn      = this.createCallbackFn(callback, scope);
+        options = this.mergeWithDefaults(options || {});
 
     if (!isAndroid && options.app != mailto && fn) {
         this.registerCallbackForScheme(fn);
@@ -191,6 +149,16 @@ exports.forceOpen = function (options, callback, scope) {
  */
 exports.addAlias = function (alias, package) {
     this.aliases[alias] = package;
+};
+
+/**
+ * @depreacted
+ */
+exports.isServiceAvailable = function () {
+    console.log('`email.isServiceAvailable` is deprecated.' +
+                ' Please use `email.isAvailable` instead.');
+
+    this.isAvailable.apply(this, arguments);
 };
 
 /**
@@ -221,7 +189,6 @@ exports.mergeWithDefaults = function (options) {
 
     if (options.hasOwnProperty('app')) {
         var package = this.aliases[options.app];
-
         options.app = package || options.app;
     }
 
@@ -240,15 +207,14 @@ exports.mergeWithDefaults = function (options) {
             continue;
         }
 
-        if (typeof default_ != typeof custom_) {
+        if (typeof default_ == typeof custom_)
+            continue;
 
-            if (typeof default_ == 'string') {
-                options[key] = custom_.join('');
-            }
-
-            else if (typeof default_ == 'object') {
-                options[key] = [custom_.toString()];
-            }
+        if (typeof default_ == 'string') {
+            options[key] = custom_.join('');
+        } else
+        if (typeof default_ == 'object') {
+            options[key] = [custom_.toString()];
         }
     }
 
@@ -282,10 +248,10 @@ exports.createCallbackFn = function (callbackFn, scope) {
 /**
  * @private
  *
- * Register an Eventlistener on resume-Event to execute callback after
- * open a draft.
+ * Register an Eventlistener on resume-Event to
+ * execute callback after open a draft.
  */
-exports.registerCallbackForScheme = function(fn) {
+exports.registerCallbackForScheme = function (fn) {
 
     var callback = function () {
         fn();

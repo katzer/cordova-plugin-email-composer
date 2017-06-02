@@ -26,7 +26,6 @@ import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaInterface;
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CordovaWebView;
-import org.apache.cordova.LOG;
 import org.apache.cordova.PluginResult;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -96,7 +95,7 @@ public class EmailComposer extends CordovaPlugin {
         this.command = callback;
 
         if ("open".equalsIgnoreCase(action)) {
-            open(args);
+            open(args.getJSONObject(0));
             return true;
         }
 
@@ -130,8 +129,7 @@ public class EmailComposer extends CordovaPlugin {
     /**
      * Tells if the device has the capability to send emails.
      *
-     * @param id
-     * The app id.
+     * @param id The app id.
      */
     private void isAvailable (final String id) {
         cordova.getThreadPool().execute(new Runnable() {
@@ -153,22 +151,13 @@ public class EmailComposer extends CordovaPlugin {
     /**
      * Sends an intent to the email app.
      *
-     * @param args The email properties like subject or body
+     * @param props The email properties like subject or body
      */
-    private void open (JSONArray args) throws JSONException {
-        JSONObject props = args.getJSONObject(0);
-        String appId     = props.getString("app");
-
-        if (!(impl.canSendMail(appId, getContext()))[0]) {
-            LOG.i(LOG_TAG, "No client or account found for.");
-            command.success();
-            return;
-        }
-
+    private void open (JSONObject props) throws JSONException {
         Intent draft  = impl.getDraftWithProperties(props, getContext());
         String header = props.optString("chooserHeader", "Open with");
 
-        final Intent chooser = Intent.createChooser(draft, header);
+        final Intent chooser       = Intent.createChooser(draft, header);
         final EmailComposer plugin = this;
 
         cordova.getThreadPool().execute(new Runnable() {
@@ -181,7 +170,7 @@ public class EmailComposer extends CordovaPlugin {
     /**
      * Check if the required permissions are granted.
      */
-    private void hasPermission () {
+    private void hasPermission() {
         Boolean hasPermission = cordova.hasPermission(PERMISSION);
 
         PluginResult result = new PluginResult(
@@ -212,7 +201,7 @@ public class EmailComposer extends CordovaPlugin {
      *                    (various data can be attached to Intent "extras").
      */
     @Override
-    public void onActivityResult(int reqCode, int resCode, Intent intent) {
+    public void onActivityResult (int reqCode, int resCode, Intent intent) {
         if (command != null) {
             command.success();
         }
