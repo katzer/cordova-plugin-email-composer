@@ -123,6 +123,11 @@
         MFMailComposeViewController* draft =
         [self.impl mailComposerFromProperties:props delegateTo:self];
 
+        if (!draft) {
+            [self execCallback];
+            return;
+        }
+
         [self.viewController presentViewController:draft
                                           animated:YES
                                         completion:NULL];
