@@ -41,7 +41,7 @@ Or install from local source:
 
 ## ChangeLog
 
-#### Version 0.8.4 (not yet released)
+#### Version 0.8.4 (06.06.2017)
 25 commits including bug fixes and enhancements:
 - [__change__]: Skip availability checks with `email.open()`
 - [__change__]: Upgrade minimum required engine versions 
