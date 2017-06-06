@@ -18,7 +18,8 @@
  */
 
 var exec      = require('cordova/exec'),
-    isAndroid = navigator.userAgent.toLowerCase().indexOf('android') > -1,
+    ua        = navigator.userAgent.toLowerCase(),
+    isAndroid = !window.Windows && ua.includes('android'),
     mailto    = 'mailto:';
 
 /**
@@ -58,8 +59,10 @@ exports.getDefaults = function () {
 exports.hasPermission = function(callback, scope) {
     var fn = this.createCallbackFn(callback, scope);
 
-    if (!isAndroid)
-        return fn(true);
+    if (!isAndroid) {
+        if (fn) fn(true);
+        return;
+    }
 
     exec(fn, null, 'EmailComposer','hasPermission', []);
  };
