@@ -180,6 +180,25 @@ cordova.plugins.email.open({
 ```
 
 
+## Permissions
+
+The plugin might ask for granting permissions like reading email account informations. That's done automatically.
+
+Its possible to request them manually:
+
+```javascript
+cordova.plugins.email.requestPermission(function (granted) {...});
+```
+
+Or check if they have been granted already:
+
+```javascript
+cordova.plugins.email.hasPermission(function (granted) {...});
+```
+
+In case of missing permissions the result of `isAvailable` might be wrong.
+
+
 ## Quirks
 
 ### HTML and CSS on Android
