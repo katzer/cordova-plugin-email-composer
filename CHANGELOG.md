@@ -1,4 +1,17 @@
 ## ChangeLog
+#### Version 0.8.4 (not yet released)
+25 commits including bug fixes and enhancements:
+- [__change__]: Skip availability checks with `email.open()`
+- [__change__]: Upgrade minimum required engine versions 
+- [enhancement]: Treat callback functions as optional
+- [enhancement]: Support for Android API 23 Permission API
+- [enhancement]: Test the account name if they match the email pattern (#180)
+- [enhancement]: Support newest cordova platform versions
+- [enhancement]: Use @synthesize to prevent EXC_BAD_ACCESS errors with non-ARC code (#207)
+- [bugfix]: res:// uri not resolved on cordova-android@6 (6334d0)
+- [bugfix]: Require old plugin id for windows platform (#176)
+- [bugfix]: Memory leak for iOS
+
 #### Version 0.8.3 (01.03.2016)
 63 commits including bug fixes and enhancements:
 - [___change:___] New plugin ID: _cordova-plugin-email-composer_
