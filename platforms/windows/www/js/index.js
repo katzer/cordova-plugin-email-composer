@@ -76,8 +76,8 @@ var app = {
     },
     // Check if mail client exist
     hasMailClient: function () {
-        cordova.plugins.email.isAvailable(function(hasAccount, hasClient) {
-           showToast(hasClient);
+        cordova.plugins.email.isAvailable(function (hasAccount, hasClient) {
+           showToast(hasClient || 'unknown');
         });
     },
     // Open mail client
@@ -87,7 +87,7 @@ var app = {
     // Check if gmail client exist
     hasGmailClient: function () {
         cordova.plugins.email.isAvailable('gmail', function(hasAccount, hasClient) {
-           showToast(hasClient);
+           showToast(hasClient || 'unknown');
         });
     },
     // Open gmail client

@@ -76,8 +76,8 @@ var app = {
     },
     // Check if mail client exist
     hasMailClient: function () {
-        cordova.plugins.email.isAvailable(function(hasAccount, hasClient) {
-           showToast(hasClient);
+        cordova.plugins.email.isAvailable(function (hasAccount, hasClient) {
+           showToast(hasClient || 'unknown');
         });
     },
     // Open mail client
@@ -87,7 +87,7 @@ var app = {
     // Check if gmail client exist
     hasGmailClient: function () {
         cordova.plugins.email.isAvailable('gmail', function(hasAccount, hasClient) {
-           showToast(hasClient);
+           showToast(hasClient || 'unknown');
         });
     },
     // Open gmail client
@@ -117,7 +117,7 @@ var app = {
             bcc:     ['bcc1@email.de', 'bcc2@email.de'],
             subject: isHtml ? 'Body with HTML and CSS3' : 'Body with plain text',
             body:    app.getBody(isHtml),
-            isHTML:  isHtml
+            isHTML:  isHtml,
         }, showToast);
     },
     // Open draft with attachments
@@ -134,10 +134,11 @@ var app = {
         };
 
         cordova.plugins.email.open({
-            subject:     'Cordova Icons',
-            body:        attachments.map(mapFn).join("\n\n"),
-            attachments: attachments,
-            isHtml:      false
+            subject:       'Cordova Icons',
+            body:          attachments.map(mapFn).join("\n\n"),
+            attachments:   attachments,
+            chooserHeader: 'Öffnen mit',
+            isHtml:        false
         }, showToast);
     },
     // Open draft with a picture taken from cam

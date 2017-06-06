@@ -13,6 +13,7 @@
     <engine name="android" spec="latest" />
     <engine name="browser" spec="latest" />
     <engine name="ios" spec="^4.4.0" />
+    <engine name="windows" spec="^5.0.0" />
     <plugin name="cordova-plugin-camera" spec="^2.4.1">
         <variable name="CAMERA_USAGE_DESCRIPTION" value=" " />
         <variable name="PHOTOLIBRARY_USAGE_DESCRIPTION" value=" " />
@@ -26,6 +27,5 @@
         <variable name="PHOTOLIBRARY_USAGE_DESCRIPTION" value=" " />
     </plugin>
     <plugin name="cordova-plugin-x-toast" spec="^2.6.0" />
-    <engine name="windows" spec="latest" />
-    <plugin name="cordova-plugin-email-composer" spec="~0.8.3" />
+    <plugin name="cordova-plugin-email-composer" spec="^0.8.4" />
 </widget>
