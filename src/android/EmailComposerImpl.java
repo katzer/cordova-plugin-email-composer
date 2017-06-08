@@ -87,7 +87,7 @@ class EmailComposerImpl {
         // is possible in general
         boolean isPossible = isEmailAccountConfigured(ctx);
 
-        return new boolean[] { isPossible, withScheme };
+        return new boolean[] { withScheme, isPossible };
     }
 
     /**
