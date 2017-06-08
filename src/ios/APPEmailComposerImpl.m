@@ -112,8 +112,9 @@
     NSArray* to          = [props objectForKey:@"to"];
     NSArray* cc          = [props objectForKey:@"cc"];
     NSArray* bcc         = [props objectForKey:@"bcc"];
-
     NSArray* attachments = [props objectForKey:@"attachments"];
+
+    NSCharacterSet* cs   = [NSCharacterSet URLHostAllowedCharacterSet];
 
     if (![mailto hasSuffix:@":"]) {
         mailto = [mailto stringByAppendingString:@":"];
@@ -123,12 +124,12 @@
               [to componentsJoinedByString:@","]];
 
     if (body.length > 0) {
-        query = [NSString stringWithFormat: @"%@&body=%@",
-                   query, body];
+        query = [NSString stringWithFormat: @"%@&body=%@", query,
+                 [body stringByAddingPercentEncodingWithAllowedCharacters:cs]];
     }
     if (subject.length > 0) {
-        query = [NSString stringWithFormat: @"%@&subject=%@",
-                   query, body];
+        query = [NSString stringWithFormat: @"%@&subject=%@", query,
+                 [subject stringByAddingPercentEncodingWithAllowedCharacters:cs]];
     }
 
     if (cc.count > 0) {
@@ -151,7 +152,7 @@
 
     mailto = [mailto stringByAppendingString:query];
 
-    return [[NSURL URLWithString:mailto] absoluteURL];
+    return [NSURL URLWithString:mailto];
 }
 
 #pragma mark -
