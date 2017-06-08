@@ -32,7 +32,7 @@ exports.aliases = {
 /**
  * List of all available options with their default value.
  *
- * @return {Object}
+ * @return [ Object ]
  */
 exports.getDefaults = function () {
     return {
@@ -49,13 +49,13 @@ exports.getDefaults = function () {
 };
 
 /**
-* Informs if the app has the needed permission.
-*
-* @param {Function} callback
-*       The function to be exec as the callback
-* @param {Object?} scope
-*       The callback function's scope
-*/
+ * Informs if the app has the needed permission.
+ *
+ * @param [ Function ] callback The callback function.
+ * @param [ Object ]   scope    The scope of the callback.
+ *
+ * @return [ Void ]
+ */
 exports.hasPermission = function(callback, scope) {
     var fn = this.createCallbackFn(callback, scope);
 
@@ -68,13 +68,13 @@ exports.hasPermission = function(callback, scope) {
  };
 
 /**
-* Request permission if not already granted.
-*
-* @param {Function} callback
-*       The function to be exec as the callback
-* @param {Object?} scope
-*       The callback function's scope
-*/
+ * Request permission if not already granted.
+ *
+ * @param [ Function ] callback The callback function.
+ * @param [ Object ]   scope    The scope of the callback.
+ *
+ * @return [ Void ]
+ */
 exports.requestPermission = function(callback, scope) {
     var fn = this.createCallbackFn(callback, scope);
 
@@ -89,12 +89,12 @@ exports.requestPermission = function(callback, scope) {
 /**
  * Verifies if sending emails is supported on the device.
  *
- * @param {String?} app
- *      An optional app id or uri scheme. Defaults to mailto.
- * @param {Function} callback
- *      A callback function to be called with the result
- * @param {Object} scope
- *      The scope of the callback
+ * @param [ String ]   app      An optional app id or uri scheme.
+ *                              Defaults to mailto.
+ * @param [ Function ] callback The callback function.
+ * @param [ Object ]   scope    The scope of the callback.
+ *
+ * @return [ Void ]
  */
 exports.isAvailable = function (app, callback, scope) {
 
@@ -107,7 +107,7 @@ exports.isAvailable = function (app, callback, scope) {
     var fn  = this.createCallbackFn(callback, scope);
         app = app || mailto;
 
-    if (this.aliases.hasOwnProperty(app)){
+    if (this.aliases.hasOwnProperty(app)) {
         app = this.aliases[app];
     }
 
@@ -115,14 +115,45 @@ exports.isAvailable = function (app, callback, scope) {
 };
 
 /**
+ * Verifies if sending emails is supported on the device.
+ *
+ * @param [ String ]   app      An optional app id or uri scheme.
+ *                              Defaults to mailto.
+ * @param [ Function ] callback The callback function.
+ * @param [ Object ]   scope    The scope of the callback.
+ *
+ * @return [ Void ]
+ */
+exports.isAvailable2 = function (app, callback, scope) {
+
+    if (typeof callback != 'function') {
+        scope    = null;
+        callback = app;
+        app      = mailto;
+    }
+
+    var fn  = this.createCallbackFn(callback, scope), fn2;
+        app = app || mailto;
+
+    if (this.aliases.hasOwnProperty(app)) {
+        app = this.aliases[app];
+    }
+
+    if (fn) {
+        fn2 = function (a, b) { fn(b, a); };
+    }
+
+    exec(fn2, null, 'EmailComposer', 'isAvailable', [app]);
+};
+
+/**
  * Displays the email composer pre-filled with data.
  *
- * @param {Object} options
- *      Different properties of the email like the body, subject
- * @param {Function} callback
- *      A callback function to be called with the result
- * @param {Object?} scope
- *      The scope of the callback
+ * @param [ Object ]   options  The email properties like the body,...
+ * @param [ Function ] callback The callback function.
+ * @param [ Object ]   scope    The scope of the callback.
+ *
+ * @return [ Void ]
  */
 exports.open = function (options, callback, scope) {
 
@@ -145,23 +176,13 @@ exports.open = function (options, callback, scope) {
 /**
  * Adds a new mail app alias.
  *
- * @param {String} alias
- *      The alias name
- * @param {String} package
- *      The package name
+ * @param [ String ] alias   The alias name.
+ * @param [ String ] package The package name.
+ *
+ * @return [ Void ]
  */
 exports.addAlias = function (alias, package) {
     this.aliases[alias] = package;
-};
-
-/**
- * @depreacted
- */
-exports.isServiceAvailable = function () {
-    console.log('`email.isServiceAvailable` is deprecated.' +
-                ' Please use `email.isAvailable` instead.');
-
-    this.isAvailable.apply(this, arguments);
 };
 
 /**
@@ -176,12 +197,9 @@ exports.openDraft = function () {
  *
  * Merge settings with default values.
  *
- * @param {Object} options
- *      The custom options
+ * @param [ Object ] options The custom options
  *
- * @retrun {Object}
- *      Default values merged
- *      with custom values
+ * @retrun [ Object ] Default values merged with custom values.
  */
 exports.mergeWithDefaults = function (options) {
     var defaults = this.getDefaults();
@@ -230,21 +248,18 @@ exports.mergeWithDefaults = function (options) {
  * Creates a callback, which will be executed
  * within a specific scope.
  *
- * @param {Function} callbackFn
- *      The callback function
- * @param {Object} scope
- *      The scope for the function
+ * @param [ Function ] callback The callback function.
+ * @param [ Object ]   scope    The scope for the function.
  *
- * @return {Function}
- *      The new callback function
+ * @return [ Function ] The new callback function
  */
-exports.createCallbackFn = function (callbackFn, scope) {
+exports.createCallbackFn = function (callback, scope) {
 
-    if (typeof callbackFn != 'function')
+    if (typeof callback != 'function')
         return;
 
     return function () {
-        callbackFn.apply(scope || this, arguments);
+        callback.apply(scope || this, arguments);
     };
 };
 
@@ -253,6 +268,8 @@ exports.createCallbackFn = function (callbackFn, scope) {
  *
  * Register an Eventlistener on resume-Event to
  * execute callback after open a draft.
+ *
+ * @return [ Void ]
  */
 exports.registerCallbackForScheme = function (fn) {
 

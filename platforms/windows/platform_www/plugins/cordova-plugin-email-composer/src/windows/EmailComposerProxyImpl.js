@@ -25,10 +25,9 @@ var proxy = require('cordova-plugin-email-composer.EmailComposerProxy'),
 /**
  * The Email with the containing properties.
  *
- * @param {Object} props
- *      The email properties like subject or body
- * @return {Windows.ApplicationModel.Email.EmailMessage}
- *      The resulting email draft
+ * @param [ Object ] props Properties like subject.
+ *
+ * @return [ Email.EmailMessage ]
  */
 impl.getDraftWithProperties = function (props) {
     var me = this;
@@ -55,6 +54,13 @@ impl.getDraftWithProperties = function (props) {
     });
 };
 
+/**
+ * Construct a mailto: string based on the provided properties.
+ *
+ * @param [ Object ] props Properties like subject.
+ *
+ * @return [ Windows.Foundation.Uri ]
+ */
 impl.getMailTo = function (props) {
     // The URI to launch
     var uriToLaunch = "mailto:" + props.to;
@@ -86,10 +92,10 @@ impl.getMailTo = function (props) {
 /**
  * Setter for the subject.
  *
- * @param {String} subject
- *      The subject
- * @param {Windows.ApplicationModel.Email.EmailMessage} draft
- *      The draft
+ * @param [ String ]             subject
+ * @param [ Email.EmailMessage ] draft
+ *
+ * @return [ Void ]
  */
 impl.setSubject = function (subject, draft) {
     draft.subject = subject;
@@ -98,13 +104,11 @@ impl.setSubject = function (subject, draft) {
 /**
  * Setter for the body.
  *
- * @param {String} body
- *      The body
- * @param isHTML
- *      Indicates the encoding
- *      (HTML or plain text)
- * @param {Windows.ApplicationModel.Email.EmailMessage} draft
- *      The draft
+ * @param [ String ]  body
+ * @param [ Boolean ] isHTML Indicates the encoding (HTML or plain text)
+ * @param [ Email.EmailMessage ] draft
+ *
+ * @return [ Void ]
  */
 impl.setBody = function (body, isHTML, draft) {
     draft.body = body;
@@ -113,10 +117,10 @@ impl.setBody = function (body, isHTML, draft) {
 /**
  * Setter for the recipients.
  *
- * @param {String[]} recipients
- *      List of mail addresses
- * @param {Windows.ApplicationModel.Email.EmailMessage} draft
- *      The draft.to / *.cc / *.bcc
+ * @param [ Array<String> ]      recipients List of emails
+ * @param [ Email.EmailMessage ] draft
+ *
+ * @return [ Void ]
  */
 impl.setRecipients = function (recipients, draft) {
     recipients.forEach(function (address) {
@@ -127,10 +131,10 @@ impl.setRecipients = function (recipients, draft) {
 /**
  * Setter for the attachments.
  *
- * @param {String[]} attachments
- *      List of URIs
- * @param {Windows.ApplicationModel.Email.EmailMessage} draft
- *      The draft
+ * @param [ Array<String> ]      attachments List of uris
+ * @param [ Email.EmailMessage ] draft
+ *
+ * @return [ Void ]
  */
 impl.setAttachments = function (attachments, draft) {
     var promises = [], me = this;
@@ -154,10 +158,9 @@ impl.setAttachments = function (attachments, draft) {
 /**
  * The URI for an attachment path.
  *
- * @param {String} path
- *      The given path to the attachment
- * @return
- *      The URI pointing to the given path
+ * @param [ String ] path The path to the attachment.
+ *
+ * @return [ Windows.Foundation.Uri ]
  */
 impl.getUriForPath = function (path) {
     var me = this;
@@ -180,10 +183,9 @@ impl.getUriForPath = function (path) {
 /**
  * The URI for a file.
  *
- * @param {String} path
- *      The given absolute path
- * @return
- *      The URI pointing to the given path
+ * @param [ String ] path Absolute path to the attachment.
+ *
+ * @return [ Windows.Foundation.Uri ]
  */
 impl.getUriForAbsolutePath = function (path) {
     return new Windows.Foundation.Uri(path);
@@ -192,10 +194,9 @@ impl.getUriForAbsolutePath = function (path) {
 /**
  * The URI for an asset.
  *
- * @param {String} path
- *      The given asset path
- * @return
- *      The URI pointing to the given path
+ * @param [ String ] path Asset path to the attachment.
+ *
+ * @return [ Windows.Foundation.Uri ]
  */
 impl.getUriForAssetPath = function (path) {
     var resPath = path.replace('file:/', '/www');
@@ -206,10 +207,9 @@ impl.getUriForAssetPath = function (path) {
 /**
  * The URI for a resource.
  *
- * @param {String} path
- *      The given relative path
- * @return
- *      The URI pointing to the given path
+ * @param [ String ] path Relative path to the attachment.
+ *
+ * @return [ Windows.Foundation.Uri ]
  */
 impl.getUriForResourcePath = function (path) {
     var resPath = path.replace('res:/', '/images');
@@ -220,10 +220,9 @@ impl.getUriForResourcePath = function (path) {
 /**
  * The URI for a path.
  *
- * @param {String} resPath
- *      The given relative path
- * @return
- *      The URI pointing to the given path
+ * @param [ String ] path Relative path to the attachment.
+ *
+ * @return [ Windows.Foundation.Uri ]
  */
 impl.getUriForPathUtil = function (resPath) {
     var rawUri = 'ms-appx:' + '//' + resPath;
@@ -234,10 +233,9 @@ impl.getUriForPathUtil = function (resPath) {
 /**
  * The URI for a base64 encoded content.
  *
- * @param {String} content
- *      The given base64 encoded content
- * @return
- *      The URI including the given content
+ * @param [ String ] content Base64 encoded content.
+ *
+ * @return [ Windows.Foundation.Uri ]
  */
 impl.getUriFromBase64 = function (content) {
     return new WinJS.Promise(function (complete) {

@@ -15,7 +15,7 @@ Clone the _example_ branch:
 
 And then execute:
 
-    cordova run [android|browser|ios|windows]
+    cordova run [android|browser|ios|osx|windows]
 
 These will lunch the simulator or any plugged in device and start the example application as seen below in the screenshots.
 

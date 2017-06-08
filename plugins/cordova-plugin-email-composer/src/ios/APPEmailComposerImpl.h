@@ -21,36 +21,12 @@
 
 @interface APPEmailComposerImpl : NSObject
 
-/**
- * Checks if the mail composer is able to send mails and if an app is available
- * to handle the specified scheme.
- *
- * @param scheme
- * An URL scheme, that defaults to 'mailto:
- */
+// Checks if the mail composer is able to send mails
 - (NSArray*) canSendMail:(NSString*)scheme;
-
-/**
- * Instantiates an email composer view.
- *
- * @param properties
- * The email properties like subject, body, attachments
- * @param delegateTo
- * The mail composition view controller’s delegate.
- * @return
- * The configured email composer view
- */
+// Creates an mailto-url-sheme
+- (NSURL*) urlFromProperties:(NSDictionary*)props;
+// Instantiates an email composer view
 - (MFMailComposeViewController*) mailComposerFromProperties:(NSDictionary*)props
                                                  delegateTo:(id)receiver;
-
-/**
- * Creates an mailto-url-sheme.
- *
- * @param properties
- * The email properties like subject, body, attachments
- * @return
- * The configured mailto-sheme
- */
-- (NSURL*) urlFromProperties:(NSDictionary*)props;
 
 @end

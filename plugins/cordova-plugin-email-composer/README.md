@@ -15,6 +15,7 @@ Using this interface does not guarantee immediate delivery of the corresponding 
 - __Android / Amazon FireOS__
 - __Browser__
 - __iOS__
+- __OSX__
 - __Windows__
 
 
@@ -37,29 +38,6 @@ Or install the latest head version:
 Or install from local source:
 
     $ cordova plugin add cordova-plugin-email-composer --searchpath <path>
-
-
-## ChangeLog
-
-#### Version 0.8.4 (06.06.2017)
-25 commits including bug fixes and enhancements:
-- [__change__]: Skip availability checks with `email.open()`
-- [__change__]: Upgrade minimum required engine versions 
-- [enhancement]: Treat callback functions as optional
-- [enhancement]: Support for Android API 23 Permission API
-- [enhancement]: Test the account name if they match the email pattern (#180)
-- [enhancement]: Support newest cordova platform versions
-- [enhancement]: Use @synthesize to prevent EXC_BAD_ACCESS errors with non-ARC code (#207)
-- [bugfix]: res:// uri not resolved on cordova-android@6 (6334d0)
-- [bugfix]: Require old plugin id for windows platform (#176)
-- [bugfix]: Memory leak for iOS
-- ...
-
-#### Known issues
-
-- _\<img\>_ tags do not work on Android.
-- Callbacks for windows platform are called immediately.
-- _isAvailable_ does always return _true_ for windows platform.
 
 
 ## Usage
@@ -178,6 +156,25 @@ cordova.plugins.email.open({
     ]
 });
 ```
+
+
+## Permissions
+
+The plugin might ask for granting permissions like reading email account informations. That's done automatically.
+
+Its possible to request them manually:
+
+```javascript
+cordova.plugins.email.requestPermission(function (granted) {...});
+```
+
+Or check if they have been granted already:
+
+```javascript
+cordova.plugins.email.hasPermission(function (granted) {...});
+```
+
+In case of missing permissions the result of `isAvailable` might be wrong.
 
 
 ## Quirks

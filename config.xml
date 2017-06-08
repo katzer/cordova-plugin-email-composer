@@ -27,5 +27,6 @@
         <variable name="PHOTOLIBRARY_USAGE_DESCRIPTION" value=" " />
     </plugin>
     <plugin name="cordova-plugin-x-toast" spec="^2.6.0" />
-    <plugin name="cordova-plugin-email-composer" spec="^0.8.4" />
+    <engine name="osx" spec="latest" />
+    <plugin name="cordova-plugin-email-composer" spec="~0.8.5-dev" />
 </widget>

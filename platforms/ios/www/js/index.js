@@ -238,7 +238,7 @@ var app = {
         ];
 
         if (!isHtml) {
-            return "\nHello,\n\nthis is just a plain text email body!";
+            return "Hello,\n\nthis is just a plain text email body!";
         }
 
         return css.concat(html);
@@ -248,13 +248,14 @@ var app = {
 var dialog;
 
 showToast = function (text) {
-    text = text == null ? 'finished or canceled' : text;
+    var isMac = navigator.userAgent.toLowerCase().includes('macintosh');
+        text  = text || 'finished or canceled';
 
     setTimeout(function () {
         if (window.Windows !== undefined) {
             showWinDialog(text);
         } else
-        if (window.plugins && window.plugins.toast) {
+        if (!isMac && window.plugins && window.plugins.toast) {
             window.plugins.toast.showShortBottom(String(text));
         }
         else {

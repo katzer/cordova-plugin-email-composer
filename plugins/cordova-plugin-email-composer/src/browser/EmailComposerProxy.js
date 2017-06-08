@@ -20,26 +20,24 @@
 /**
  * Verifies if sending emails is supported on the device.
  *
- * @param {Function} success
- *      Success callback function
- * @param {Function} error
- *      Error callback function
- * @param {Array} args
- *      Interface arguments
+ * @param [ Function ] success Success callback
+ * @param [ Function ] error   Error callback
+ * @param [ Array ]    args    Interface arguments
+ *
+ * @return [ Void ]
  */
 exports.isAvailable = function (success, error, args) {
-    success(true,false);
+    success(true, false);
 };
 
 /**
  * Displays the email composer pre-filled with data.
  *
- * @param {Function} success
- *      Success callback function
- * @param {Function} error
- *      Error callback function
- * @param {Array} args
- *      Interface arguments
+ * @param [ Function ] success Success callback
+ * @param [ Function ] error   Error callback
+ * @param [ Array ]    args    Interface arguments
+ *
+ * @return [ Void ]
  */
 exports.open = function (success, error, args) {
     var props   = args[0],
