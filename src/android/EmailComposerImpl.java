@@ -46,9 +46,6 @@ import java.util.regex.Pattern;
 
 import static de.appplant.cordova.emailcomposer.EmailComposer.LOG_TAG;
 
-/**
- * Implements the interface methods of the plugin.
- */
 class EmailComposerImpl {
 
     // The default mailto: scheme.
@@ -104,7 +101,7 @@ class EmailComposerImpl {
             throws JSONException {
 
         Intent mail = getEmailIntent();
-        String app  = params.optString("app", null);
+        String app  = params.optString("app", MAILTO_SCHEME);
 
         if (params.has("subject"))
             setSubject(params.getString("subject"), mail);
@@ -211,7 +208,7 @@ class EmailComposerImpl {
 
         for (int i = 0; i < attachments.length(); i++) {
             Uri uri = getUriForPath(attachments.getString(i), ctx);
-            uris.add(uri);
+            if (uri != null) uris.add(uri);
         }
 
         if (uris.isEmpty())
@@ -219,7 +216,14 @@ class EmailComposerImpl {
 
         draft.setAction(Intent.ACTION_SEND_MULTIPLE)
                 .setType("message/rfc822")
-                .putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris);
+                .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                .putExtra(Intent.EXTRA_STREAM, uris);
+
+        if (uris.size() > 1)
+            return;
+
+        draft.setAction(Intent.ACTION_SEND)
+                .putExtra(Intent.EXTRA_STREAM, uris.get(0));
     }
 
     /**
