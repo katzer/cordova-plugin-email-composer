@@ -27,7 +27,7 @@
  * @return [ Void ]
  */
 exports.isAvailable = function (success, error, args) {
-    success(true,false);
+    success(true, false);
 };
 
 /**

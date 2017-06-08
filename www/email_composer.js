@@ -107,11 +107,43 @@ exports.isAvailable = function (app, callback, scope) {
     var fn  = this.createCallbackFn(callback, scope);
         app = app || mailto;
 
-    if (this.aliases.hasOwnProperty(app)){
+    if (this.aliases.hasOwnProperty(app)) {
         app = this.aliases[app];
     }
 
     exec(fn, null, 'EmailComposer', 'isAvailable', [app]);
+};
+
+/**
+ * Verifies if sending emails is supported on the device.
+ *
+ * @param [ String ]   app      An optional app id or uri scheme.
+ *                              Defaults to mailto.
+ * @param [ Function ] callback The callback function.
+ * @param [ Object ]   scope    The scope of the callback.
+ *
+ * @return [ Void ]
+ */
+exports.isAvailable2 = function (app, callback, scope) {
+
+    if (typeof callback != 'function') {
+        scope    = null;
+        callback = app;
+        app      = mailto;
+    }
+
+    var fn  = this.createCallbackFn(callback, scope), fn2;
+        app = app || mailto;
+
+    if (this.aliases.hasOwnProperty(app)) {
+        app = this.aliases[app];
+    }
+
+    if (fn) {
+        fn2 = function (a, b) { fn(b, a); };
+    }
+
+    exec(fn2, null, 'EmailComposer', 'isAvailable', [app]);
 };
 
 /**
