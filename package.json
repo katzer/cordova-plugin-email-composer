@@ -41,10 +41,6 @@
       "version": ">=4.0.0"
     },
     {
-      "name": "cordova-osx",
-      "version": ">=10.8.0"
-    },
-    {
       "name": "cordova-windows",
       "version": ">=4.3.0"
     }
