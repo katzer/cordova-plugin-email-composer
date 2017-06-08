@@ -19,7 +19,6 @@
 
 #import "APPEmailComposerImpl.h"
 #import <Cordova/CDVAvailability.h>
-#import <Cordova/NSData+Base64.h>
 #import <MessageUI/MFMailComposeViewController.h>
 #import <MobileCoreServices/MobileCoreServices.h>
 
