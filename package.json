@@ -7,6 +7,7 @@
     "platforms": [
       "ios",
       "android",
+      "osx",
       "amazon-fireos",
       "windows",
       "browser"
@@ -22,6 +23,7 @@
     "cordova",
     "ecosystem:cordova",
     "cordova-ios",
+    "cordova-osx",
     "cordova-android",
     "cordova-amazon-fireos",
     "cordova-windows",
