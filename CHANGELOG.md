@@ -1,7 +1,7 @@
 
 ## ChangeLog
 
-#### Version 0.8.5 (not yet released)
+#### Version 0.8.5 (09.06.2017)
 10 commits including bug fixes and enhancements:
 - [enhancement]: Support for osx platform
 - [enhancement]: Added `isAvailable2` which works equal except the callback args are in reverse order.
