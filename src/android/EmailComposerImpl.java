@@ -314,14 +314,11 @@ class EmailComposerImpl {
     }
 
     /**
-     * The URI for an asset.
+     * The URI for an internal file.
      *
-     * @param path
-     * The given asset path.
-     * @param ctx
-     * The application context.
-     * @return
-     * The URI pointing to the given path.
+     * @param path The given asset path.
+     * @param ctx  The application context.
+     * @return     The URI pointing to the given path.
      */
     @SuppressWarnings("ResultOfMethodCallIgnored")
     private Uri getUriForAppInternalFilePath (String path, Context ctx) {
@@ -338,7 +335,7 @@ class EmailComposerImpl {
         File file       = new File(storage, fileName);
 
         new File(storage).mkdir();
-            File privateDir = ctx.getFilesDir();
+        File privateDir    = ctx.getFilesDir();
         String privatePath = privateDir.getAbsolutePath()+"/.."+resPath;
 
         try {
