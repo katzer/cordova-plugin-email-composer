@@ -1,4 +1,18 @@
+
 ## ChangeLog
+
+#### Version 0.8.7 (not yet released)
+- Add support for an app:// URL #158 (Android)
+
+#### Version 0.8.6 (12.06.2017)
+- Fixed issue with Android 4.x
+
+#### Version 0.8.5 (09.06.2017)
+10 commits including bug fixes and enhancements:
+- [enhancement]: Support for osx platform
+- [enhancement]: Added `isAvailable2` which works equal except the callback args are in reverse order.
+- [enhancement]: Fixed possible attachment issues some Android email clients.
+
 #### Version 0.8.4 (06.06.2017)
 25 commits including bug fixes and enhancements:
 - [__change__]: Skip availability checks with `email.open()`

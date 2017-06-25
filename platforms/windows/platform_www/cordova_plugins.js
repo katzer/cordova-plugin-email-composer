@@ -102,7 +102,7 @@ module.exports.metadata =
     "cordova-plugin-camera": "2.4.1",
     "cordova-plugin-device": "1.1.6",
     "cordova-plugin-x-toast": "2.6.0",
-    "cordova-plugin-email-composer": "0.8.5-dev"
+    "cordova-plugin-email-composer": "0.8.7-dev"
 };
 // BOTTOM OF METADATA
 });

@@ -132,7 +132,7 @@ The path to the files must be defined absolute from the root of the file system.
 
 ```javascript
 cordova.plugins.email.open({
-    attachments: 'file:///storage/sdcard/icon.png', //=> Android
+    attachments: 'file:///storage/sdcard/icon.png', //=> storage/sdcard/icon.png (Android)
 });
 ```
 
@@ -141,7 +141,7 @@ Each app has a resource folder, e.g. the _res_ folder for Android apps or the _R
 
 ```javascript
 cordova.plugins.email.open({
-    attachments: 'res://icon.png' //=> res/drawable/icon (Android)
+    attachments: 'res://icon.png' //=> res/mipmap/icon (Android)
 });
 ```
 
@@ -153,6 +153,17 @@ cordova.plugins.email.open({
     attachments: [
         'file://img/logo.png', //=> assets/www/img/logo.png (Android)
         'file://css/index.css' //=> www/css/index.css (iOS)
+    ]
+});
+```
+
+#### Attach files from the internal app file system
+The path must be defined relative from the directory holding application files.
+
+```javascript
+cordova.plugins.email.open({
+    attachments: [
+        'app://databases/db.db3', //=> /data/data/<app.package>/databases/db.db3 (Android)
     ]
 });
 ```
@@ -224,6 +235,12 @@ The following table gives an overview which tags and attributes can be used:
 ### HTML and CSS on Windows
 
 HTML+CSS formatted body are not supported through the native API for Windows.
+
+### Other limitations
+
+- _\<img\>_ tags do not work properly on Android.
+- Callbacks for windows and osx platform are called immediately.
+- _isAvailable_ does always return _true_ for windows platform.
 
 
 ## Contributing

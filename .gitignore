@@ -10,6 +10,10 @@ npm-debug.log
 /platforms/android/CordovaLib/bin
 /platforms/wp8/Bin
 /platforms/android/bin
+/platforms/android/build
 /platforms/android/ant-build
-/platforms/android/CordovaLib/ant-build
 /platforms/android/ant-gen
+/platforms/android/CordovaLib/bin
+/platforms/android/CordovaLib/build
+/platforms/android/CordovaLib/ant-build
+/platforms/android/CordovaLib/ant-gen

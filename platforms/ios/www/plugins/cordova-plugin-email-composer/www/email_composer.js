@@ -20,7 +20,7 @@ cordova.define("cordova-plugin-email-composer.EmailComposer", function(require, 
 
 var exec      = require('cordova/exec'),
     ua        = navigator.userAgent.toLowerCase(),
-    isAndroid = !window.Windows && ua.includes('android'),
+    isAndroid = !window.Windows && ua.indexOf('android') > -1,
     mailto    = 'mailto:';
 
 /**
