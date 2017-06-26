@@ -3,7 +3,7 @@
 
 #### Version 0.8.7 (not yet released)
 - Add support for an app:// URL #158 (Android)
-- Add support for an app:// (iOS, macOS)
+- Add support for an app:// (iOS, OSX, Windows)
 
 #### Version 0.8.6 (12.06.2017)
 - Fixed issue with Android 4.x
