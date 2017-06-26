@@ -1,7 +1,7 @@
 
 ## ChangeLog
 
-#### Version 0.8.7 (not yet released)
+#### Version 0.8.7 (26.06.2017)
 - Add support for an app:// URL #158 (Android)
 - Add support for an app:// (iOS, OSX, Windows)
 
