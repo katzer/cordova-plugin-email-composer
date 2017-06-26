@@ -267,6 +267,10 @@
     {
         return [self dataForAsset:path];
     }
+    else if ([path hasPrefix:@"app://"])
+    {
+        return [self dataForAppInternalPath:path];
+    }
     else if ([path hasPrefix:@"base64:"])
     {
         return [self dataFromBase64:path];
@@ -365,6 +369,29 @@
 }
 
 /**
+ * Retrieves the data for a asset path.
+ *
+ * @param path A relative www file path.
+ *
+ * @return The data for the attachment.
+ */
+- (NSData*) dataForAppInternalPath:(NSString*)path
+{
+    NSFileManager* fileManager = [NSFileManager defaultManager];
+
+    NSBundle* mainBundle = [NSBundle mainBundle];
+    NSString* absPath    = [mainBundle bundlePath];
+
+    if (![fileManager fileExistsAtPath:absPath]) {
+        NSLog(@"File not found: %@", absPath);
+    }
+
+    NSData* data = [fileManager contentsAtPath:absPath];
+
+    return data;
+}
+
+/**
  * Retrieves the data for a base64 encoded string.
  *
  * @param base64String Base64 encoded string.
@@ -379,7 +406,7 @@
 
     regex = [NSRegularExpression regularExpressionWithPattern:@"^base64:[^/]+.."
                                                       options:NSRegularExpressionCaseInsensitive
-                                                        error:Nil];
+                                                        error:NULL];
 
     dataString = [regex stringByReplacingMatchesInString:base64String
                                                  options:0

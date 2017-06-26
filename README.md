@@ -164,6 +164,7 @@ The path must be defined relative from the directory holding application files.
 cordova.plugins.email.open({
     attachments: [
         'app://databases/db.db3', //=> /data/data/<app.package>/databases/db.db3 (Android)
+        'app://databases/db.db3', //=> <AppName.app>/databases/db.db3 (iOS)
     ]
 });
 ```
