@@ -35,8 +35,8 @@
         "cordova-plugin-camera": "^2.4.1",
         "cordova-plugin-compat": "^1.1.0",
         "cordova-plugin-device": "^1.1.6",
+        "cordova-plugin-email-composer": "^0.8.7",
         "cordova-plugin-x-toast": "^2.6.0",
-        "cordova-windows": "^5.0.0",
-        "cordova-plugin-email-composer": "~0.8.7-dev"
+        "cordova-windows": "^5.0.0"
     }
 }

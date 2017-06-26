@@ -172,6 +172,8 @@ impl.getUriForPath = function (path) {
             complete(me.getUriForAbsolutePath(path));
         } else if (path.match(/^file:/)) {
             complete(me.getUriForAssetPath(path));
+        } else if (path.match(/^app:/)) {
+            complete(me.getUriForAppInternalPath(path));
         } else if (path.match(/^base64:/)) {
             me.getUriFromBase64(path).then(complete);
         } else {
@@ -213,6 +215,19 @@ impl.getUriForAssetPath = function (path) {
  */
 impl.getUriForResourcePath = function (path) {
     var resPath = path.replace('res:/', '/images');
+
+    return this.getUriForPathUtil(resPath);
+};
+
+/**
+ * The URI for an app internal file.
+ *
+ * @param [ String ] path Relative path to the app root dir.
+ *
+ * @return [ Windows.Foundation.Uri ]
+ */
+impl.getUriForAppInternalPath = function (path) {
+    var resPath = path.replace('app:/', '/');
 
     return this.getUriForPathUtil(resPath);
 };

@@ -238,7 +238,7 @@ class EmailComposerImpl {
         if (path.startsWith("res:")) {
             return getUriForResourcePath(path, ctx);
         } else if (path.startsWith("app://")) {
-            return getUriForAppInternalFilePath(path, ctx);
+            return getUriForAppInternalPath(path, ctx);
         } else if (path.startsWith("file:///")) {
             return getUriForAbsolutePath(path);
         } else if (path.startsWith("file://")) {
@@ -321,7 +321,7 @@ class EmailComposerImpl {
      * @return     The URI pointing to the given path.
      */
     @SuppressWarnings("ResultOfMethodCallIgnored")
-    private Uri getUriForAppInternalFilePath (String path, Context ctx) {
+    private Uri getUriForAppInternalPath (String path, Context ctx) {
         String resPath  = path.replaceFirst("app:/", "");
         String fileName = resPath.substring(resPath.lastIndexOf('/') + 1);
         File dir        = ctx.getExternalCacheDir();

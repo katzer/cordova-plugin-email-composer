@@ -267,18 +267,22 @@
     {
         return [self dataForAsset:path];
     }
+    else if ([path hasPrefix:@"app://"])
+    {
+        return [self dataForAppInternalPath:path];
+    }
     else if ([path hasPrefix:@"base64:"])
     {
         return [self dataFromBase64:path];
     }
 
-    NSFileManager* fileManager = [NSFileManager defaultManager];
+    NSFileManager* fm = [NSFileManager defaultManager];
 
-    if (![fileManager fileExistsAtPath:path]){
+    if (![fm fileExistsAtPath:path]){
         NSLog(@"File not found: %@", path);
     }
 
-    return [fileManager contentsAtPath:path];
+    return [fm contentsAtPath:path];
 }
 
 /**
@@ -290,17 +294,17 @@
  */
 - (NSData*) dataForAbsolutePath:(NSString*)path
 {
-    NSFileManager* fileManager = [NSFileManager defaultManager];
+    NSFileManager* fm = [NSFileManager defaultManager];
     NSString* absPath;
 
     absPath = [path stringByReplacingOccurrencesOfString:@"file://"
                                               withString:@""];
 
-    if (![fileManager fileExistsAtPath:absPath]) {
+    if (![fm fileExistsAtPath:absPath]) {
         NSLog(@"File not found: %@", absPath);
     }
 
-    NSData* data = [fileManager contentsAtPath:absPath];
+    NSData* data = [fm contentsAtPath:absPath];
 
     return data;
 }
@@ -343,7 +347,7 @@
  */
 - (NSData*) dataForAsset:(NSString*)path
 {
-    NSFileManager* fileManager = [NSFileManager defaultManager];
+    NSFileManager* fm = [NSFileManager defaultManager];
     NSString* absPath;
 
     NSBundle* mainBundle = [NSBundle mainBundle];
@@ -355,11 +359,34 @@
 
     absPath = [bundlePath stringByAppendingString:absPath];
 
-    if (![fileManager fileExistsAtPath:absPath]) {
+    if (![fm fileExistsAtPath:absPath]) {
         NSLog(@"File not found: %@", absPath);
     }
 
-    NSData* data = [fileManager contentsAtPath:absPath];
+    NSData* data = [fm contentsAtPath:absPath];
+
+    return data;
+}
+
+/**
+ * Retrieves the file URL for an internal app path.
+ *
+ * @param path A relative file path from main bundle dir.
+ *
+ * @return The data for the attachment.
+ */
+- (NSData*) dataForAppInternalPath:(NSString*)path
+{
+    NSFileManager* fm = [NSFileManager defaultManager];
+
+    NSBundle* mainBundle = [NSBundle mainBundle];
+    NSString* absPath    = [mainBundle bundlePath];
+
+    if (![fm fileExistsAtPath:absPath]) {
+        NSLog(@"File not found: %@", absPath);
+    }
+
+    NSData* data = [fm contentsAtPath:absPath];
 
     return data;
 }
@@ -379,7 +406,7 @@
 
     regex = [NSRegularExpression regularExpressionWithPattern:@"^base64:[^/]+.."
                                                       options:NSRegularExpressionCaseInsensitive
-                                                        error:Nil];
+                                                        error:NULL];
 
     dataString = [regex stringByReplacingMatchesInString:base64String
                                                  options:0

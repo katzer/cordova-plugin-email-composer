@@ -38,8 +38,8 @@
       <file leaf-file-name="EmailComposer.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/de/appplant/cordova/emailcomposer/EmailComposer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="216" column="39" selection-start-line="216" selection-start-column="39" selection-end-line="216" selection-end-column="39" />
+            <state relative-caret-position="195">
+              <caret line="212" column="52" selection-start-line="212" selection-start-column="52" selection-end-line="212" selection-end-column="52" />
               <folding />
             </state>
           </provider>
@@ -1519,7 +1519,7 @@
     <option name="modificationStamps">
       <map>
         <entry key="$PROJECT_DIR$/../../../../appPlant/it-projects/workshop/droidshop" value="5724663350000" />
-        <entry key="$PROJECT_DIR$" value="7486333925000" />
+        <entry key="$PROJECT_DIR$" value="7487841566000" />
       </map>
     </option>
     <option name="projectBuildClasspath">
@@ -1943,8 +1943,8 @@
       <list>
         <option value="$PROJECT_DIR$/assets/www/js/index.js" />
         <option value="$PROJECT_DIR$/assets/www/index.html" />
-        <option value="$PROJECT_DIR$/src/de/appplant/cordova/emailcomposer/EmailComposer.java" />
         <option value="$PROJECT_DIR$/src/de/appplant/cordova/emailcomposer/EmailComposerImpl.java" />
+        <option value="$PROJECT_DIR$/src/de/appplant/cordova/emailcomposer/EmailComposer.java" />
       </list>
     </option>
   </component>
@@ -2580,8 +2580,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/de/appplant/cordova/emailcomposer/EmailComposer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="216" column="39" selection-start-line="216" selection-start-column="39" selection-end-line="216" selection-end-column="39" />
+        <state relative-caret-position="195">
+          <caret line="212" column="52" selection-start-line="212" selection-start-column="52" selection-end-line="212" selection-end-column="52" />
           <folding />
         </state>
       </provider>
