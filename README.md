@@ -195,6 +195,8 @@ In case of missing permissions the result of `isAvailable` might be wrong.
 ### HTML and CSS on Android
 Even Android is capable to render HTML formatted mails, most native Mail clients like the standard app or Gmail only support rich formatted text while writing mails. That means that __CSS cannot be used__ (no _class_ and _style_ support).
 
+__Update:__ Seems it stopped working with gmail at version 6.x and Android Mail, see [#264](https://github.com/katzer/cordova-plugin-email-composer/issues/264).
+
 The following table gives an overview which tags and attributes can be used:
 
 <table>
