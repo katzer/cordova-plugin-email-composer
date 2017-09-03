@@ -3,24 +3,22 @@
   "version": "0.8.7",
   "description": "Provides access to the standard interface that manages the editing and sending an email message",
   "cordova": {
-    "id": "de.appplant.cordova.plugin.email-composer",
+    "id": "cordova-plugin-email-composer",
     "platforms": [
       "ios",
-      "android",
       "osx",
-      "amazon-fireos",
+      "android",
       "windows",
       "browser"
     ]
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/katzer/cordova-plugin-email-composer.git"
+    "url": "git+https://github.com/katzer/cordova-plugin-email-composer.git"
   },
   "keywords": [
     "appplant",
     "email",
-    "cordova",
     "ecosystem:cordova",
     "cordova-ios",
     "cordova-osx",
@@ -51,5 +49,5 @@
   "bugs": {
     "url": "https://github.com/katzer/cordova-plugin-email-composer/issues"
   },
-  "homepage": "https://github.com/katzer/cordova-plugin-email-composer"
+  "homepage": "https://github.com/katzer/cordova-plugin-email-composer#readme"
 }
