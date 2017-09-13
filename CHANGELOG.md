@@ -1,6 +1,9 @@
 
 ## ChangeLog
 
+#### Version 0.8.9 (not yet released)
+- Fix opening email with file attachment causes app crash on Android 8 (#270)
+
 #### Version 0.8.8 (07.09.2017)
 - Fix crash on iOS if attachment could not be found
 - Fix wrong plugin ID in package.json

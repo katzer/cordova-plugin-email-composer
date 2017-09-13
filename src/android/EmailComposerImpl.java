@@ -240,7 +240,7 @@ class EmailComposerImpl {
         } else if (path.startsWith("app://")) {
             return getUriForAppInternalPath(path, ctx);
         } else if (path.startsWith("file:///")) {
-            return getUriForAbsolutePath(path);
+            return getUriForAbsolutePath(path, ctx);
         } else if (path.startsWith("file://")) {
             return getUriForAssetPath(path, ctx);
         } else if (path.startsWith("base64:")) {
@@ -254,9 +254,10 @@ class EmailComposerImpl {
      * The URI for a file.
      *
      * @param path  The given absolute path.
+     * @param ctx   The application context.
      * @return      The URI pointing to the given path.
      */
-    private Uri getUriForAbsolutePath (String path) {
+    private Uri getUriForAbsolutePath (String path, Context ctx) {
         String absPath = path.replaceFirst("file://", "");
         File file      = new File(absPath);
 
@@ -264,7 +265,7 @@ class EmailComposerImpl {
             Log.e(LOG_TAG, "File not found: " + file.getAbsolutePath());
         }
 
-        return Uri.fromFile(file);
+        return getUriForFile(ctx, file);
     }
 
     /**
@@ -310,7 +311,7 @@ class EmailComposerImpl {
             }
         }
 
-        return Uri.fromFile(file);
+        return getUriForFile(ctx, file);
     }
 
     /**
@@ -350,7 +351,7 @@ class EmailComposerImpl {
             e.printStackTrace();
         }
 
-        return Uri.fromFile(file);
+        return getUriForFile(ctx, file);
     }
 
     /**
@@ -401,7 +402,7 @@ class EmailComposerImpl {
             }
         }
 
-        return Uri.fromFile(file);
+        return getUriForFile(ctx, file);
     }
 
     /**
@@ -451,7 +452,7 @@ class EmailComposerImpl {
             }
         }
 
-        return Uri.fromFile(file);
+        return getUriForFile(ctx, file);
     }
 
     /**
@@ -501,6 +502,20 @@ class EmailComposerImpl {
         }
 
         return resId;
+    }
+
+    /**
+     * Get content URI for the specified file.
+     *
+     * @param ctx The application context.
+     * @param file The file to get the URI.
+     *
+     * @return content://...
+     */
+    private Uri getUriForFile(Context ctx, File file) {
+        String authority = ctx.getPackageName() + ".provider";
+
+        return EmailComposerProvider.getUriForFile(ctx, authority, file);
     }
 
     /**
