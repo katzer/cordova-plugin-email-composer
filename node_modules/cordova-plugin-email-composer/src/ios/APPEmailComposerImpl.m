@@ -227,22 +227,23 @@
 - (void) setAttachments:(NSArray*)attatchments
                 ofDraft:(MFMailComposeViewController*)draft
 {
-    if (attatchments)
+    if (!attatchments) return;
+
+    for (NSString* path in attatchments)
     {
-        for (NSString* path in attatchments)
-        {
-            NSData* data = [self getDataForAttachmentPath:path];
+        NSData* data = [self getDataForAttachmentPath:path];
 
-            NSString* basename = [self getBasenameFromAttachmentPath:path];
-            NSString* pathExt  = [basename pathExtension];
-            NSString* fileName = [basename pathComponents].lastObject;
-            NSString* mimeType = [self getMimeTypeFromFileExtension:pathExt];
+        if (!data) continue;
 
-            // Couldn't find mimeType, must be some type of binary data
-            if (mimeType == nil) mimeType = @"application/octet-stream";
+        NSString* basename = [self getBasenameFromAttachmentPath:path];
+        NSString* pathExt  = [basename pathExtension];
+        NSString* fileName = [basename pathComponents].lastObject;
+        NSString* mimeType = [self getMimeTypeFromFileExtension:pathExt];
 
-            [draft addAttachmentData:data mimeType:mimeType fileName:fileName];
-        }
+        // Couldn't find mimeType, must be some type of binary data
+        if (mimeType == nil) mimeType = @"application/octet-stream";
+
+        [draft addAttachmentData:data mimeType:mimeType fileName:fileName];
     }
 }
 

@@ -77,7 +77,7 @@ var app = {
     // Check if mail client exist
     hasMailClient: function () {
         cordova.plugins.email.isAvailable(function (hasAccount, hasClient) {
-           showToast(hasClient || 'unknown');
+            showToast(hasClient || 'unknown');
         });
     },
     // Open mail client
@@ -87,7 +87,7 @@ var app = {
     // Check if gmail client exist
     hasGmailClient: function () {
         cordova.plugins.email.isAvailable('gmail', function(hasAccount, hasClient) {
-           showToast(hasClient || 'unknown');
+            showToast(hasClient || 'unknown');
         });
     },
     // Open gmail client
@@ -248,8 +248,8 @@ var app = {
 var dialog;
 
 showToast = function (text) {
-    var isMac = navigator.userAgent.toLowerCase().includes('macintosh');
-        text  = text || 'finished or canceled';
+    var isMac = navigator.userAgent.toLowerCase().includes('macintosh'),
+        text  = text != null ? text : 'finished or canceled';
 
     setTimeout(function () {
         if (window.Windows !== undefined) {
@@ -278,7 +278,7 @@ showWinDialog = function (text) {
 };
 
 if (window.hasOwnProperty('Windows')) {
-    alert = function (msg) { new Windows.UI.Popups.MessageDialog(msg).showAsync(); };
+    alert = showWinDialog;
 }
 
 app.initialize();

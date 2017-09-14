@@ -7,17 +7,6 @@
         "is_top_level": true,
         "variables": {}
     },
-    "cordova-plugin-camera": {
-        "source": {
-            "type": "registry",
-            "id": "cordova-plugin-camera"
-        },
-        "is_top_level": true,
-        "variables": {
-            "CAMERA_USAGE_DESCRIPTION": " ",
-            "PHOTOLIBRARY_USAGE_DESCRIPTION": " "
-        }
-    },
     "cordova-plugin-compat": {
         "source": {
             "type": "registry",
@@ -40,10 +29,18 @@
             "PHOTOLIBRARY_USAGE_DESCRIPTION": " "
         }
     },
+    "cordova-plugin-camera": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-camera"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
     "cordova-plugin-email-composer": {
         "source": {
             "type": "registry",
-            "id": "cordova-plugin-email-composer@latest"
+            "id": "cordova-plugin-email-composer"
         },
         "is_top_level": true,
         "variables": {}

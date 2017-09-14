@@ -2,6 +2,6 @@
     "windows": "latest",
     "android": "latest",
     "browser": "latest",
-    "ios": "latest",
-    "osx": "latest"
+    "osx": "latest",
+    "ios": "latest"
 }

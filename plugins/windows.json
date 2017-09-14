@@ -7,9 +7,6 @@
         "files": {}
     },
     "installed_plugins": {
-        "cordova-plugin-camera": {
-            "PACKAGE_NAME": "EmailExample"
-        },
         "cordova-plugin-compat": {
             "PACKAGE_NAME": "EmailExample"
         },
@@ -17,6 +14,9 @@
             "PACKAGE_NAME": "EmailExample"
         },
         "cordova-plugin-x-toast": {
+            "PACKAGE_NAME": "EmailExample"
+        },
+        "cordova-plugin-camera": {
             "PACKAGE_NAME": "EmailExample"
         },
         "cordova-plugin-email-composer": {
