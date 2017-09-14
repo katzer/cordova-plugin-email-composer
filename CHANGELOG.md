@@ -1,7 +1,7 @@
 
 ## ChangeLog
 
-#### Version 0.8.9 (not yet released)
+#### Version 0.8.9 (14.09.2017)
 - Fix opening email with file attachment causes app crash on Android 8 (#270)
 
 #### Version 0.8.8 (07.09.2017)
