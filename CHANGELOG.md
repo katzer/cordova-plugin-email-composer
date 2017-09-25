@@ -1,6 +1,10 @@
 
 ## ChangeLog
 
+#### Version 0.8.10 (not yet released)
+- Open gmail on ios and macos [fixes #272]
+- Added alias for outlook
+
 #### Version 0.8.9 (14.09.2017)
 - Fix opening email with file attachment causes app crash on Android 8 (#270)
 
