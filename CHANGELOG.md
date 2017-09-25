@@ -1,7 +1,7 @@
 
 ## ChangeLog
 
-#### Version 0.8.10 (not yet released)
+#### Version 0.8.10 (25.09.2017)
 - Open gmail on ios and macos [fixes #272]
 - Added alias for outlook
 - Fix warnings with iOS 11
