@@ -70,7 +70,7 @@ module.exports.metadata =
   "cordova-plugin-camera": "2.4.1",
   "cordova-plugin-device": "1.1.6",
   "cordova-plugin-x-toast": "2.6.0",
-  "cordova-plugin-email-composer": "0.8.9"
+  "cordova-plugin-email-composer": "0.8.10"
 };
 // BOTTOM OF METADATA
 });

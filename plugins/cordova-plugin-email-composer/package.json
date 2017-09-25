@@ -1,8 +1,8 @@
 {
   "_from": "cordova-plugin-email-composer",
-  "_id": "cordova-plugin-email-composer@0.8.9",
+  "_id": "cordova-plugin-email-composer@0.8.10",
   "_inBundle": false,
-  "_integrity": "sha512-h7Y5hdtYvqI2AzGO+5A406VGJM+/MZz+AYCbDvOBQUkjRP1qJ7o1K0uKUjIyF+3Q3WfpHXW8/TfsaHqPuDhVlg==",
+  "_integrity": "sha512-PIoQMu+Awhk08T4nlGtA1nxchO4OAXh6zcXMTsJl/N0Bs4EDLq+jS6vvwEXRnlGKnWQ59j8ztJHhQLd4ey3WXA==",
   "_location": "/cordova-plugin-email-composer",
   "_phantomChildren": {},
   "_requested": {
@@ -19,8 +19,8 @@
     "#USER",
     "/"
   ],
-  "_resolved": "https://registry.npmjs.org/cordova-plugin-email-composer/-/cordova-plugin-email-composer-0.8.9.tgz",
-  "_shasum": "aa9e1869ba03f70c3f01e3bd480fa3f7de7a6f49",
+  "_resolved": "https://registry.npmjs.org/cordova-plugin-email-composer/-/cordova-plugin-email-composer-0.8.10.tgz",
+  "_shasum": "51b2edef3d2280e465976f467536a2de276bf991",
   "_spec": "cordova-plugin-email-composer",
   "_where": "/Users/sebastian/Documents/github/cordova-example-email-composer/node_modules",
   "author": {
@@ -77,5 +77,5 @@
     "type": "git",
     "url": "git+https://github.com/katzer/cordova-plugin-email-composer.git"
   },
-  "version": "0.8.9"
+  "version": "0.8.10"
 }

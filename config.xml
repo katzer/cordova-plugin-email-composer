@@ -28,5 +28,5 @@
     </plugin>
     <plugin name="cordova-plugin-x-toast" spec="^2.6.0" />
     <engine name="ios" spec="latest" />
-    <plugin name="cordova-plugin-email-composer" spec="^0.8.9" />
+    <plugin name="cordova-plugin-email-composer" spec="^0.8.10" />
 </widget>
