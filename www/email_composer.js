@@ -26,7 +26,7 @@ var exec      = require('cordova/exec'),
  * List of all registered mail app aliases.
  */
 exports.aliases = {
-    gmail: isAndroid ? 'com.google.android.gm' : 'googlemail:'
+    gmail: isAndroid ? 'com.google.android.gm' : 'googlegmail://co'
 };
 
 /**
