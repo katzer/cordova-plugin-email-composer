@@ -35,8 +35,9 @@
  */
 - (NSArray*) canSendMail:(NSString*)scheme
 {
-    bool canSendMail = [MFMailComposeViewController canSendMail];
-    bool withScheme  = false;
+    bool canSendMail         = [MFMailComposeViewController canSendMail];
+    __block bool withScheme  = false;
+    NSCharacterSet *set      = [NSCharacterSet URLFragmentAllowedCharacterSet];
 
     if (!scheme) {
         scheme = @"mailto:";
@@ -44,19 +45,21 @@
         scheme = [scheme stringByAppendingString:@":"];
     }
 
-    NSCharacterSet *set = [NSCharacterSet URLFragmentAllowedCharacterSet];
-    scheme = [[scheme stringByAppendingString:@"test@test.de"]
-                stringByAddingPercentEncodingWithAllowedCharacters:set];
+    scheme     = [[scheme stringByAppendingString:@"test@test.de"]
+                  stringByAddingPercentEncodingWithAllowedCharacters:set];
 
-    NSURL *url = [[NSURL URLWithString:scheme]
-                    absoluteURL];
+    NSURL *url = [[NSURL URLWithString:scheme] absoluteURL];
 
-    withScheme = [[UIApplication sharedApplication]
-                   canOpenURL:url];
+    dispatch_semaphore_t sema = dispatch_semaphore_create(0);
 
-    NSArray* resultArray = [NSArray arrayWithObjects:@(canSendMail),@(withScheme), nil];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        withScheme = [[UIApplication sharedApplication] canOpenURL:url];
+        dispatch_semaphore_signal(sema);
+    });
 
-    return resultArray;
+    dispatch_semaphore_wait(sema, DISPATCH_TIME_FOREVER);
+
+    return @[@(canSendMail), @(withScheme)];
 }
 
 /**
