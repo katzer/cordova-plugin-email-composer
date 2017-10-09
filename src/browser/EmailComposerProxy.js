@@ -41,7 +41,7 @@ exports.isAvailable = function (success, error, args) {
  */
 exports.open = function (success, error, args) {
     var props   = args[0],
-        mailto  = 'mailto:' + props.to,
+        mailto  = 'mailto:' + encodeURIComponent(props.to),
         options = '';
 
     if (props.subject !== '') {
