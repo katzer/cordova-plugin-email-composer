@@ -41,27 +41,27 @@ exports.isAvailable = function (success, error, args) {
  */
 exports.open = function (success, error, args) {
     var props   = args[0],
-        mailto  = 'mailto:' + props.to,
+        mailto  = 'mailto:' + encodeURIComponent(props.to),
         options = '';
 
     if (props.subject !== '') {
-        options = options + '&subject=' + props.subject;
+        options += '&subject=' + encodeURIComponent(props.subject);
     }
 
     if (props.body !== '') {
-        options = options + '&body=' + props.body;
+        options += '&body=' + encodeURIComponent(props.body);
     }
 
     if (props.cc !== '') {
-        options = options + '&cc=' + props.cc;
+        options += '&cc=' + encodeURIComponent(props.cc);
     }
 
     if (props.bcc !== '') {
-        options = options + '&bcc=' + props.bcc;
+        options += '&bcc=' + encodeURIComponent(props.bcc);
     }
 
     if (options !== '') {
-        mailto = mailto + '?' + options.substring(1);
+        mailto += '?' + options.substring(1);
     }
 
     window.location.href = mailto;
