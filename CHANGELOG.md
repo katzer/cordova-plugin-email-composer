@@ -1,6 +1,9 @@
 
 ## ChangeLog
 
+#### Version 0.8.11 (25.10.2017)
+- Apply URL encoding when constructing mailto: link (#273)
+
 #### Version 0.8.10 (25.09.2017)
 - Open gmail on ios and macos [fixes #272]
 - Added alias for outlook
