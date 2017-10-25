@@ -1,29 +1,29 @@
 {
-    "prepare_queue": {
-        "installed": [],
-        "uninstalled": []
+  "prepare_queue": {
+    "installed": [],
+    "uninstalled": []
+  },
+  "config_munge": {
+    "files": {}
+  },
+  "installed_plugins": {
+    "cordova-plugin-camera": {
+      "CAMERA_USAGE_DESCRIPTION": " ",
+      "PHOTOLIBRARY_USAGE_DESCRIPTION": " ",
+      "PACKAGE_NAME": "de.appplant.cordova.plugin.emailcomposer.example"
     },
-    "config_munge": {
-        "files": {}
+    "cordova-plugin-compat": {
+      "PACKAGE_NAME": "de.appplant.cordova.plugin.emailcomposer.example"
     },
-    "installed_plugins": {
-        "cordova-plugin-camera": {
-            "CAMERA_USAGE_DESCRIPTION": " ",
-            "PHOTOLIBRARY_USAGE_DESCRIPTION": " ",
-            "PACKAGE_NAME": "de.appplant.cordova.plugin.emailcomposer.example"
-        },
-        "cordova-plugin-compat": {
-            "PACKAGE_NAME": "de.appplant.cordova.plugin.emailcomposer.example"
-        },
-        "cordova-plugin-device": {
-            "PACKAGE_NAME": "de.appplant.cordova.plugin.emailcomposer.example"
-        },
-        "cordova-plugin-x-toast": {
-            "PACKAGE_NAME": "de.appplant.cordova.plugin.emailcomposer.example"
-        },
-        "cordova-plugin-email-composer": {
-            "PACKAGE_NAME": "de.appplant.cordova.plugin.emailcomposer.example"
-        }
+    "cordova-plugin-device": {
+      "PACKAGE_NAME": "de.appplant.cordova.plugin.emailcomposer.example"
     },
-    "dependent_plugins": {}
+    "cordova-plugin-x-toast": {
+      "PACKAGE_NAME": "de.appplant.cordova.plugin.emailcomposer.example"
+    },
+    "cordova-plugin-email-composer": {
+      "PACKAGE_NAME": "de.appplant.cordova.plugin.emailcomposer.example"
+    }
+  },
+  "dependent_plugins": {}
 }

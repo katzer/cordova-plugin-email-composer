@@ -9,6 +9,12 @@
     <feature name="LocalStorage">
         <param name="osx-package" value="CDVLocalStorage" />
     </feature>
+    <feature name="Device">
+        <param name="ios-package" value="CDVDevice" />
+    </feature>
+    <feature name="EmailComposer">
+        <param name="osx-package" value="APPEmailComposer" />
+    </feature>
     <name>EmailExample</name>
     <description>
         A sample Apache Cordova application that responds to the deviceready event.

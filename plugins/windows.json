@@ -1,27 +1,27 @@
 {
-    "prepare_queue": {
-        "installed": [],
-        "uninstalled": []
+  "prepare_queue": {
+    "installed": [],
+    "uninstalled": []
+  },
+  "config_munge": {
+    "files": {}
+  },
+  "installed_plugins": {
+    "cordova-plugin-camera": {
+      "PACKAGE_NAME": "EmailExample"
     },
-    "config_munge": {
-        "files": {}
+    "cordova-plugin-compat": {
+      "PACKAGE_NAME": "EmailExample"
     },
-    "installed_plugins": {
-        "cordova-plugin-compat": {
-            "PACKAGE_NAME": "EmailExample"
-        },
-        "cordova-plugin-device": {
-            "PACKAGE_NAME": "EmailExample"
-        },
-        "cordova-plugin-x-toast": {
-            "PACKAGE_NAME": "EmailExample"
-        },
-        "cordova-plugin-camera": {
-            "PACKAGE_NAME": "EmailExample"
-        },
-        "cordova-plugin-email-composer": {
-            "PACKAGE_NAME": "EmailExample"
-        }
+    "cordova-plugin-device": {
+      "PACKAGE_NAME": "EmailExample"
     },
-    "dependent_plugins": {}
+    "cordova-plugin-x-toast": {
+      "PACKAGE_NAME": "EmailExample"
+    },
+    "cordova-plugin-email-composer": {
+      "PACKAGE_NAME": "EmailExample"
+    }
+  },
+  "dependent_plugins": {}
 }

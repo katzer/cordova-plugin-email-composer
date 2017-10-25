@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <Package IgnorableNamespaces="uap mp" xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10">
     <Identity Name="de.appplant.cordova.plugin.emailcomposer.example" Publisher="CN=$username$" Version="0.8.2.0" />
-    <mp:PhoneIdentity PhoneProductId="71569ec0-4799-11e7-82cf-751bffebbf34" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
+    <mp:PhoneIdentity PhoneProductId="08632540-b95a-11e7-828e-0353d2505c9f" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
     <Properties>
         <DisplayName>EmailExample</DisplayName>
         <PublisherDisplayName>Apache Cordova Team</PublisherDisplayName>
