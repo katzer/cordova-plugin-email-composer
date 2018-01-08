@@ -130,14 +130,7 @@ class Impl {
      * @param draft     The intent to send.
      */
     private void setRecipients (JSONObject params, Intent draft) {
-        JSONArray recipients = params.optJSONArray("to");
-        String[] receivers   = new String[recipients.length()];
-
-        for (int i = 0; i < recipients.length(); i++) {
-            receivers[i] = recipients.optString(i);
-        }
-
-        draft.putExtra(Intent.EXTRA_EMAIL, receivers);
+        insertRecipients(draft, params, "to", Intent.EXTRA_EMAIL);
     }
 
     /**
@@ -147,14 +140,7 @@ class Impl {
      * @param draft     The intent to send.
      */
     private void setCcRecipients (JSONObject params, Intent draft) {
-        JSONArray recipients = params.optJSONArray("cc");
-        String[] receivers   = new String[recipients.length()];
-
-        for (int i = 0; i < recipients.length(); i++) {
-            receivers[i] = recipients.optString(i);
-        }
-
-        draft.putExtra(Intent.EXTRA_CC, receivers);
+        insertRecipients(draft, params, "cc", Intent.EXTRA_CC);
     }
 
     /**
@@ -164,14 +150,28 @@ class Impl {
      * @param draft     The intent to send.
      */
     private void setBccRecipients (JSONObject params, Intent draft) {
-        JSONArray recipients = params.optJSONArray("bcc");
+        insertRecipients(draft, params, "bcc", Intent.EXTRA_BCC);
+    }
+
+    /**
+     * Insert the recipients into the email draft intent.
+     *
+     * @param draft     The intent to send.
+     * @param params    The email properties like subject or body.
+     * @param key       The key where to find the recipients.
+     * @param extra     The key where to insert the recipients.
+     */
+    private void insertRecipients (Intent draft, JSONObject params,
+                                   String key, String extra) {
+
+        JSONArray recipients = params.optJSONArray(key);
         String[] receivers   = new String[recipients.length()];
 
         for (int i = 0; i < recipients.length(); i++) {
             receivers[i] = recipients.optString(i);
         }
 
-        draft.putExtra(Intent.EXTRA_BCC, receivers);
+        draft.putExtra(extra, receivers);
     }
 
     /**
