@@ -38,7 +38,7 @@ import static de.appplant.cordova.emailcomposer.EmailComposer.LOG_TAG;
 final class AssetUtil {
 
     // Path where to put tmp the attachments.
-    static final String ATTACHMENT_FOLDER = "/email_composer";
+    private static final String ATTACHMENT_FOLDER = "/email_composer";
 
     // Application context
     private final Context ctx;
@@ -53,25 +53,48 @@ final class AssetUtil {
     }
 
     /**
+     * Cleans the attachment folder.
+     */
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    void cleanupAttachmentFolder() {
+        try {
+            File dir = new File(ctx.getExternalCacheDir() + ATTACHMENT_FOLDER);
+
+            if (!dir.isDirectory())
+                return;
+
+            File[] files = dir.listFiles();
+
+            for (File file : files) { file.delete(); }
+        } catch (Exception npe){
+            Log.w(LOG_TAG, "Missing external cache dir");
+        }
+    }
+
+    /**
      * The URI for an attachment path.
      *
      * @param path  The given path to the attachment.
      * @return      The URI pointing to the given path.
      */
     Uri parse (String path) {
+        Uri uri;
+
         if (path.startsWith("res:")) {
-            return getUriForResourcePath(path);
+            uri = getUriForResourcePath(path);
         } else if (path.startsWith("app://")) {
-            return getUriForAppInternalPath(path);
+            uri = getUriForAppInternalPath(path);
         } else if (path.startsWith("file:///")) {
-            return getUriForAbsolutePath(path);
+            uri = getUriForAbsolutePath(path);
         } else if (path.startsWith("file://")) {
-            return getUriForAssetPath(path);
+            uri = getUriForAssetPath(path);
         } else if (path.startsWith("base64:")) {
-            return getUriForBase64Content(path);
+            uri = getUriForBase64Content(path);
+        } else {
+            uri = Uri.parse(path);
         }
 
-        return Uri.parse(path);
+        return uri;
     }
 
     /**

@@ -30,53 +30,40 @@ import android.util.Log;
 import android.util.Patterns;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
-import static de.appplant.cordova.emailcomposer.AssetUtil.ATTACHMENT_FOLDER;
 import static de.appplant.cordova.emailcomposer.EmailComposer.LOG_TAG;
 
 class Impl {
 
     // The default mailto: scheme.
-    static private final String MAILTO_SCHEME = "mailto:";
+    private static final String MAILTO_SCHEME = "mailto:";
+
+    // The application context.
+    private final Context ctx;
 
     /**
-     * Cleans the attachment folder.
+     * Initializes the class.
      *
-     * @param ctx   The application context.
+     * @param ctx The application context.
      */
-    @SuppressWarnings("ResultOfMethodCallIgnored")
-    void cleanupAttachmentFolder (Context ctx) {
-        try {
-            File dir = new File(ctx.getExternalCacheDir() + ATTACHMENT_FOLDER);
-
-            if (!dir.isDirectory())
-                return;
-
-            File[] files = dir.listFiles();
-
-            for (File file : files) { file.delete(); }
-        } catch (Exception npe){
-            Log.w(LOG_TAG, "Missing external cache dir");
-        }
+    Impl (Context ctx) {
+        this.ctx = ctx;
     }
 
     /**
      * Tells if the device has the capability to send emails.
      *
-     * @param id    The app id.
-     * @param ctx   The application context.
+     * @param id The app id.
      */
-    boolean[] canSendMail (String id, Context ctx) {
+    boolean[] canSendMail (String id) {
         // is possible with specified app
-        boolean withScheme = isAppInstalled(id, ctx);
+        boolean withScheme = isAppInstalled(id);
         // is possible in general
-        boolean isPossible = isEmailAccountConfigured(ctx);
+        boolean isPossible = isEmailAccountConfigured();
 
         return new boolean[] { isPossible, withScheme };
     }
@@ -84,30 +71,27 @@ class Impl {
     /**
      * The intent with the containing email properties.
      *
-     * @param params    The email properties like subject or body
-     * @param ctx       The context of the application.
+     * @param params    The email properties like subject or body.
      * @return          The resulting intent.
      */
-    Intent getDraftWithProperties (JSONObject params, Context ctx)
-            throws JSONException {
-
+    Intent getDraft (JSONObject params) {
         Intent mail = getEmailIntent();
         String app  = params.optString("app", MAILTO_SCHEME);
 
         if (params.has("subject"))
-            setSubject(params.getString("subject"), mail);
+            setSubject(params, mail);
         if (params.has("body"))
-            setBody(params.getString("body"), params.optBoolean("isHtml"), mail);
+            setBody(params, mail);
         if (params.has("to"))
-            setRecipients(params.getJSONArray("to"), mail);
+            setRecipients(params, mail);
         if (params.has("cc"))
-            setCcRecipients(params.getJSONArray("cc"), mail);
+            setCcRecipients(params, mail);
         if (params.has("bcc"))
-            setBccRecipients(params.getJSONArray("bcc"), mail);
+            setBccRecipients(params, mail);
         if (params.has("attachments"))
-            setAttachments(params.getJSONArray("attachments"), mail, ctx);
+            setAttachments(params, mail);
 
-        if (!app.equals(MAILTO_SCHEME) && isAppInstalled(app, ctx)) {
+        if (!app.equals(MAILTO_SCHEME) && isAppInstalled(app)) {
             mail.setPackage(app);
         }
 
@@ -117,21 +101,23 @@ class Impl {
     /**
      * Setter for the subject.
      *
-     * @param subject   The subject of the email.
+     * @param params    The email properties like subject or body.
      * @param draft     The intent to send.
      */
-    private void setSubject (String subject, Intent draft) {
+    private void setSubject (JSONObject params, Intent draft) {
+        String subject = params.optString("subject");
         draft.putExtra(Intent.EXTRA_SUBJECT, subject);
     }
 
     /**
      * Setter for the body.
      *
-     * @param body      The body of the email.
-     * @param isHTML    Indicates the encoding (HTML or plain text).
+     * @param params    The email properties like subject or body.
      * @param draft     The intent to send.
      */
-    private void setBody (String body, Boolean isHTML, Intent draft) {
+    private void setBody (JSONObject params, Intent draft) {
+        String body       = params.optString("body");
+        boolean isHTML    = params.optBoolean("isHtml");
         CharSequence text = isHTML ? Html.fromHtml(body) : body;
 
         draft.putExtra(Intent.EXTRA_TEXT, text);
@@ -140,14 +126,15 @@ class Impl {
     /**
      * Setter for the recipients.
      *
-     * @param recipients    List of email addresses.
-     * @param draft         The intent to send.
+     * @param params    The email properties like subject or body.
+     * @param draft     The intent to send.
      */
-    private void setRecipients (JSONArray recipients, Intent draft) throws JSONException {
-        String[] receivers = new String[recipients.length()];
+    private void setRecipients (JSONObject params, Intent draft) {
+        JSONArray recipients = params.optJSONArray("to");
+        String[] receivers   = new String[recipients.length()];
 
         for (int i = 0; i < recipients.length(); i++) {
-            receivers[i] = recipients.getString(i);
+            receivers[i] = recipients.optString(i);
         }
 
         draft.putExtra(Intent.EXTRA_EMAIL, receivers);
@@ -156,14 +143,15 @@ class Impl {
     /**
      * Setter for the cc recipients.
      *
-     * @param recipients    List of email addresses.
-     * @param draft         The intent to send.
+     * @param params    The email properties like subject or body.
+     * @param draft     The intent to send.
      */
-    private void setCcRecipients (JSONArray recipients, Intent draft) throws JSONException {
-        String[] receivers = new String[recipients.length()];
+    private void setCcRecipients (JSONObject params, Intent draft) {
+        JSONArray recipients = params.optJSONArray("cc");
+        String[] receivers   = new String[recipients.length()];
 
         for (int i = 0; i < recipients.length(); i++) {
-            receivers[i] = recipients.getString(i);
+            receivers[i] = recipients.optString(i);
         }
 
         draft.putExtra(Intent.EXTRA_CC, receivers);
@@ -172,14 +160,15 @@ class Impl {
     /**
      * Setter for the bcc recipients.
      *
-     * @param recipients    List of email addresses.
-     * @param draft         The intent to send.
+     * @param params    The email properties like subject or body.
+     * @param draft     The intent to send.
      */
-    private void setBccRecipients (JSONArray recipients, Intent draft) throws JSONException {
-        String[] receivers = new String[recipients.length()];
+    private void setBccRecipients (JSONObject params, Intent draft) {
+        JSONArray recipients = params.optJSONArray("bcc");
+        String[] receivers   = new String[recipients.length()];
 
         for (int i = 0; i < recipients.length(); i++) {
-            receivers[i] = recipients.getString(i);
+            receivers[i] = recipients.optString(i);
         }
 
         draft.putExtra(Intent.EXTRA_BCC, receivers);
@@ -188,18 +177,17 @@ class Impl {
     /**
      * Setter for the attachments.
      *
-     * @param attachments   List of URIs to attach.
-     * @param draft         The intent to send.
-     * @param ctx           The application context.
+     * @param params    The email properties like subject or body.
+     * @param draft     The intent to send.
      */
-    private void setAttachments (JSONArray attachments, Intent draft,
-                                 Context ctx) throws JSONException {
+    private void setAttachments (JSONObject params, Intent draft) {
 
-        ArrayList<Uri> uris = new ArrayList<Uri>();
-        AssetUtil assets    = new AssetUtil(ctx);
+        JSONArray attachments = params.optJSONArray("attachments");
+        ArrayList<Uri> uris   = new ArrayList<Uri>();
+        AssetUtil assets      = new AssetUtil(ctx);
 
         for (int i = 0; i < attachments.length(); i++) {
-            Uri uri = assets.parse(attachments.getString(i));
+            Uri uri = assets.parse(attachments.optString(i));
             if (uri != null) uris.add(uri);
         }
 
@@ -221,10 +209,9 @@ class Impl {
     /**
      * If email apps are available.
      *
-     * @param ctx   The application context.
-     * @return      true if available, otherwise false
+     * @return true if available, otherwise false
      */
-    private boolean isEmailAccountConfigured (Context ctx) {
+    private boolean isEmailAccountConfigured() {
         AccountManager am  = AccountManager.get(ctx);
 
         try {
@@ -245,10 +232,9 @@ class Impl {
      * Ask the package manager if the app is installed on the device.
      *
      * @param id    The app id.
-     * @param ctx   The application context.
      * @return      true if yes otherwise false.
      */
-    private boolean isAppInstalled (String id, Context ctx) {
+    private boolean isAppInstalled (String id) {
 
         if (id.equalsIgnoreCase(MAILTO_SCHEME)) {
             Intent intent     = getEmailIntent();
