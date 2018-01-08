@@ -26,12 +26,11 @@ import android.net.Uri;
 import android.util.Base64;
 import android.util.Log;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 
 import static de.appplant.cordova.emailcomposer.EmailComposer.LOG_TAG;
 
@@ -58,7 +57,8 @@ final class AssetUtil {
     @SuppressWarnings("ResultOfMethodCallIgnored")
     void cleanupAttachmentFolder() {
         try {
-            File dir = new File(ctx.getExternalCacheDir() + ATTACHMENT_FOLDER);
+            String path = ctx.getExternalCacheDir() + ATTACHMENT_FOLDER;
+            File dir    = new File(path);
 
             if (!dir.isDirectory())
                 return;
@@ -108,7 +108,7 @@ final class AssetUtil {
         File file      = new File(absPath);
 
         if (!file.exists()) {
-            Log.e(LOG_TAG, "File not found: " + file.getAbsolutePath());
+            Log.e(LOG_TAG, "File not found: " + absPath);
         }
 
         return getUriForFile(ctx, file);
@@ -133,27 +133,16 @@ final class AssetUtil {
 
         String storage  = dir.toString() + ATTACHMENT_FOLDER;
         File file       = new File(storage, fileName);
-
         new File(storage).mkdir();
 
-        FileOutputStream outStream = null;
-
         try {
-            AssetManager assets = ctx.getAssets();
-
-            outStream = new FileOutputStream(file);
-            InputStream inputStream    = assets.open(resPath);
-
-            copyFile(inputStream, outStream);
-            outStream.flush();
-            outStream.close();
+            AssetManager assets  = ctx.getAssets();
+            InputStream in       = assets.open(resPath);
+            FileOutputStream out = new FileOutputStream(file);
+            copyFile(in, out);
         } catch (Exception e) {
-            Log.e(LOG_TAG, "File not found: assets/" + resPath);
+            Log.e(LOG_TAG, "File not found: " + resPath);
             e.printStackTrace();
-        } finally {
-            if (outStream != null) {
-                safeClose(outStream);
-            }
         }
 
         return getUriForFile(ctx, file);
@@ -178,20 +167,17 @@ final class AssetUtil {
 
         String storage  = dir.toString() + ATTACHMENT_FOLDER;
         File file       = new File(storage, fileName);
-
         new File(storage).mkdir();
-        File privateDir    = ctx.getFilesDir();
-        String privatePath = privateDir.getAbsolutePath()+"/.."+resPath;
+
+        File filesDir  = ctx.getFilesDir();
+        String absPath = filesDir.getAbsolutePath() + "/.." + resPath;
 
         try {
-            FileOutputStream outStream = new FileOutputStream(file);
-            InputStream inputStream    = new FileInputStream(privatePath);
-
-            copyFile(inputStream, outStream);
-            outStream.flush();
-            outStream.close();
+            InputStream in       = new FileInputStream(absPath);
+            FileOutputStream out = new FileOutputStream(file);
+            copyFile(in, out);
         } catch (Exception e) {
-            Log.e("EmailComposer", "File not found: " + privatePath);
+            Log.e(LOG_TAG, "File not found: " + absPath);
             e.printStackTrace();
         }
 
@@ -211,38 +197,29 @@ final class AssetUtil {
         String resName   = fileName.substring(0, fileName.lastIndexOf('.'));
         String extension = resPath.substring(resPath.lastIndexOf('.'));
         File dir         = ctx.getExternalCacheDir();
+        int resId        = getResId(resPath);
 
         if (dir == null) {
             Log.e(LOG_TAG, "Missing external cache dir");
             return Uri.EMPTY;
         }
 
-        String storage   = dir.toString() + ATTACHMENT_FOLDER;
-        int resId        = getResId(resPath);
-        File file        = new File(storage, resName + extension);
-
         if (resId == 0) {
             Log.e(LOG_TAG, "File not found: " + resPath);
         }
 
+        String storage   = dir.toString() + ATTACHMENT_FOLDER;
+        File file        = new File(storage, resName + extension);
         new File(storage).mkdir();
 
-        FileOutputStream outStream = null;
-
         try {
-            Resources res = ctx.getResources();
-            outStream = new FileOutputStream(file);
-            InputStream inputStream    = res.openRawResource(resId);
-
-            copyFile(inputStream, outStream);
-            outStream.flush();
-            outStream.close();
+            Resources res        = ctx.getResources();
+            InputStream in       = res.openRawResource(resId);
+            FileOutputStream out = new FileOutputStream(file);
+            copyFile(in, out);
         } catch (Exception e) {
+            Log.e(LOG_TAG, "File not found: " + resPath);
             e.printStackTrace();
-        } finally {
-            if (outStream != null) {
-                safeClose(outStream);
-            }
         }
 
         return getUriForFile(ctx, file);
@@ -251,22 +228,14 @@ final class AssetUtil {
     /**
      * The URI for a base64 encoded content.
      *
-     * @param content   The given base64 encoded content.
-     * @return          The URI including the given content.
+     * @param str   The given base64 encoded content.
+     * @return      The URI including the given content.
      */
     @SuppressWarnings("ResultOfMethodCallIgnored")
-    private Uri getUriForBase64Content (String content) {
-        String resName = content.substring(content.indexOf(":") + 1, content.indexOf("//"));
-        String resData = content.substring(content.indexOf("//") + 2);
+    private Uri getUriForBase64Content (String str) {
+        String resName = str.substring(str.indexOf(":") + 1, str.indexOf("//"));
+        String resData = str.substring(str.indexOf("//") + 2);
         File dir       = ctx.getExternalCacheDir();
-        byte[] bytes;
-
-        try {
-            bytes = Base64.decode(resData, 0);
-        } catch (Exception ignored) {
-            Log.e(LOG_TAG, "Invalid Base64 string");
-            return Uri.EMPTY;
-        }
 
         if (dir == null) {
             Log.e(LOG_TAG, "Missing external cache dir");
@@ -275,23 +244,16 @@ final class AssetUtil {
 
         String storage = dir.toString() + ATTACHMENT_FOLDER;
         File file      = new File(storage, resName);
-
         new File(storage).mkdir();
 
-        FileOutputStream outStream = null;
-
         try {
-            outStream = new FileOutputStream(file);
-
-            outStream.write(bytes);
-            outStream.flush();
-            outStream.close();
+            byte[] bytes         = Base64.decode(resData, 0);
+            InputStream in       = new ByteArrayInputStream(bytes);
+            FileOutputStream out = new FileOutputStream(file);
+            copyFile(in, out);
         } catch (Exception e) {
+            Log.e(LOG_TAG, "Invalid Base64 string");
             e.printStackTrace();
-        } finally {
-            if (outStream != null) {
-                safeClose(outStream);
-            }
         }
 
         return getUriForFile(ctx, file);
@@ -308,7 +270,13 @@ final class AssetUtil {
     private Uri getUriForFile(Context ctx, File file) {
         String authority = ctx.getPackageName() + ".provider";
 
-        return Provider.getUriForFile(ctx, authority, file);
+        try {
+            return Provider.getUriForFile(ctx, authority, file);
+        } catch (Exception e) {
+            Log.e(LOG_TAG, "Failed to get uri for file");
+            e.printStackTrace();
+            return Uri.EMPTY;
+        }
     }
 
     /**
@@ -317,12 +285,18 @@ final class AssetUtil {
      * @param in    The input stream.
      * @param out   The output stream.
      */
-    private void copyFile (InputStream in, OutputStream out) throws IOException {
+    private void copyFile (InputStream in, FileOutputStream out) {
         byte[] buffer = new byte[1024];
         int read;
 
-        while ((read = in.read(buffer)) != -1) {
-            out.write(buffer, 0, read);
+        try {
+            while ((read = in.read(buffer)) != -1) {
+                out.write(buffer, 0, read);
+            }
+            out.flush();
+            out.close();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -332,9 +306,7 @@ final class AssetUtil {
      * @return The resource ID for the given resource.
      */
     private int getResId (String resPath) {
-        Resources res = ctx.getResources();
-        int resId;
-
+        Resources res   = ctx.getResources();
         String pkgName  = ctx.getPackageName();
         String dirName  = "drawable";
         String fileName = resPath;
@@ -345,8 +317,7 @@ final class AssetUtil {
         }
 
         String resName = fileName.substring(0, fileName.lastIndexOf('.'));
-
-        resId = res.getIdentifier(resName, dirName, pkgName);
+        int resId      = res.getIdentifier(resName, dirName, pkgName);
 
         if (resId == 0) {
             resId = res.getIdentifier(resName, "mipmap", pkgName);
@@ -357,26 +328,6 @@ final class AssetUtil {
         }
 
         return resId;
-    }
-
-    /**
-     * Attempt to safely close the given stream.
-     *
-     * @param outStream The stream to close.
-     * @return          true if successful, false otherwise
-     */
-    private static boolean safeClose (final FileOutputStream outStream) {
-
-        if (outStream != null) {
-            try {
-                outStream.close();
-                return true;
-            } catch (IOException e) {
-                Log.e(LOG_TAG, "Error attempting to safely close resource: " + e.getMessage());
-            }
-        }
-
-        return false;
     }
 
 }
