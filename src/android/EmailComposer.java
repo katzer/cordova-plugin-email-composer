@@ -95,29 +95,25 @@ public class EmailComposer extends CordovaPlugin {
 
         if ("open".equalsIgnoreCase(action)) {
             open(args.getJSONObject(0));
-            return true;
         }
-
-        if ("isAvailable".equalsIgnoreCase(action)) {
+        else if ("isAvailable".equalsIgnoreCase(action)) {
             if (cordova.hasPermission(PERMISSION)) {
                 isAvailable(args.getString(0));
             } else {
                 requestPermissions(EXEC_AVAIL_AFTER);
             }
-            return true;
         }
-
-        if ("hasPermission".equalsIgnoreCase(action)) {
+        else if ("hasPermission".equalsIgnoreCase(action)) {
             hasPermission();
-            return true;
         }
-
-        if ("requestPermission".equalsIgnoreCase(action)) {
+        else if ("requestPermission".equalsIgnoreCase(action)) {
             requestPermissions(EXEC_CHECK_AFTER);
-            return true;
+        }
+        else {
+            return false;
         }
 
-        return false;
+        return true;
     }
 
     /**
