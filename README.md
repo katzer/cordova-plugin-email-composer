@@ -76,6 +76,7 @@ cordova.plugins.email.open({
     subject:    String, // subject of the email
     body:       String, // email body (for HTML, set isHtml to true)
     isHtml:    Boolean, // indicats if the body is HTML or plain text
+    type:       String, // content type of the email (Android only)
 }, callback, scope);
 ```
 

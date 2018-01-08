@@ -80,16 +80,24 @@ class Impl {
 
         if (params.has("subject"))
             setSubject(params, mail);
+
         if (params.has("body"))
             setBody(params, mail);
+
         if (params.has("to"))
             setRecipients(params, mail);
+
         if (params.has("cc"))
             setCcRecipients(params, mail);
+
         if (params.has("bcc"))
             setBccRecipients(params, mail);
+
         if (params.has("attachments"))
             setAttachments(params, mail);
+
+        if (params.has("type"))
+            setType(params, mail);
 
         if (!app.equals(MAILTO_SCHEME) && isAppInstalled(app)) {
             mail.setPackage(app);
@@ -188,7 +196,7 @@ class Impl {
 
         for (int i = 0; i < attachments.length(); i++) {
             Uri uri = assets.parse(attachments.optString(i));
-            if (uri != null) uris.add(uri);
+            if (uri != null && uri != Uri.EMPTY) uris.add(uri);
         }
 
         if (uris.isEmpty())
@@ -207,6 +215,17 @@ class Impl {
     }
 
     /**
+     * Setter for the email type.
+     *
+     * @param params    The email properties like subject or body.
+     * @param draft     The intent to send.
+     */
+    private void setType (JSONObject params, Intent draft) {
+        String type = params.optString("type", "message/rfc822");
+        draft.setType(type);
+    }
+
+    /**
      * If email apps are available.
      *
      * @return true if available, otherwise false
@@ -216,13 +235,14 @@ class Impl {
 
         try {
             Pattern emailPattern = Patterns.EMAIL_ADDRESS;
+
             for (Account account : am.getAccounts()) {
                 if (emailPattern.matcher(account.name).matches()) {
                     return true;
                 }
             }
         } catch (Exception e) {
-            Log.i(LOG_TAG, "Missing GET_ACCOUNTS permission.");
+            Log.w(LOG_TAG, "Missing GET_ACCOUNTS permission.");
         }
 
         return false;

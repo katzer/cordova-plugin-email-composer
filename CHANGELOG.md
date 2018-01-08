@@ -1,6 +1,10 @@
 
 ## ChangeLog
 
+#### Version 0.8.12 (not yet released)
+- Internal code refactoring
+- Added `type` property to specify the content type (#283)
+
 #### Version 0.8.11 (25.10.2017)
 - Apply URL encoding when constructing mailto: link (#273)
 
