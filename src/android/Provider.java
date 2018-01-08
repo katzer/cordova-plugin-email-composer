@@ -21,6 +21,6 @@ package de.appplant.cordova.emailcomposer;
 
 import android.support.v4.content.FileProvider;
 
-public class EmailComposerProvider extends FileProvider {
+public class Provider extends FileProvider {
     // Nothing to do here
 }

@@ -53,7 +53,7 @@ public class EmailComposer extends CordovaPlugin {
     private static final int EXEC_CHECK_AFTER = 1;
 
     // Implementation of the plugin.
-    private final EmailComposerImpl impl = new EmailComposerImpl();
+    private final Impl impl = new Impl();
 
     // The callback context used when calling back into JavaScript
     private CallbackContext command;

@@ -40,7 +40,7 @@ import java.util.regex.Pattern;
 import static de.appplant.cordova.emailcomposer.AssetUtil.ATTACHMENT_FOLDER;
 import static de.appplant.cordova.emailcomposer.EmailComposer.LOG_TAG;
 
-class EmailComposerImpl {
+class Impl {
 
     // The default mailto: scheme.
     static private final String MAILTO_SCHEME = "mailto:";
