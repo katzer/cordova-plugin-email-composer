@@ -1,7 +1,7 @@
 
 ## ChangeLog
 
-#### Version 0.8.12 (not yet released)
+#### Version 0.8.12 (09.01.2018)
 - Internal code refactoring
 - Added `type` property to specify the content type (#283)
 
