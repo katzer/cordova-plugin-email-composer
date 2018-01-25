@@ -1,6 +1,10 @@
 
 ## ChangeLog
 
+#### Version 0.8.13 (25.02.2018)
+- Fix potential wrong result for isAvailable on iOS+OSX by using scheme other then `mailto:`
+- Fix open app from background thread by using scheme other then `mailto:`
+
 #### Version 0.8.12 (09.01.2018)
 - Internal code refactoring
 - Added `type` property to specify the content type (#283)
