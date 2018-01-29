@@ -1,6 +1,9 @@
 
 ## ChangeLog
 
+#### Version 0.8.14 (not yet released)
+- Fix wrong uri encoding for browser platform
+
 #### Version 0.8.13 (25.02.2018)
 - Fix potential wrong result for isAvailable on iOS+OSX by using scheme other then `mailto:`
 - Fix open app from background thread by using scheme other then `mailto:`
