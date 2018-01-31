@@ -209,35 +209,33 @@ exports.mergeWithDefaults = function (options) {
         options.isHtml = options.isHTML;
     }
 
+    if (!options.hasOwnProperty('isHtml')) {
+        options.isHtml = defaults.isHtml;
+    }
+
     if (options.hasOwnProperty('app')) {
         var package = this.aliases[options.app];
         options.app = package || options.app;
     }
 
-    for (var key in defaults) {
+    options.subject       = String(options.subject || defaults.subject);
+    options.body          = String(options.body || defaults.body);
+    options.chooserHeader = String(options.chooserHeader || defaults.chooserHeader);
+    options.to            = options.to || defaults.to;
+    options.cc            = options.cc || defaults.cc;
+    options.bcc           = options.bcc || defaults.bcc;
+    options.isHtml        = !!options.isHtml;
 
-        if (!options.hasOwnProperty(key)) {
-            options[key] = defaults[key];
-            continue;
-        }
+    if (!Array.isArray(options.to)) {
+        options.to = [options.to];
+    }
 
-        var custom_  = options[key],
-            default_ = defaults[key];
+    if (!Array.isArray(options.cc)) {
+        options.cc = [options.cc];
+    }
 
-        if (custom_ === null || custom_ === undefined) {
-            options[key] = default_;
-            continue;
-        }
-
-        if (typeof default_ == typeof custom_)
-            continue;
-
-        if (typeof default_ == 'string') {
-            options[key] = custom_.join('');
-        } else
-        if (typeof default_ == 'object') {
-            options[key] = [custom_.toString()];
-        }
+    if (!Array.isArray(options.bcc)) {
+        options.bcc = [options.bcc];
     }
 
     return options;
@@ -256,7 +254,7 @@ exports.mergeWithDefaults = function (options) {
  */
 exports.createCallbackFn = function (callback, scope) {
 
-    if (typeof callback != 'function')
+    if (typeof callback !== 'function')
         return;
 
     return function () {
