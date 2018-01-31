@@ -1,7 +1,7 @@
 
 ## ChangeLog
 
-#### Version 0.8.14 (not yet released)
+#### Version 0.8.14 (31.02.2018)
 - Fix wrong uri encoding for browser platform
 
 #### Version 0.8.13 (25.02.2018)
