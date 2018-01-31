@@ -9,6 +9,9 @@
     <feature name="LocalStorage">
         <param name="osx-package" value="CDVLocalStorage" />
     </feature>
+    <feature name="Camera">
+        <param name="osx-package" value="CDVCamera" />
+    </feature>
     <feature name="Device">
         <param name="ios-package" value="CDVDevice" />
     </feature>

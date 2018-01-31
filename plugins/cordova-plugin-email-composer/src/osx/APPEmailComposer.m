@@ -138,7 +138,9 @@
 {
     NSURL* url = [self.impl urlFromProperties:props];
 
-    [[NSWorkspace sharedWorkspace] openURL:url];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [[NSWorkspace sharedWorkspace] openURL:url];
+    });
 }
 
 /**

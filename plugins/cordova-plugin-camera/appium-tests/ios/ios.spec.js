@@ -1,5 +1,3 @@
-/*jshint node: true, jasmine: true */
-
 /*
  *
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -81,18 +79,18 @@ describe('Camera tests iOS.', function () {
         return cameraHelper.generateSpecs(sourceTypes, destinationTypes, encodingTypes, allowEditOptions, correctOrientationOptions);
     }
 
-    function usePicture() {
+    function usePicture(allowEdit) {
         return driver
-            .elementByXPath('//*[@label="Use"]')
-            .click()
-            .fail(function () {
+            .sleep(10)
+            .then(function () {
                 if (isXCUI) {
-                    return driver
-                        .waitForElementByAccessibilityId('Choose', MINUTE / 3)
-                        .click();
+                    return driver.waitForElementByAccessibilityId('Choose', MINUTE / 3).click();
+                } else {
+                    if (allowEdit) {
+                        return wdHelper.tapElementByXPath('//UIAButton[@label="Choose"]', driver);
+                    }
+                    return driver.elementByXPath('//*[@label="Use"]').click();
                 }
-                // For some reason "Choose" element is not clickable by standard Appium methods on iOS <= 9
-                return wdHelper.tapElementByXPath('//UIAButton[@label="Choose"]', driver);
             });
     }
 
@@ -128,6 +126,16 @@ describe('Camera tests iOS.', function () {
         if (!options) {
             options = {};
         }
+        // assign defaults
+        if (!options.hasOwnProperty('allowEdit')) {
+            options.allowEdit = true;
+        }
+        if (!options.hasOwnProperty('destinationType')) {
+            options.destinationType = cameraConstants.DestinationType.FILE_URI;
+        }
+        if (!options.hasOwnProperty('sourceType')) {
+            options.destinationType = cameraConstants.PictureSourceType.CAMERA;
+        }
 
         return driver
             .context(webviewContext)
@@ -148,7 +156,7 @@ describe('Camera tests iOS.', function () {
                             if (!options.allowEdit) {
                                 return driver;
                             }
-                            return usePicture();
+                            return usePicture(options.allowEdit);
                         });
                 }
                 if (options.hasOwnProperty('sourceType') && options.sourceType === cameraConstants.PictureSourceType.SAVEDPHOTOALBUM) {
@@ -157,7 +165,7 @@ describe('Camera tests iOS.', function () {
                             if (!options.allowEdit) {
                                 return driver;
                             }
-                            return usePicture();
+                            return usePicture(options.allowEdit);
                         });
                 }
                 if (cancelCamera) {
@@ -183,7 +191,7 @@ describe('Camera tests iOS.', function () {
         return driver
             .context(webviewContext)
             .setAsyncScriptTimeout(MINUTE / 2)
-            .executeAsync(cameraHelper.checkPicture, [getCurrentPromiseId(), options])
+            .executeAsync(cameraHelper.checkPicture, [getCurrentPromiseId(), options, false])
             .then(function (result) {
                 if (shouldLoad) {
                     if (result !== 'OK') {
@@ -273,14 +281,22 @@ describe('Camera tests iOS.', function () {
     }
 
     it('camera.ui.util configure driver and start a session', function (done) {
+        // retry up to 3 times
         getDriver()
+            .fail(function () {
+                return getDriver()
+                    .fail(function () {
+                        return getDriver()
+                            .fail(fail);
+                    });
+            })
             .fail(fail)
             .done(done);
-    }, 15 * MINUTE);
+    }, 30 * MINUTE);
 
     describe('Specs.', function () {
         afterEach(function (done) {
-            if (specsRun >= 15) {
+            if (specsRun >= 19) {
                 specsRun = 0;
                 // we need to restart the session regularly because for some reason
                 // when running against iOS 10 simulator on SauceLabs, 
@@ -291,13 +307,20 @@ describe('Camera tests iOS.', function () {
                 return driver
                     .quit()
                     .then(function () {
-                        return getDriver();
+                        return getDriver()
+                            .fail(function () {
+                                return getDriver()
+                                    .fail(function () {
+                                        return getDriver()
+                                            .fail(fail);
+                                    });
+                            });
                     })
                     .done(done);
             } else {
                 done();
             }
-        }, 15 * MINUTE);
+        }, 30 * MINUTE);
 
         // getPicture() with mediaType: VIDEO, sourceType: PHOTOLIBRARY
         it('camera.ui.spec.1 Selecting only videos', function (done) {

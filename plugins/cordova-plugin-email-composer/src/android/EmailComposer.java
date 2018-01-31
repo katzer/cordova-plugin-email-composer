@@ -52,9 +52,6 @@ public class EmailComposer extends CordovaPlugin {
     private static final int EXEC_AVAIL_AFTER = 0;
     private static final int EXEC_CHECK_AFTER = 1;
 
-    // Implementation of the plugin.
-    private final EmailComposerImpl impl = new EmailComposerImpl();
-
     // The callback context used when calling back into JavaScript
     private CallbackContext command;
 
@@ -67,7 +64,7 @@ public class EmailComposer extends CordovaPlugin {
     @Override
     public void initialize(CordovaInterface cordova, CordovaWebView webView) {
         super.initialize(cordova, webView);
-        impl.cleanupAttachmentFolder(getContext());
+        new AssetUtil(getContext()).cleanupAttachmentFolder();
     }
 
     /**
@@ -95,29 +92,25 @@ public class EmailComposer extends CordovaPlugin {
 
         if ("open".equalsIgnoreCase(action)) {
             open(args.getJSONObject(0));
-            return true;
         }
-
-        if ("isAvailable".equalsIgnoreCase(action)) {
+        else if ("isAvailable".equalsIgnoreCase(action)) {
             if (cordova.hasPermission(PERMISSION)) {
                 isAvailable(args.getString(0));
             } else {
                 requestPermissions(EXEC_AVAIL_AFTER);
             }
-            return true;
         }
-
-        if ("hasPermission".equalsIgnoreCase(action)) {
+        else if ("hasPermission".equalsIgnoreCase(action)) {
             hasPermission();
-            return true;
         }
-
-        if ("requestPermission".equalsIgnoreCase(action)) {
+        else if ("requestPermission".equalsIgnoreCase(action)) {
             requestPermissions(EXEC_CHECK_AFTER);
-            return true;
+        }
+        else {
+            return false;
         }
 
-        return false;
+        return true;
     }
 
     /**
@@ -133,7 +126,8 @@ public class EmailComposer extends CordovaPlugin {
     private void isAvailable (final String id) {
         cordova.getThreadPool().execute(new Runnable() {
             public void run() {
-                boolean[] res = impl.canSendMail(id, getContext());
+                Impl impl     = new Impl(getContext());
+                boolean[] res = impl.canSendMail(id);
                 List<PluginResult> messages = new ArrayList<PluginResult>();
 
                 messages.add(new PluginResult(PluginResult.Status.OK, res[0]));
@@ -153,7 +147,8 @@ public class EmailComposer extends CordovaPlugin {
      * @param props The email properties like subject or body
      */
     private void open (JSONObject props) throws JSONException {
-        Intent draft  = impl.getDraftWithProperties(props, getContext());
+        Impl impl     = new Impl(getContext());
+        Intent draft  = impl.getDraft(props);
         String header = props.optString("chooserHeader", "Open with");
 
         final Intent chooser       = Intent.createChooser(draft, header);

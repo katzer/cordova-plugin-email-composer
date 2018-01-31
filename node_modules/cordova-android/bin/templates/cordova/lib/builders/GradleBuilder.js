@@ -82,12 +82,50 @@ GradleBuilder.prototype.runGradleWrapper = function (gradle_cmd, gradle_file) {
     }
 };
 
+/*
+ * We need to kill this in a fire.
+ */
+
+GradleBuilder.prototype.readProjectProperties = function () {
+    function findAllUniq (data, r) {
+        var s = {};
+        var m;
+        while ((m = r.exec(data))) {
+            s[m[1]] = 1;
+        }
+        return Object.keys(s);
+    }
+
+    var data = fs.readFileSync(path.join(this.root, 'project.properties'), 'utf8');
+    return {
+        libs: findAllUniq(data, /^\s*android\.library\.reference\.\d+=(.*)(?:\s|$)/mg),
+        gradleIncludes: findAllUniq(data, /^\s*cordova\.gradle\.include\.\d+=(.*)(?:\s|$)/mg),
+        systemLibs: findAllUniq(data, /^\s*cordova\.system\.library\.\d+=(.*)(?:\s|$)/mg)
+    };
+};
+
+GradleBuilder.prototype.extractRealProjectNameFromManifest = function () {
+    var manifestPath = path.join(this.root, 'AndroidManifest.xml');
+    var manifestData = fs.readFileSync(manifestPath, 'utf8');
+    var m = /<manifest[\s\S]*?package\s*=\s*"(.*?)"/i.exec(manifestData);
+    if (!m) {
+        throw new CordovaError('Could not find package name in ' + manifestPath);
+    }
+
+    var packageName = m[1];
+    var lastDotIndex = packageName.lastIndexOf('.');
+    return packageName.substring(lastDotIndex + 1);
+};
+
 // Makes the project buildable, minus the gradle wrapper.
 GradleBuilder.prototype.prepBuildFiles = function () {
     // Update the version of build.gradle in each dependent library.
     var pluginBuildGradle = path.join(this.root, 'cordova', 'lib', 'plugin-build.gradle');
     var propertiesObj = this.readProjectProperties();
     var subProjects = propertiesObj.libs;
+
+    // Check and copy the gradle file into the subproject.
+    // Called by the loop below this function def.
     var checkAndCopy = function (subProject, root) {
         var subProjectGradle = path.join(root, subProject, 'build.gradle');
         // This is the future-proof way of checking if a file exists
@@ -98,11 +136,15 @@ GradleBuilder.prototype.prepBuildFiles = function () {
             shell.cp('-f', pluginBuildGradle, subProjectGradle);
         }
     };
+
+    // Some dependencies on Android don't use gradle, or don't have default
+    // gradle files.  This copies a dummy gradle file into them
     for (var i = 0; i < subProjects.length; ++i) {
-        if (subProjects[i] !== 'CordovaLib') {
+        if (subProjects[i] !== 'CordovaLib' && subProjects[i] !== 'app') {
             checkAndCopy(subProjects[i], this.root);
         }
     }
+
     var name = this.extractRealProjectNameFromManifest();
     // Remove the proj.id/name- prefix from projects: https://issues.apache.org/jira/browse/CB-9149
     var settingsGradlePaths = subProjects.map(function (p) {
@@ -121,6 +163,10 @@ GradleBuilder.prototype.prepBuildFiles = function () {
     var buildGradle = fs.readFileSync(path.join(this.root, 'build.gradle'), 'utf8');
     var depsList = '';
     var root = this.root;
+
+    // Cordova Plugins can be written as library modules that would use Cordova as a
+    // dependency.  Because we need to make sure that Cordova is compiled only once for
+    // dexing, we make sure to exclude CordovaLib from these modules
     var insertExclude = function (p) {
         var gradlePath = path.join(root, p, 'build.gradle');
         var projectGradleFile = fs.readFileSync(gradlePath, 'utf-8');
@@ -130,14 +176,14 @@ GradleBuilder.prototype.prepBuildFiles = function () {
             depsList += '\n';
         }
     };
+
     subProjects.forEach(function (p) {
         console.log('Subproject Path: ' + p);
         var libName = p.replace(/[/\\]/g, ':').replace(name + '-', '');
-        depsList += '    debugCompile(project(path: "' + libName + '", configuration: "debug"))';
-        insertExclude(p);
-        depsList += '    releaseCompile(project(path: "' + libName + '", configuration: "release"))';
+        depsList += '    implementation(project(path: "' + libName + '"))';
         insertExclude(p);
     });
+
     // For why we do this mapping: https://issues.apache.org/jira/browse/CB-8390
     var SYSTEM_LIBRARY_MAPPINGS = [
         [/^\/?extras\/android\/support\/(.*)$/, 'com.android.support:support-$1:+'],
@@ -162,6 +208,9 @@ GradleBuilder.prototype.prepBuildFiles = function () {
         }
         depsList += '    compile "' + mavenRef + '"\n';
     });
+
+    // This code is dangerous and actually writes gradle declarations directly into the build.gradle
+    // Try not to mess with this if possible
     buildGradle = buildGradle.replace(/(SUB-PROJECT DEPENDENCIES START)[\s\S]*(\/\/ SUB-PROJECT DEPENDENCIES END)/, '$1\n' + depsList + '    $2');
     var includeList = '';
     propertiesObj.gradleIncludes.forEach(function (includePath) {
@@ -198,7 +247,7 @@ GradleBuilder.prototype.prepEnv = function (opts) {
         // For some reason, using ^ and $ don't work.  This does the job, though.
         var distributionUrlRegex = /distributionUrl.*zip/;
         /* jshint -W069 */
-        var distributionUrl = process.env['CORDOVA_ANDROID_GRADLE_DISTRIBUTION_URL'] || 'https\\://services.gradle.org/distributions/gradle-3.3-all.zip';
+        var distributionUrl = process.env['CORDOVA_ANDROID_GRADLE_DISTRIBUTION_URL'] || 'https\\://services.gradle.org/distributions/gradle-4.1-all.zip';
         /* jshint +W069 */
         var gradleWrapperPropertiesPath = path.join(self.root, 'gradle', 'wrapper', 'gradle-wrapper.properties');
         shell.chmod('u+w', gradleWrapperPropertiesPath);

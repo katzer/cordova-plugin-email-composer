@@ -7,16 +7,16 @@
     "files": {}
   },
   "installed_plugins": {
-    "cordova-plugin-camera": {
-      "PACKAGE_NAME": "EmailExample"
-    },
     "cordova-plugin-compat": {
       "PACKAGE_NAME": "EmailExample"
     },
-    "cordova-plugin-device": {
+    "cordova-plugin-x-toast": {
       "PACKAGE_NAME": "EmailExample"
     },
-    "cordova-plugin-x-toast": {
+    "cordova-plugin-camera": {
+      "PACKAGE_NAME": "EmailExample"
+    },
+    "cordova-plugin-device": {
       "PACKAGE_NAME": "EmailExample"
     },
     "cordova-plugin-email-composer": {

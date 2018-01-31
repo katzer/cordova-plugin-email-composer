@@ -10,23 +10,17 @@
     <content src="index.html" />
     <access origin="*" />
     <preference name="windows-target-version" value="10.0" />
-    <plugin name="cordova-plugin-camera" spec="^2.4.1">
-        <variable name="CAMERA_USAGE_DESCRIPTION" value=" " />
-        <variable name="PHOTOLIBRARY_USAGE_DESCRIPTION" value=" " />
-    </plugin>
     <plugin name="cordova-plugin-compat" spec="^1.1.0">
         <variable name="CAMERA_USAGE_DESCRIPTION" value=" " />
         <variable name="PHOTOLIBRARY_USAGE_DESCRIPTION" value=" " />
     </plugin>
-    <plugin name="cordova-plugin-device" spec="^1.1.6">
-        <variable name="CAMERA_USAGE_DESCRIPTION" value=" " />
-        <variable name="PHOTOLIBRARY_USAGE_DESCRIPTION" value=" " />
-    </plugin>
     <plugin name="cordova-plugin-x-toast" spec="^2.6.0" />
-    <engine name="android" spec="~6.3.0" />
-    <engine name="browser" spec="~5.0.1" />
-    <engine name="ios" spec="~4.5.2" />
-    <engine name="osx" spec="~4.0.1" />
-    <engine name="windows" spec="~5.0.0" />
-    <plugin name="cordova-plugin-email-composer" spec="^0.8.11" />
+    <plugin name="cordova-plugin-camera" spec="^4.0.1" />
+    <plugin name="cordova-plugin-device" spec="^2.0.1" />
+    <engine name="osx" spec="^4.0.1" />
+    <engine name="windows" spec="^5.0.0" />
+    <engine name="android" spec="^7.0.0" />
+    <engine name="browser" spec="^5.0.3" />
+    <engine name="ios" spec="^4.5.4" />
+    <plugin name="cordova-plugin-email-composer" spec="^0.8.13" />
 </widget>

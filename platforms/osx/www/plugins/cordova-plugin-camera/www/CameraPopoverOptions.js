@@ -22,7 +22,7 @@ cordova.define("cordova-plugin-camera.CameraPopoverOptions", function(require, e
 
 var Camera = require('./Camera');
 
-/** 
+/**
  * @namespace navigator
  */
 

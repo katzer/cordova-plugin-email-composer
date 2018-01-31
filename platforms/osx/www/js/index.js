@@ -117,7 +117,7 @@ var app = {
             bcc:     ['bcc1@email.de', 'bcc2@email.de'],
             subject: isHtml ? 'Body with HTML and CSS3' : 'Body with plain text',
             body:    app.getBody(isHtml),
-            isHTML:  isHtml,
+            isHTML:  isHtml
         }, showToast);
     },
     // Open draft with attachments

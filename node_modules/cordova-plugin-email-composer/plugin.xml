@@ -22,7 +22,7 @@
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
         xmlns:android="http://schemas.android.com/apk/res/android"
         id="cordova-plugin-email-composer"
-        version="0.8.11">
+        version="0.8.13">
 
     <name>EmailComposer</name>
 
@@ -103,15 +103,15 @@
         </config-file>
 
         <config-file target="AndroidManifest.xml" parent="application">
-          <provider
-              android:name="de.appplant.cordova.emailcomposer.EmailComposerProvider"
-              android:authorities="${applicationId}.provider"
-              android:exported="false"
-              android:grantUriPermissions="true" >
-              <meta-data
-                  android:name="android.support.FILE_PROVIDER_PATHS"
-                  android:resource="@xml/emailcomposer_provider_paths"/>
-          </provider>
+            <provider
+                android:name="de.appplant.cordova.emailcomposer.Provider"
+                android:authorities="${applicationId}.provider"
+                android:exported="false"
+                android:grantUriPermissions="true" >
+                <meta-data
+                    android:name="android.support.FILE_PROVIDER_PATHS"
+                    android:resource="@xml/emailcomposer_provider_paths"/>
+            </provider>
         </config-file>
 
         <framework src="com.android.support:support-v4:24.1.1+" />
@@ -121,15 +121,19 @@
             target-dir="res/xml" />
 
         <source-file
+            src="src/android/AssetUtil.java"
+            target-dir="src/de/appplant/cordova/emailcomposer" />
+
+        <source-file
             src="src/android/EmailComposer.java"
             target-dir="src/de/appplant/cordova/emailcomposer" />
 
         <source-file
-            src="src/android/EmailComposerImpl.java"
+            src="src/android/Impl.java"
             target-dir="src/de/appplant/cordova/emailcomposer" />
 
         <source-file
-            src="src/android/EmailComposerProvider.java"
+            src="src/android/Provider.java"
             target-dir="src/de/appplant/cordova/emailcomposer" />
     </platform>
 

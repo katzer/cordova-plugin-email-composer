@@ -1,0 +1,9 @@
+de.appplant.cordova.plugin.emailcomposer.example
+int drawable screen 0x7f010000
+int mipmap icon 0x7f020000
+int string activity_name 0x7f030000
+int string app_name 0x7f030001
+int string launcher_name 0x7f030002
+int xml config 0x7f040000
+int xml emailcomposer_provider_paths 0x7f040001
+int xml provider_paths 0x7f040002

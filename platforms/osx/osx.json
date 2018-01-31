@@ -9,6 +9,10 @@
         "parents": {
           "/*": [
             {
+              "xml": "<feature name=\"Camera\"><param name=\"osx-package\" value=\"CDVCamera\" /></feature>",
+              "count": 1
+            },
+            {
               "xml": "<feature name=\"Device\"><param name=\"ios-package\" value=\"CDVDevice\" /></feature>",
               "count": 1
             },
@@ -25,13 +29,13 @@
     "cordova-plugin-compat": {
       "PACKAGE_NAME": "de.appplant.cordova.plugin.emailcomposer.example"
     },
+    "cordova-plugin-x-toast": {
+      "PACKAGE_NAME": "de.appplant.cordova.plugin.emailcomposer.example"
+    },
     "cordova-plugin-camera": {
       "PACKAGE_NAME": "de.appplant.cordova.plugin.emailcomposer.example"
     },
     "cordova-plugin-device": {
-      "PACKAGE_NAME": "de.appplant.cordova.plugin.emailcomposer.example"
-    },
-    "cordova-plugin-x-toast": {
       "PACKAGE_NAME": "de.appplant.cordova.plugin.emailcomposer.example"
     },
     "cordova-plugin-email-composer": {
@@ -40,6 +44,19 @@
   },
   "dependent_plugins": {},
   "modules": [
+    {
+      "file": "plugins/cordova-plugin-x-toast/www/Toast.js",
+      "id": "cordova-plugin-x-toast.Toast",
+      "pluginId": "cordova-plugin-x-toast",
+      "clobbers": [
+        "window.plugins.toast"
+      ]
+    },
+    {
+      "file": "plugins/cordova-plugin-x-toast/test/tests.js",
+      "id": "cordova-plugin-x-toast.tests",
+      "pluginId": "cordova-plugin-x-toast"
+    },
     {
       "file": "plugins/cordova-plugin-camera/www/CameraConstants.js",
       "id": "cordova-plugin-camera.Camera",
@@ -65,25 +82,20 @@
       ]
     },
     {
+      "file": "plugins/cordova-plugin-camera/www/CameraPopoverHandle.js",
+      "id": "cordova-plugin-camera.CameraPopoverHandle",
+      "pluginId": "cordova-plugin-camera",
+      "clobbers": [
+        "CameraPopoverHandle"
+      ]
+    },
+    {
       "file": "plugins/cordova-plugin-device/www/device.js",
       "id": "cordova-plugin-device.device",
       "pluginId": "cordova-plugin-device",
       "clobbers": [
         "device"
       ]
-    },
-    {
-      "file": "plugins/cordova-plugin-x-toast/www/Toast.js",
-      "id": "cordova-plugin-x-toast.Toast",
-      "pluginId": "cordova-plugin-x-toast",
-      "clobbers": [
-        "window.plugins.toast"
-      ]
-    },
-    {
-      "file": "plugins/cordova-plugin-x-toast/test/tests.js",
-      "id": "cordova-plugin-x-toast.tests",
-      "pluginId": "cordova-plugin-x-toast"
     },
     {
       "file": "plugins/cordova-plugin-email-composer/www/email_composer.js",

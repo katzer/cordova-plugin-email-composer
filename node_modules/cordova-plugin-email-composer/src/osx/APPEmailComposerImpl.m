@@ -47,7 +47,7 @@
     }
 
     NSCharacterSet *set = [NSCharacterSet URLFragmentAllowedCharacterSet];
-    scheme = [[scheme stringByAppendingString:@"test@test.de"]
+    scheme = [[scheme stringByAppendingString:@"?test@test.de"]
                 stringByAddingPercentEncodingWithAllowedCharacters:set];
 
     NSURL* url = [NSURL URLWithString:scheme];

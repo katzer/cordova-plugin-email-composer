@@ -133,7 +133,9 @@
 {
     NSURL* url = [self.impl urlFromProperties:props];
 
-    [[UIApplication sharedApplication] openURL:url];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [[UIApplication sharedApplication] openURL:url];
+    });
 }
 
 /**

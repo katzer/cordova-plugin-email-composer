@@ -22,7 +22,7 @@
 
 var Camera = require('./Camera');
 
-/** 
+/**
  * @namespace navigator
  */
 

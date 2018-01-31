@@ -20,6 +20,10 @@
 -->
 ## Release Notes for Cordova Browser ##
 
+### 5.0.2 (Dec 18, 2017)
+* [CB-13689](https://issues.apache.org/jira/browse/CB-13689): Updated checked-in node_modules
+* [CB-13562](https://issues.apache.org/jira/browse/CB-13562): fixed asset tag when adding push plugin to **Browser**
+
 ### 5.0.1 (Oct 16, 2017)
 * [CB-13444](https://issues.apache.org/jira/browse/CB-13444) Updated checked-in `node_modules`
 * [CB-13435](https://issues.apache.org/jira/browse/CB-13435) fix merges directory support for **Browser**

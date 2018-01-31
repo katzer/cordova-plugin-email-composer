@@ -4,38 +4,32 @@
   "displayName": "EmailExample",
   "cordova": {
     "platforms": [
+      "osx",
+      "windows",
       "android",
       "browser",
-      "ios",
-      "osx",
-      "windows"
+      "ios"
     ],
     "plugins": {
       "cordova-plugin-compat": {
         "CAMERA_USAGE_DESCRIPTION": " ",
         "PHOTOLIBRARY_USAGE_DESCRIPTION": " "
       },
-      "cordova-plugin-device": {
-        "CAMERA_USAGE_DESCRIPTION": " ",
-        "PHOTOLIBRARY_USAGE_DESCRIPTION": " "
-      },
       "cordova-plugin-x-toast": {},
-      "cordova-plugin-camera": {
-        "CAMERA_USAGE_DESCRIPTION": " ",
-        "PHOTOLIBRARY_USAGE_DESCRIPTION": " "
-      },
+      "cordova-plugin-camera": {},
+      "cordova-plugin-device": {},
       "cordova-plugin-email-composer": {}
     }
   },
   "dependencies": {
-    "cordova-android": "^6.3.0",
-    "cordova-browser": "^5.0.1",
-    "cordova-ios": "^4.5.2",
+    "cordova-android": "^7.0.0",
+    "cordova-browser": "^5.0.3",
+    "cordova-ios": "^4.5.4",
     "cordova-osx": "^4.0.1",
-    "cordova-plugin-camera": "^2.4.1",
+    "cordova-plugin-camera": "^4.0.1",
     "cordova-plugin-compat": "^1.1.0",
-    "cordova-plugin-device": "^1.1.6",
-    "cordova-plugin-email-composer": "^0.8.11",
+    "cordova-plugin-device": "^2.0.1",
+    "cordova-plugin-email-composer": "^0.8.13",
     "cordova-plugin-x-toast": "^2.6.0",
     "cordova-windows": "^5.0.0"
   }
