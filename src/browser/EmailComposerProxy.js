@@ -52,11 +52,11 @@ exports.open = function (success, error, args) {
         options += '&body=' + encodeURIComponent(props.body);
     }
 
-    if (props.cc !== '') {
+    if (props.cc.length > 0) {
         options += '&cc=' + exports.encodeURIs(props.cc);
     }
 
-    if (props.bcc !== '') {
+    if (props.bcc.length > 0) {
         options += '&bcc=' + exports.encodeURIs(props.bcc);
     }
 
