@@ -1,7 +1,14 @@
 
 ## ChangeLog
 
-#### Version 0.8.13 (25.02.2018)
+#### Version 0.8.15 (08.02.2018)
+- Fix iOS not working if `app:` wasn't specified.
+- Fix `attachments:` to accept a string.
+
+#### Version 0.8.14 (31.01.2018)
+- Fix wrong uri encoding for browser platform.
+
+#### Version 0.8.13 (25.01.2018)
 - Fix potential wrong result for isAvailable on iOS+OSX by using scheme other then `mailto:`
 - Fix open app from background thread by using scheme other then `mailto:`
 

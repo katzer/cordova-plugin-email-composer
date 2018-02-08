@@ -37,7 +37,7 @@
   "cordova-plugin-email-composer": {
     "source": {
       "type": "registry",
-      "id": "cordova-plugin-email-composer@latest"
+      "id": "cordova-plugin-email-composer@0.8.15"
     },
     "is_top_level": true,
     "variables": {}

@@ -1,27 +1,27 @@
 {
-  "_from": "cordova-plugin-email-composer@latest",
-  "_id": "cordova-plugin-email-composer@0.8.13",
+  "_from": "cordova-plugin-email-composer@0.8.15",
+  "_id": "cordova-plugin-email-composer@0.8.15",
   "_inBundle": false,
-  "_integrity": "sha512-W2Lza2L9w9NooNZYJLHQ4JB30gwX4T0hmRsAsLre1cHJKVaX8ydLWoG0F3LbgO2hFclcZP6ZMi5mjy0yAvf3fg==",
+  "_integrity": "sha512-DkGnlwGw25JKx/aICZT0X3N/Iew+btB/DLfjgEB2brjkj6N+lcognNPr40eltK7UWur3Ql8V4djm2EAuEbM7NQ==",
   "_location": "/cordova-plugin-email-composer",
   "_phantomChildren": {},
   "_requested": {
-    "type": "tag",
+    "type": "version",
     "registry": true,
-    "raw": "cordova-plugin-email-composer@latest",
+    "raw": "cordova-plugin-email-composer@0.8.15",
     "name": "cordova-plugin-email-composer",
     "escapedName": "cordova-plugin-email-composer",
-    "rawSpec": "latest",
+    "rawSpec": "0.8.15",
     "saveSpec": null,
-    "fetchSpec": "latest"
+    "fetchSpec": "0.8.15"
   },
   "_requiredBy": [
     "#USER",
     "/"
   ],
-  "_resolved": "https://registry.npmjs.org/cordova-plugin-email-composer/-/cordova-plugin-email-composer-0.8.13.tgz",
-  "_shasum": "98bbcd8b3c5ac9dcab45528954799808feaf3db6",
-  "_spec": "cordova-plugin-email-composer@latest",
+  "_resolved": "https://registry.npmjs.org/cordova-plugin-email-composer/-/cordova-plugin-email-composer-0.8.15.tgz",
+  "_shasum": "d952b5b588996915fb332f7f464812757f170688",
+  "_spec": "cordova-plugin-email-composer@0.8.15",
   "_where": "/Users/sebastian/Documents/github/cordova-example-email-composer",
   "author": {
     "name": "Sebastián Katzer"
@@ -77,5 +77,5 @@
     "type": "git",
     "url": "git+https://github.com/katzer/cordova-plugin-email-composer.git"
   },
-  "version": "0.8.13"
+  "version": "0.8.15"
 }
