@@ -214,10 +214,10 @@ exports.mergeWithDefaults = function (options) {
     }
 
     if (options.hasOwnProperty('app')) {
-        var package = this.aliases[options.app];
-        options.app = package || options.app;
+        options.app = this.aliases[options.app];
     }
 
+    options.app           = String(options.app || defaults.app);
     options.subject       = String(options.subject || defaults.subject);
     options.body          = String(options.body || defaults.body);
     options.chooserHeader = String(options.chooserHeader || defaults.chooserHeader);
