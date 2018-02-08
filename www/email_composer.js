@@ -224,6 +224,7 @@ exports.mergeWithDefaults = function (options) {
     options.to            = options.to || defaults.to;
     options.cc            = options.cc || defaults.cc;
     options.bcc           = options.bcc || defaults.bcc;
+    options.attachments   = options.attachments || defaults.attachments;
     options.isHtml        = !!options.isHtml;
 
     if (!Array.isArray(options.to)) {
@@ -236,6 +237,10 @@ exports.mergeWithDefaults = function (options) {
 
     if (!Array.isArray(options.bcc)) {
         options.bcc = [options.bcc];
+    }
+
+    if (!Array.isArray(options.attachments)) {
+        options.attachments = [options.attachments];
     }
 
     return options;
