@@ -148,15 +148,12 @@ public class EmailComposer extends CordovaPlugin {
      */
     private void open (JSONObject props) throws JSONException {
         Impl impl     = new Impl(getContext());
-        Intent draft  = impl.getDraft(props);
-        String header = props.optString("chooserHeader", "Open with");
-
-        final Intent chooser       = Intent.createChooser(draft, header);
+        final Intent draft  = impl.getDraft(props);
         final EmailComposer plugin = this;
 
         cordova.getThreadPool().execute(new Runnable() {
             public void run() {
-                cordova.startActivityForResult(plugin, chooser, 0);
+                cordova.startActivityForResult(plugin, draft, 0);
             }
         });
     }
