@@ -268,7 +268,7 @@ final class AssetUtil {
      * @return content://...
      */
     private Uri getUriForFile(Context ctx, File file) {
-        String authority = ctx.getPackageName() + ".provider";
+        String authority = ctx.getPackageName() + ".emailcomposer.provider";
 
         try {
             return Provider.getUriForFile(ctx, authority, file);
