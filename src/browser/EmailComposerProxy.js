@@ -26,7 +26,7 @@
  *
  * @return [ Void ]
  */
-exports.isAvailable = function (success, error, args) {
+exports.scan = function (success, error, args) {
     success(true, false);
 };
 

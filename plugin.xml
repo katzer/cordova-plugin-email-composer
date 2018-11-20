@@ -22,7 +22,7 @@
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
         xmlns:android="http://schemas.android.com/apk/res/android"
         id="cordova-plugin-email-composer"
-        version="0.8.15">
+        version="0.9.0.beta">
 
     <name>EmailComposer</name>
 
@@ -49,7 +49,6 @@
     <!-- interface -->
     <js-module src="www/email_composer.js" name="EmailComposer">
         <clobbers target="cordova.plugins.email" />
-        <clobbers target="plugin.email" />
     </js-module>
 
     <!-- ios -->
@@ -96,10 +95,6 @@
                 <param name="android-package"
                        value="de.appplant.cordova.emailcomposer.EmailComposer"/>
             </feature>
-        </config-file>
-
-        <config-file target="AndroidManifest.xml" parent="/manifest">
-            <uses-permission android:name="android.permission.GET_ACCOUNTS" />
         </config-file>
 
         <config-file target="AndroidManifest.xml" parent="application">

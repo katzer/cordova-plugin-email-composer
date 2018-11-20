@@ -1,6 +1,16 @@
 
 ## ChangeLog
 
+#### Version 0.9.0 (not yet released)
+- [__change__]: Plugin does not add any permissions by itself like `GET_ACCOUNTS` or `READ_EXTERNAL_STORAGE`.
+- [__change__]: `isAvailable` does not request for missing permission (`GET_ACCOUNTS`).
+- [__change__]: `hasPermission` takes 3 arguments now. The first one has to be a value of `cordova.plugins.email.permission`.
+- [__change__]: `requestPermission` takes 3 arguments now. The first one has to be a value of `cordova.plugins.email.permission`.
+- [__change__]: Remove support lib from being installed (Android).
+- [__change__]: Remove deprecated namespace `plugin.email`.
+- [enhancement]: Skip chooser if there's only the default app (#302)
+- [bugfix:] Do not open old email draft [fixes #303]
+
 #### Version 0.8.15 (08.02.2018)
 - Fix iOS not working if `app:` wasn't specified.
 - Fix `attachments:` to accept a string.
