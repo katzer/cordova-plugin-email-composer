@@ -1,5 +1,5 @@
 // Platform: browser
-// 4450a4cea50616e080a82e8ede9e3d6a1fe3c3ec
+// 9e8e1b716252c4a08abcd31a13013b868d6f4141
 /*
  Licensed to the Apache Software Foundation (ASF) under one
  or more contributor license agreements.  See the NOTICE file
@@ -19,7 +19,7 @@
  under the License.
 */
 ;(function() {
-var PLATFORM_VERSION_BUILD_LABEL = '5.0.3';
+var PLATFORM_VERSION_BUILD_LABEL = '5.0.4';
 // file: src/scripts/require.js
 
 /* jshint -W079 */
@@ -307,6 +307,7 @@ var cordova = {
         } catch (err) {
             var msg = 'Error in ' + (isSuccess ? 'Success' : 'Error') + ' callbackId: ' + callbackId + ' : ' + err;
             console && console.log && console.log(msg);
+            console && console.log && err.stack && console.log(err.stack);
             cordova.fireWindowEvent('cordovacallbackerror', { 'message': msg });
             throw err;
         }
@@ -836,7 +837,7 @@ module.exports = channel;
 
 });
 
-// file: /Users/steveng/repo/cordova/cordova-browser/cordova-js-src/confighelper.js
+// file: /Users/brodybits/Documents/cordova/cordova-browser/cordova-js-src/confighelper.js
 define("cordova/confighelper", function(require, exports, module) {
 
 var config;
@@ -911,7 +912,7 @@ exports.readConfig = readConfig;
 
 });
 
-// file: /Users/steveng/repo/cordova/cordova-browser/cordova-js-src/exec.js
+// file: /Users/brodybits/Documents/cordova/cordova-browser/cordova-js-src/exec.js
 define("cordova/exec", function(require, exports, module) {
 
 /*jslint sloppy:true, plusplus:true*/
@@ -1486,7 +1487,7 @@ exports.reset();
 
 });
 
-// file: /Users/steveng/repo/cordova/cordova-browser/cordova-js-src/platform.js
+// file: /Users/brodybits/Documents/cordova/cordova-browser/cordova-js-src/platform.js
 define("cordova/platform", function(require, exports, module) {
 
 module.exports = {

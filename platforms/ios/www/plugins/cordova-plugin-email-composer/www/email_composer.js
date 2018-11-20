@@ -32,6 +32,14 @@ exports.aliases = {
 };
 
 /**
+ * List of possible permissions to request.
+ */
+exports.permission = {
+    READ_EXTERNAL_STORAGE: 1,
+    READ_ACCOUNTS: 2
+};
+
+/**
  * List of all available options with their default value.
  *
  * @return [ Object ]
@@ -53,12 +61,20 @@ exports.getDefaults = function () {
 /**
  * Informs if the app has the needed permission.
  *
- * @param [ Function ] callback The callback function.
- * @param [ Object ]   scope    The scope of the callback.
+ * @param [ Number ]   permission The permission to check.
+ * @param [ Function ] callback   The callback function.
+ * @param [ Object ]   scope      The scope of the callback.
  *
  * @return [ Void ]
  */
-exports.hasPermission = function(callback, scope) {
+exports.hasPermission = function(permission, callback, scope) {
+
+    if (typeof permission != 'number') {
+        permission = 0;
+        scope      = callback;
+        callback   = permission;
+    }
+
     var fn = this.createCallbackFn(callback, scope);
 
     if (!isAndroid) {
@@ -66,18 +82,26 @@ exports.hasPermission = function(callback, scope) {
         return;
     }
 
-    exec(fn, null, 'EmailComposer','hasPermission', []);
+    exec(fn, null, 'EmailComposer', 'check', [permission]);
  };
 
 /**
  * Request permission if not already granted.
  *
+ * @param [ Number ]   permission The permission to request.
  * @param [ Function ] callback The callback function.
  * @param [ Object ]   scope    The scope of the callback.
  *
  * @return [ Void ]
  */
-exports.requestPermission = function(callback, scope) {
+exports.requestPermission = function(permission, callback, scope) {
+
+    if (typeof permission != 'number') {
+        permission = 0;
+        scope      = callback;
+        callback   = permission;
+    }
+
     var fn = this.createCallbackFn(callback, scope);
 
     if (!isAndroid) {
@@ -85,7 +109,7 @@ exports.requestPermission = function(callback, scope) {
         return;
     }
 
-    exec(fn, null, 'EmailComposer','requestPermission', []);
+    exec(fn, null, 'EmailComposer', 'request', [permission]);
 };
 
 /**
@@ -113,7 +137,7 @@ exports.isAvailable = function (app, callback, scope) {
         app = this.aliases[app];
     }
 
-    exec(fn, null, 'EmailComposer', 'isAvailable', [app]);
+    exec(fn, null, 'EmailComposer', 'scan', [app]);
 };
 
 /**
@@ -145,7 +169,7 @@ exports.isAvailable2 = function (app, callback, scope) {
         fn2 = function (a, b) { fn(b, a); };
     }
 
-    exec(fn2, null, 'EmailComposer', 'isAvailable', [app]);
+    exec(fn2, null, 'EmailComposer', 'scan', [app]);
 };
 
 /**

@@ -1,77 +1,54 @@
 {
-  "_args": [
-    [
-      {
-        "raw": "cordova-plugin-compat@^1.1.0",
-        "scope": null,
-        "escapedName": "cordova-plugin-compat",
-        "name": "cordova-plugin-compat",
-        "rawSpec": "^1.1.0",
-        "spec": ">=1.1.0 <2.0.0",
-        "type": "range"
-      },
-      "/Users/sebastian/Documents/github/cordova-example-email-composer/node_modules"
-    ]
-  ],
-  "_from": "cordova-plugin-compat@>=1.1.0 <2.0.0",
-  "_id": "cordova-plugin-compat@1.1.0",
-  "_inCache": true,
+  "_from": "cordova-plugin-compat@1.2.0",
+  "_id": "cordova-plugin-compat@1.2.0",
+  "_inBundle": false,
+  "_integrity": "sha1-C8ZXVyduvZIMASzpIOJ0F3V2Nz4=",
   "_location": "/cordova-plugin-compat",
-  "_nodeVersion": "6.6.0",
-  "_npmOperationalInternal": {
-    "host": "packages-18-east.internal.npmjs.com",
-    "tmp": "tmp/cordova-plugin-compat-1.1.0.tgz_1478304539989_0.23511901660822332"
-  },
-  "_npmUser": {
-    "name": "stevegill",
-    "email": "stevengill97@gmail.com"
-  },
-  "_npmVersion": "4.0.0",
   "_phantomChildren": {},
   "_requested": {
-    "raw": "cordova-plugin-compat@^1.1.0",
-    "scope": null,
-    "escapedName": "cordova-plugin-compat",
+    "type": "version",
+    "registry": true,
+    "raw": "cordova-plugin-compat@1.2.0",
     "name": "cordova-plugin-compat",
-    "rawSpec": "^1.1.0",
-    "spec": ">=1.1.0 <2.0.0",
-    "type": "range"
+    "escapedName": "cordova-plugin-compat",
+    "rawSpec": "1.2.0",
+    "saveSpec": null,
+    "fetchSpec": "1.2.0"
   },
   "_requiredBy": [
     "#USER",
     "/"
   ],
-  "_resolved": "https://registry.npmjs.org/cordova-plugin-compat/-/cordova-plugin-compat-1.1.0.tgz",
-  "_shasum": "92bdf169feb61205323dcc96a3ff8348e37e87fc",
-  "_shrinkwrap": null,
-  "_spec": "cordova-plugin-compat@^1.1.0",
-  "_where": "/Users/sebastian/Documents/github/cordova-example-email-composer/node_modules",
+  "_resolved": "https://registry.npmjs.org/cordova-plugin-compat/-/cordova-plugin-compat-1.2.0.tgz",
+  "_shasum": "0bc65757276ebd920c012ce920e274177576373e",
+  "_spec": "cordova-plugin-compat@1.2.0",
+  "_where": "/Users/sebastian/Documents/github/cordova-example-email-composer",
   "author": {
     "name": "Apache Software Foundation"
   },
   "bugs": {
     "url": "https://github.com/apache/cordova-plugin-compat/issues"
   },
+  "bundleDependencies": false,
   "cordova": {
     "id": "cordova-plugin-compat",
     "platforms": [
       "android"
     ]
   },
-  "dependencies": {},
-  "description": "This repo is for remaining backwards compatible with previous versions of Cordova.",
-  "devDependencies": {},
-  "directories": {},
-  "dist": {
-    "shasum": "92bdf169feb61205323dcc96a3ff8348e37e87fc",
-    "tarball": "https://registry.npmjs.org/cordova-plugin-compat/-/cordova-plugin-compat-1.1.0.tgz"
-  },
-  "engines": [
-    {
-      "name": "cordova",
-      "version": ">=5.0.0"
+  "deprecated": false,
+  "description": "[DEPRECATED] This repo is for remaining backwards compatible with previous versions of Cordova.",
+  "engines": {
+    "cordovaDependencies": {
+      "<1.2.0": {
+        "cordova": ">=5.0.0"
+      },
+      ">=1.2.0": {
+        "cordova": ">=5.0.0",
+        "cordova-android": "<6.3.0"
+      }
     }
-  ],
+  },
   "homepage": "http://github.com/apache/cordova-plugin-compat#readme",
   "keywords": [
     "ecosystem:cordova",
@@ -79,24 +56,10 @@
     "cordova-android"
   ],
   "license": "Apache-2.0",
-  "maintainers": [
-    {
-      "name": "macdonst",
-      "email": "simon.macdonald@gmail.com"
-    },
-    {
-      "name": "stevegill",
-      "email": "stevengill97@gmail.com"
-    }
-  ],
   "name": "cordova-plugin-compat",
-  "optionalDependencies": {},
-  "readme": "<!--\n#\n# Licensed to the Apache Software Foundation (ASF) under one\n# or more contributor license agreements.  See the NOTICE file\n# distributed with this work for additional information\n# regarding copyright ownership.  The ASF licenses this file\n# to you under the Apache License, Version 2.0 (the\n# \"License\"); you may not use this file except in compliance\n# with the License.  You may obtain a copy of the License at\n#\n# http://www.apache.org/licenses/LICENSE-2.0\n#\n# Unless required by applicable law or agreed to in writing,\n# software distributed under the License is distributed on an\n# \"AS IS\" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY\n#  KIND, either express or implied.  See the License for the\n# specific language governing permissions and limitations\n# under the License.\n#\n-->\n\ncordova-plugin-compat\n------------------------\n\nThis repo is for remaining backwards compatible with previous versions of Cordova.\n\n## USAGE\n\nYour plugin can depend on this plugin and use it to handle the new run time permissions Android 6.0.0 (cordova-android 5.0.0) introduced. \n\nView [this commit](https://github.com/apache/cordova-plugin-camera/commit/a9c18710f23e86f5b7f8918dfab7c87a85064870) to see how to depend on `cordova-plugin-compat`. View [this file](https://github.com/apache/cordova-plugin-camera/blob/master/src/android/CameraLauncher.java) to see how `PermissionHelper` is being used to request and store permissions. Read more about Android permissions at http://cordova.apache.org/docs/en/latest/guide/platforms/android/plugin.html#android-permissions.\n",
-  "readmeFilename": "README.md",
   "repository": {
     "type": "git",
     "url": "git://github.com/apache/cordova-plugin-compat.git"
   },
-  "scripts": {},
-  "version": "1.1.0"
+  "version": "1.2.0"
 }

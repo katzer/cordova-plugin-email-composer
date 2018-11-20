@@ -37,7 +37,7 @@ Or install the latest head version:
 
 Or install from local source:
 
-    $ cordova plugin add cordova-plugin-email-composer --searchpath <path>
+    $ cordova plugin add <path> --nofetch --nosave
 
 
 ## Usage

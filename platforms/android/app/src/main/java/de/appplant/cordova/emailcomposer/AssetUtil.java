@@ -139,7 +139,7 @@ final class AssetUtil {
             AssetManager assets  = ctx.getAssets();
             InputStream in       = assets.open(resPath);
             FileOutputStream out = new FileOutputStream(file);
-            copyFile(in, out);
+            copyStream(in, out);
         } catch (Exception e) {
             Log.e(LOG_TAG, "File not found: " + resPath);
             e.printStackTrace();
@@ -175,7 +175,7 @@ final class AssetUtil {
         try {
             InputStream in       = new FileInputStream(absPath);
             FileOutputStream out = new FileOutputStream(file);
-            copyFile(in, out);
+            copyStream(in, out);
         } catch (Exception e) {
             Log.e(LOG_TAG, "File not found: " + absPath);
             e.printStackTrace();
@@ -216,7 +216,7 @@ final class AssetUtil {
             Resources res        = ctx.getResources();
             InputStream in       = res.openRawResource(resId);
             FileOutputStream out = new FileOutputStream(file);
-            copyFile(in, out);
+            copyStream(in, out);
         } catch (Exception e) {
             Log.e(LOG_TAG, "File not found: " + resPath);
             e.printStackTrace();
@@ -250,7 +250,7 @@ final class AssetUtil {
             byte[] bytes         = Base64.decode(resData, 0);
             InputStream in       = new ByteArrayInputStream(bytes);
             FileOutputStream out = new FileOutputStream(file);
-            copyFile(in, out);
+            copyStream(in, out);
         } catch (Exception e) {
             Log.e(LOG_TAG, "Invalid Base64 string");
             e.printStackTrace();
@@ -285,7 +285,7 @@ final class AssetUtil {
      * @param in    The input stream.
      * @param out   The output stream.
      */
-    private void copyFile (InputStream in, FileOutputStream out) {
+    private void copyStream (InputStream in, FileOutputStream out) {
         byte[] buffer = new byte[1024];
         int read;
 

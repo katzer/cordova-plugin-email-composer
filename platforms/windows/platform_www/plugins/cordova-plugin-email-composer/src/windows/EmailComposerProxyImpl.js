@@ -18,8 +18,8 @@ cordova.define("cordova-plugin-email-composer.EmailComposerProxyImpl", function(
  under the License.
  */
 
-var proxy = require('cordova-plugin-email-composer.EmailComposerProxy'),
-    impl  = proxy.impl = {},
+var proxy   = require('cordova-plugin-email-composer.EmailComposerProxy'),
+    impl    = proxy.impl = {},
     WinMail = Windows.ApplicationModel.Email;
 
 /**

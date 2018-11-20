@@ -1,35 +1,7 @@
 {
-  "_from": "cordova-plugin-email-composer@0.8.15",
-  "_id": "cordova-plugin-email-composer@0.8.15",
-  "_inBundle": false,
-  "_integrity": "sha512-DkGnlwGw25JKx/aICZT0X3N/Iew+btB/DLfjgEB2brjkj6N+lcognNPr40eltK7UWur3Ql8V4djm2EAuEbM7NQ==",
-  "_location": "/cordova-plugin-email-composer",
-  "_phantomChildren": {},
-  "_requested": {
-    "type": "version",
-    "registry": true,
-    "raw": "cordova-plugin-email-composer@0.8.15",
-    "name": "cordova-plugin-email-composer",
-    "escapedName": "cordova-plugin-email-composer",
-    "rawSpec": "0.8.15",
-    "saveSpec": null,
-    "fetchSpec": "0.8.15"
-  },
-  "_requiredBy": [
-    "#USER",
-    "/"
-  ],
-  "_resolved": "https://registry.npmjs.org/cordova-plugin-email-composer/-/cordova-plugin-email-composer-0.8.15.tgz",
-  "_shasum": "d952b5b588996915fb332f7f464812757f170688",
-  "_spec": "cordova-plugin-email-composer@0.8.15",
-  "_where": "/Users/sebastian/Documents/github/cordova-example-email-composer",
-  "author": {
-    "name": "Sebastián Katzer"
-  },
-  "bugs": {
-    "url": "https://github.com/katzer/cordova-plugin-email-composer/issues"
-  },
-  "bundleDependencies": false,
+  "name": "cordova-plugin-email-composer",
+  "version": "0.8.15",
+  "description": "Provides access to the standard interface that manages the editing and sending an email message",
   "cordova": {
     "id": "cordova-plugin-email-composer",
     "platforms": [
@@ -40,8 +12,20 @@
       "browser"
     ]
   },
-  "deprecated": false,
-  "description": "Provides access to the standard interface that manages the editing and sending an email message",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/katzer/cordova-plugin-email-composer.git"
+  },
+  "keywords": [
+    "appplant",
+    "email",
+    "ecosystem:cordova",
+    "cordova-ios",
+    "cordova-osx",
+    "cordova-android",
+    "cordova-windows",
+    "cordova-browser"
+  ],
   "engines": [
     {
       "name": "cordova",
@@ -60,22 +44,10 @@
       "version": ">=4.3.0"
     }
   ],
-  "homepage": "https://github.com/katzer/cordova-plugin-email-composer#readme",
-  "keywords": [
-    "appplant",
-    "email",
-    "ecosystem:cordova",
-    "cordova-ios",
-    "cordova-osx",
-    "cordova-android",
-    "cordova-windows",
-    "cordova-browser"
-  ],
+  "author": "Sebastián Katzer",
   "license": "Apache 2.0",
-  "name": "cordova-plugin-email-composer",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/katzer/cordova-plugin-email-composer.git"
+  "bugs": {
+    "url": "https://github.com/katzer/cordova-plugin-email-composer/issues"
   },
-  "version": "0.8.15"
+  "homepage": "https://github.com/katzer/cordova-plugin-email-composer#readme"
 }

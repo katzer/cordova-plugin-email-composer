@@ -15,33 +15,32 @@
             {
               "xml": "<feature name=\"Device\"><param name=\"browser-package\" value=\"Device\" /></feature>",
               "count": 1
-            }
-          ]
-        }
-      },
-      "res/xml/config.xml": {
-        "parents": {
-          "/*": [
+            },
             {
               "xml": "<feature name=\"EmailComposer\"><param name=\"browser-package\" value=\"de.appplant.cordova.emailcomposer.EmailComposer\" /></feature>",
               "count": 1
             }
           ]
         }
+      },
+      "res/xml/config.xml": {
+        "parents": {
+          "/*": []
+        }
       }
     }
   },
   "installed_plugins": {
-    "cordova-plugin-compat": {
-      "PACKAGE_NAME": "de.appplant.cordova.plugin.emailcomposer.example"
-    },
-    "cordova-plugin-x-toast": {
-      "PACKAGE_NAME": "de.appplant.cordova.plugin.emailcomposer.example"
-    },
     "cordova-plugin-camera": {
       "PACKAGE_NAME": "de.appplant.cordova.plugin.emailcomposer.example"
     },
+    "cordova-plugin-compat": {
+      "PACKAGE_NAME": "de.appplant.cordova.plugin.emailcomposer.example"
+    },
     "cordova-plugin-device": {
+      "PACKAGE_NAME": "de.appplant.cordova.plugin.emailcomposer.example"
+    },
+    "cordova-plugin-x-toast": {
       "PACKAGE_NAME": "de.appplant.cordova.plugin.emailcomposer.example"
     },
     "cordova-plugin-email-composer": {
@@ -50,19 +49,6 @@
   },
   "dependent_plugins": {},
   "modules": [
-    {
-      "file": "plugins/cordova-plugin-x-toast/www/Toast.js",
-      "id": "cordova-plugin-x-toast.Toast",
-      "pluginId": "cordova-plugin-x-toast",
-      "clobbers": [
-        "window.plugins.toast"
-      ]
-    },
-    {
-      "file": "plugins/cordova-plugin-x-toast/test/tests.js",
-      "id": "cordova-plugin-x-toast.tests",
-      "pluginId": "cordova-plugin-x-toast"
-    },
     {
       "file": "plugins/cordova-plugin-camera/www/CameraConstants.js",
       "id": "cordova-plugin-camera.Camera",
@@ -108,12 +94,19 @@
       "runs": true
     },
     {
+      "file": "plugins/cordova-plugin-x-toast/www/Toast.js",
+      "id": "cordova-plugin-x-toast.Toast",
+      "pluginId": "cordova-plugin-x-toast",
+      "clobbers": [
+        "window.plugins.toast"
+      ]
+    },
+    {
       "file": "plugins/cordova-plugin-email-composer/www/email_composer.js",
       "id": "cordova-plugin-email-composer.EmailComposer",
       "pluginId": "cordova-plugin-email-composer",
       "clobbers": [
-        "cordova.plugins.email",
-        "plugin.email"
+        "cordova.plugins.email"
       ]
     },
     {
@@ -124,10 +117,10 @@
     }
   ],
   "plugin_metadata": {
-    "cordova-plugin-compat": "1.1.0",
-    "cordova-plugin-x-toast": "2.6.0",
-    "cordova-plugin-camera": "4.0.1",
-    "cordova-plugin-device": "2.0.1",
-    "cordova-plugin-email-composer": "0.8.15"
+    "cordova-plugin-camera": "4.0.3",
+    "cordova-plugin-compat": "1.2.0",
+    "cordova-plugin-device": "2.0.2",
+    "cordova-plugin-x-toast": "2.7.0",
+    "cordova-plugin-email-composer": "0.9.0.beta"
   }
 }

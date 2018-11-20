@@ -26,7 +26,7 @@ cordova.define("cordova-plugin-email-composer.EmailComposerProxy", function(requ
  *
  * @return [ Void ]
  */
-exports.isAvailable = function (success, error, args) {
+exports.scan = function (success, error, args) {
     success(true, false);
 };
 

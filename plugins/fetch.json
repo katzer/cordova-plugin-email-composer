@@ -1,8 +1,8 @@
 {
-  "cordova-plugin-x-toast": {
+  "cordova-plugin-camera": {
     "source": {
       "type": "registry",
-      "id": "cordova-plugin-x-toast"
+      "id": "cordova-plugin-camera@4.0.3"
     },
     "is_top_level": true,
     "variables": {}
@@ -10,18 +10,7 @@
   "cordova-plugin-compat": {
     "source": {
       "type": "registry",
-      "id": "cordova-plugin-compat@^1.1.0"
-    },
-    "is_top_level": true,
-    "variables": {
-      "CAMERA_USAGE_DESCRIPTION": " ",
-      "PHOTOLIBRARY_USAGE_DESCRIPTION": " "
-    }
-  },
-  "cordova-plugin-camera": {
-    "source": {
-      "type": "registry",
-      "id": "cordova-plugin-camera@4.0.1"
+      "id": "cordova-plugin-compat@1.2.0"
     },
     "is_top_level": true,
     "variables": {}
@@ -34,10 +23,18 @@
     "is_top_level": true,
     "variables": {}
   },
-  "cordova-plugin-email-composer": {
+  "cordova-plugin-x-toast": {
     "source": {
       "type": "registry",
-      "id": "cordova-plugin-email-composer@0.8.15"
+      "id": "cordova-plugin-x-toast"
+    },
+    "is_top_level": true,
+    "variables": {}
+  },
+  "cordova-plugin-email-composer": {
+    "source": {
+      "type": "local",
+      "path": "/Users/sebastian/Documents/github/cordova-example-email-composer/node_modules/cordova-plugin-email-composer"
     },
     "is_top_level": true,
     "variables": {}

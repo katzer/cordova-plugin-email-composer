@@ -24,6 +24,10 @@ cordova-plugin-compat
 
 This repo is for remaining backwards compatible with previous versions of Cordova.
 
+## Deprecated
+
+> This plugin is no longer being worked on as the functionality provided by this plugin is now included in cordova-android 6.3.0. You should upgrade your application to use version 1.2.0 of this plugin. It will detect whether or not the plugin is required based on the version of cordova-android your app uses.
+
 ## USAGE
 
 Your plugin can depend on this plugin and use it to handle the new run time permissions Android 6.0.0 (cordova-android 5.0.0) introduced. 

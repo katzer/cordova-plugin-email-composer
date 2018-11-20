@@ -22,14 +22,15 @@ apply plugin: 'com.android.application'
 buildscript {
     repositories {
         mavenCentral()
-        jcenter()
         maven {
             url "https://maven.google.com"
         }
+        jcenter()
+	    google()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.1'
+        classpath 'com.android.tools.build:gradle:3.2.1'
     }
 }
 
@@ -161,8 +162,9 @@ android {
     defaultConfig {
         versionCode cdvVersionCode ?: new BigInteger("" + privateHelpers.extractIntFromManifest("versionCode"))
         applicationId privateHelpers.extractStringFromManifest("package")
+	    minSdkVersion = 19
 
-        if (cdvMinSdkVersion != null) {
+	    if (cdvMinSdkVersion != null) {
             minSdkVersion cdvMinSdkVersion
         }
     }
@@ -222,7 +224,7 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_6
+        sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
@@ -256,8 +258,8 @@ android {
 
 
 dependencies {
-	implementation fileTree(include: '*.jar', dir: 'libs')
-	// SUB-PROJECT DEPENDENCIES START
+    implementation fileTree(dir: 'libs', include: '*.jar')
+    // SUB-PROJECT DEPENDENCIES START
     implementation(project(path: ":CordovaLib"))
     compile "com.android.support:support-v4:24.1.1+"
     // SUB-PROJECT DEPENDENCIES END

@@ -1,27 +1,27 @@
 {
-  "_from": "cordova-plugin-camera@4.0.1",
-  "_id": "cordova-plugin-camera@4.0.1",
+  "_from": "cordova-plugin-camera@4.0.3",
+  "_id": "cordova-plugin-camera@4.0.3",
   "_inBundle": false,
-  "_integrity": "sha1-AYwg1vxPGUV2tlSPP2cTPf5ix/0=",
+  "_integrity": "sha1-c3Olk4MYyGzP2E43E+I4LRD+B2s=",
   "_location": "/cordova-plugin-camera",
   "_phantomChildren": {},
   "_requested": {
     "type": "version",
     "registry": true,
-    "raw": "cordova-plugin-camera@4.0.1",
+    "raw": "cordova-plugin-camera@4.0.3",
     "name": "cordova-plugin-camera",
     "escapedName": "cordova-plugin-camera",
-    "rawSpec": "4.0.1",
+    "rawSpec": "4.0.3",
     "saveSpec": null,
-    "fetchSpec": "4.0.1"
+    "fetchSpec": "4.0.3"
   },
   "_requiredBy": [
     "#USER",
     "/"
   ],
-  "_resolved": "https://registry.npmjs.org/cordova-plugin-camera/-/cordova-plugin-camera-4.0.1.tgz",
-  "_shasum": "018c20d6fc4f194576b6548f3f67133dfe62c7fd",
-  "_spec": "cordova-plugin-camera@4.0.1",
+  "_resolved": "https://registry.npmjs.org/cordova-plugin-camera/-/cordova-plugin-camera-4.0.3.tgz",
+  "_shasum": "7373a5938318c86ccfd84e3713e2382d10fe076b",
+  "_spec": "cordova-plugin-camera@4.0.3",
   "_where": "/Users/sebastian/Documents/github/cordova-example-email-composer",
   "author": {
     "name": "Apache Software Foundation"
@@ -88,5 +88,5 @@
     "test": "npm run eslint"
   },
   "types": "./types/index.d.ts",
-  "version": "4.0.1"
+  "version": "4.0.3"
 }

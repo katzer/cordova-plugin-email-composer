@@ -64,15 +64,17 @@ var app = {
     },
     // Check permissions to read accounts
     hasPermission: function () {
-        cordova.plugins.email.hasPermission(showToast);
+        plugin().hasPermission(plugin().permission.READ_EXTERNAL_STORAGE, showToast);
     },
     // Request permissions to read accounts
     askPermission: function () {
-        cordova.plugins.email.requestPermission(showToast);
+        plugin().requestPermission(plugin().permission.READ_EXTERNAL_STORAGE, showToast);
     },
     // Check if mail account exist
     hasMailAccount: function () {
-       cordova.plugins.email.isAvailable(showToast);
+        plugin().requestPermission(plugin().permission.READ_ACCOUNTS, function (granted) {
+            plugin().isAvailable(showToast);
+        });
     },
     // Check if mail client exist
     hasMailClient: function () {
@@ -82,17 +84,17 @@ var app = {
     },
     // Open mail client
     openMailClient: function () {
-       cordova.plugins.email.open(showToast);
+       plugin().open(showToast);
     },
     // Check if gmail client exist
     hasGmailClient: function () {
-        cordova.plugins.email.isAvailable('gmail', function(hasAccount, hasClient) {
+        plugin().isAvailable('gmail', function(hasAccount, hasClient) {
             showToast(hasClient || 'unknown');
         });
     },
     // Open gmail client
     openGmailClient: function () {
-       cordova.plugins.email.open({ app: 'gmail' }, showToast);
+       plugin().open({ app: 'gmail' }, showToast);
     },
     // Open draft with plain body
     openPlainDraft: function () {
@@ -111,7 +113,7 @@ var app = {
             return;
         }
 
-        cordova.plugins.email.open({
+        plugin().open({
             to:      'to@email.de',
             cc:      ['cc1@email.de', 'cc2@email.de'],
             bcc:     ['bcc1@email.de', 'bcc2@email.de'],
@@ -133,7 +135,7 @@ var app = {
             return ++index + '. ' + uri.substring(0, 40);
         };
 
-        cordova.plugins.email.open({
+        plugin().open({
             subject:       'Cordova Icons',
             body:          attachments.map(mapFn).join("\n\n"),
             attachments:   attachments,
@@ -155,7 +157,7 @@ var app = {
 
         navigator.camera.getPicture(function(uri) {
             var fn = function () {
-                    cordova.plugins.email.open({
+                    plugin().open({
                         subject: 'Attachment from file system',
                         body: uri,
                         attachments: uri
@@ -244,6 +246,8 @@ var app = {
         return css.concat(html);
    }
 };
+
+plugin = function() { return cordova.plugins.email; };
 
 var dialog;
 

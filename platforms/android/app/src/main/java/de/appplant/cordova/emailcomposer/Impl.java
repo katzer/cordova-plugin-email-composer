@@ -21,6 +21,7 @@ package de.appplant.cordova.emailcomposer;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -35,8 +36,13 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
+import static android.content.Intent.ACTION_SENDTO;
+import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK;
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+import static android.content.Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP;
 import static de.appplant.cordova.emailcomposer.EmailComposer.LOG_TAG;
 
+@SuppressWarnings("Convert2Diamond")
 class Impl {
 
     // The default mailto: scheme.
@@ -189,7 +195,6 @@ class Impl {
      * @param draft     The intent to send.
      */
     private void setAttachments (JSONObject params, Intent draft) {
-
         JSONArray attachments = params.optJSONArray("attachments");
         ArrayList<Uri> uris   = new ArrayList<Uri>();
         AssetUtil assets      = new AssetUtil(ctx);
@@ -230,6 +235,7 @@ class Impl {
      *
      * @return true if available, otherwise false
      */
+    @SuppressLint("MissingPermission")
     private boolean isEmailAccountConfigured() {
         AccountManager am  = AccountManager.get(ctx);
 
@@ -278,10 +284,10 @@ class Impl {
      * @return intent
      */
     private static Intent getEmailIntent() {
-        Intent intent = new Intent(Intent.ACTION_SENDTO,
-                Uri.parse(MAILTO_SCHEME));
+        Intent intent = new Intent(ACTION_SENDTO, Uri.parse(MAILTO_SCHEME));
 
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(FLAG_ACTIVITY_NEW_TASK | FLAG_ACTIVITY_CLEAR_TASK);
+        intent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
 
         return intent;
     }

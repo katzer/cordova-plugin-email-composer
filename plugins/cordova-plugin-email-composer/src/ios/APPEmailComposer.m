@@ -50,7 +50,7 @@
 /**
  * Check if the mail composer is able to send mails.
  */
-- (void) isAvailable:(CDVInvokedUrlCommand*)cmd
+- (void) scan:(CDVInvokedUrlCommand*)cmd
 {
     [self.commandDelegate runInBackground:^{
         NSString* scheme = cmd.arguments[0];

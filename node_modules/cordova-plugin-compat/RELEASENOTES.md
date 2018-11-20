@@ -20,6 +20,10 @@
 -->
 # Release Notes
 
+### 1.2.0 (Sep 18, 2017)
+* [CB-12730](https://issues.apache.org/jira/browse/CB-12730) Integrate this plugin into `cordova-android@6.3.0` and deprecate this plugin as it is no longer needed.
+* [CB-12730](https://issues.apache.org/jira/browse/CB-12730) Prevent plugin from installing with `cordova-android >= 6.3.0`
+
 ### 1.1.0 (Nov 02, 2016)
 * [CB-11625](https://issues.apache.org/jira/browse/CB-11625) Adding the `BuildConfig` fetching code as a backup to using a new preference
 * Add github pull request template

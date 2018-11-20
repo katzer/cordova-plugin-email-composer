@@ -1,5 +1,9 @@
 [
     {
+        "merged": "/Users/sebastian/Documents/github/cordova-example-email-composer/platforms/android/app/build/intermediates/res/merged/debug/xml_camera_provider_paths.xml.flat",
+        "source": "/Users/sebastian/Documents/github/cordova-example-email-composer/platforms/android/app/src/main/res/xml/camera_provider_paths.xml"
+    },
+    {
         "merged": "/Users/sebastian/Documents/github/cordova-example-email-composer/platforms/android/app/build/intermediates/res/merged/debug/drawable-land-hdpi_screen.png.flat",
         "source": "/Users/sebastian/Documents/github/cordova-example-email-composer/platforms/android/app/src/main/res/drawable-land-hdpi/screen.png"
     },
@@ -38,10 +42,6 @@
     {
         "merged": "/Users/sebastian/Documents/github/cordova-example-email-composer/platforms/android/app/build/intermediates/res/merged/debug/drawable-land-ldpi_screen.png.flat",
         "source": "/Users/sebastian/Documents/github/cordova-example-email-composer/platforms/android/app/src/main/res/drawable-land-ldpi/screen.png"
-    },
-    {
-        "merged": "/Users/sebastian/Documents/github/cordova-example-email-composer/platforms/android/app/build/intermediates/res/merged/debug/xml_provider_paths.xml.flat",
-        "source": "/Users/sebastian/Documents/github/cordova-example-email-composer/platforms/android/app/src/main/res/xml/provider_paths.xml"
     },
     {
         "merged": "/Users/sebastian/Documents/github/cordova-example-email-composer/platforms/android/app/build/intermediates/res/merged/debug/drawable-port-xxxhdpi_screen.png.flat",
