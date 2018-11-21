@@ -32,7 +32,10 @@ var WinLauncher = Windows.System.Launcher,
  * @return [ Void ]
  */
 exports.scan = function (success, error, args) {
-    success(true);
+    var isPossible = undefined,
+        withScheme = args[0] === 'mailto:' || ? true : undefined;
+
+    success(isPossible, withScheme);
 };
 
 /**
