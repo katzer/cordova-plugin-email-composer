@@ -61,20 +61,6 @@ class Impl {
     }
 
     /**
-     * Tells if the device has the capability to send emails.
-     *
-     * @param id The app id.
-     */
-    boolean[] canSendMail (String id) {
-        // is possible with specified app
-        boolean withScheme = isAppInstalled(id);
-        // is possible in general
-        boolean isPossible = isEmailAccountConfigured();
-
-        return new boolean[] { isPossible, withScheme };
-    }
-
-    /**
      * The intent with the containing email properties.
      *
      * @param params    The email properties like subject or body.
@@ -236,7 +222,7 @@ class Impl {
      * @return true if available, otherwise false
      */
     @SuppressLint("MissingPermission")
-    private boolean isEmailAccountConfigured() {
+    boolean isEmailAccountConfigured() {
         AccountManager am  = AccountManager.get(ctx);
 
         try {
@@ -260,7 +246,7 @@ class Impl {
      * @param id    The app id.
      * @return      true if yes otherwise false.
      */
-    private boolean isAppInstalled (String id) {
+    boolean isAppInstalled (String id) {
 
         if (id.equalsIgnoreCase(MAILTO_SCHEME)) {
             Intent intent     = getEmailIntent();

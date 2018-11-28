@@ -27,19 +27,23 @@
 #pragma mark Public
 
 /**
- * Checks if the mail composer is able to send mails and if an app is available
- * to handle the specified scheme.
- *
- * @param scheme An URL scheme, that defaults to 'mailto:
+ * Checks if the mail composer is able to send mails.
  */
-- (NSArray*) canSendMail:(NSString*)scheme
+- (bool) canSendMail
 {
     NSSharingService* service =
     [NSSharingService sharingServiceNamed:NSSharingServiceNameComposeEmail];
 
-    bool canSendMail = [service canPerformWithItems:@[@"Test"]];
-    bool withScheme  = false;
+    return [service canPerformWithItems:@[@"Test"]];
+}
 
+/**
+ * Checks if an app is available to handle the specified scheme.
+ *
+ * @param scheme An URL scheme, that defaults to 'mailto:
+ */
+- (bool) canOpenScheme:(NSString *)scheme
+{
     if (!scheme) {
         scheme = @"mailto:";
     } else if (![scheme containsString:@":"]) {
@@ -48,13 +52,12 @@
 
     NSCharacterSet *set = [NSCharacterSet URLFragmentAllowedCharacterSet];
     scheme = [[scheme stringByAppendingString:@"?test@test.de"]
-                stringByAddingPercentEncodingWithAllowedCharacters:set];
+              stringByAddingPercentEncodingWithAllowedCharacters:set];
 
     NSURL* url = [NSURL URLWithString:scheme];
     NSURL* app = [[NSWorkspace sharedWorkspace] URLForApplicationToOpenURL:url];
-    withScheme = app != NULL;
 
-    return @[@(canSendMail), @(withScheme)];
+    return app != NULL;
 }
 
 /**

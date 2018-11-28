@@ -52,8 +52,7 @@ exports.getDefaults = function () {
         cc:            [],
         bcc:           [],
         attachments:   [],
-        isHtml:        true,
-        chooserHeader: 'Open with'
+        isHtml:        true
     };
 };
 
@@ -67,13 +66,6 @@ exports.getDefaults = function () {
  * @return [ Void ]
  */
 exports.hasPermission = function(permission, callback, scope) {
-
-    if (typeof permission != 'number') {
-        permission = 0;
-        scope      = callback;
-        callback   = permission;
-    }
-
     var fn = this.createCallbackFn(callback, scope);
 
     if (!isAndroid) {
@@ -94,13 +86,6 @@ exports.hasPermission = function(permission, callback, scope) {
  * @return [ Void ]
  */
 exports.requestPermission = function(permission, callback, scope) {
-
-    if (typeof permission != 'number') {
-        permission = 0;
-        scope      = callback;
-        callback   = permission;
-    }
-
     var fn = this.createCallbackFn(callback, scope);
 
     if (!isAndroid) {
@@ -112,35 +97,21 @@ exports.requestPermission = function(permission, callback, scope) {
 };
 
 /**
- * Verifies if sending emails is supported on the device.
+ * Tries to find out if the device has an configured email account.
  *
- * @param [ String ]   app      An optional app id or uri scheme.
- *                              Defaults to mailto.
  * @param [ Function ] callback The callback function.
  * @param [ Object ]   scope    The scope of the callback.
  *
  * @return [ Void ]
  */
-exports.isAvailable = function (app, callback, scope) {
-
-    if (typeof callback != 'function') {
-        scope    = null;
-        callback = app;
-        app      = mailto;
-    }
-
+exports.hasAccount = function (callback, scope) {
     var fn  = this.createCallbackFn(callback, scope);
-        app = app || mailto;
 
-    if (this.aliases.hasOwnProperty(app)) {
-        app = this.aliases[app];
-    }
-
-    exec(fn, null, 'EmailComposer', 'scan', [app]);
+    exec(fn, null, 'EmailComposer', 'account', []);
 };
 
 /**
- * Verifies if sending emails is supported on the device.
+ * Tries to find out if the device has an installed email client.
  *
  * @param [ String ]   app      An optional app id or uri scheme.
  *                              Defaults to mailto.
@@ -149,7 +120,7 @@ exports.isAvailable = function (app, callback, scope) {
  *
  * @return [ Void ]
  */
-exports.isAvailable2 = function (app, callback, scope) {
+exports.hasClient = function (app, callback, scope) {
 
     if (typeof callback != 'function') {
         scope    = null;
@@ -157,18 +128,14 @@ exports.isAvailable2 = function (app, callback, scope) {
         app      = mailto;
     }
 
-    var fn  = this.createCallbackFn(callback, scope), fn2;
+    var fn  = this.createCallbackFn(callback, scope),
         app = app || mailto;
 
     if (this.aliases.hasOwnProperty(app)) {
         app = this.aliases[app];
     }
 
-    if (fn) {
-        fn2 = function (a, b) { fn(b, a); };
-    }
-
-    exec(fn2, null, 'EmailComposer', 'scan', [app]);
+    exec(fn, null, 'EmailComposer', 'client', [app]);
 };
 
 /**
@@ -188,7 +155,7 @@ exports.open = function (options, callback, scope) {
         options  = {};
     }
 
-    var fn      = this.createCallbackFn(callback, scope);
+    var fn      = this.createCallbackFn(callback, scope),
         options = this.mergeWithDefaults(options || {});
 
     if (!isAndroid && options.app != mailto && fn) {
@@ -244,7 +211,6 @@ exports.mergeWithDefaults = function (options) {
     options.app           = String(options.app || defaults.app);
     options.subject       = String(options.subject || defaults.subject);
     options.body          = String(options.body || defaults.body);
-    options.chooserHeader = String(options.chooserHeader || defaults.chooserHeader);
     options.to            = options.to || defaults.to;
     options.cc            = options.cc || defaults.cc;
     options.bcc           = options.bcc || defaults.bcc;

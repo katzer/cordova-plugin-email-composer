@@ -2,6 +2,7 @@
 ## ChangeLog
 
 #### Version 0.9.0 (not yet released)
+- [__change__]: Replace `isAvailable` through `hasClient` and `hasAccount`.
 - [__change__]: Plugin does not add any permissions by itself like `GET_ACCOUNTS` or `READ_EXTERNAL_STORAGE`.
 - [__change__]: `isAvailable` does not request for missing permission (`GET_ACCOUNTS`).
 - [__change__]: `hasPermission` takes 3 arguments now. The first one has to be a value of `cordova.plugins.email.permission`.

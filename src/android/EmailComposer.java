@@ -85,12 +85,14 @@ public class EmailComposer extends CordovaPlugin {
 
         if        ("open".equalsIgnoreCase(action)) {
             open(args.getJSONObject(0));
-        } else if ("scan".equalsIgnoreCase(action)) {
-            scan(args.getString(0));
+        } else if ("client".equalsIgnoreCase(action)) {
+            client(args.getString(0));
         } else if ("check".equalsIgnoreCase(action)) {
             check(args.optInt(0, 0));
         } else if ("request".equalsIgnoreCase(action)) {
             request(args.optInt(0, 0));
+        } else if ("account".equalsIgnoreCase(action)) {
+            account();
         } else {
             return false;
         }
@@ -106,21 +108,31 @@ public class EmailComposer extends CordovaPlugin {
     }
 
     /**
-     * Tells if the device has the capability to send emails.
+     * Finds out if the given mail client is installed.
      *
      * @param id The app id.
      */
-    private void scan(final String id) {
+    private void client(String id) {
         cordova.getThreadPool().execute(new Runnable() {
             public void run() {
-                Impl impl = new Impl(getContext());
-                boolean[] res = impl.canSendMail(id);
-                List<PluginResult> messages = new ArrayList<PluginResult>();
+                Impl impl   = new Impl(getContext());
+                boolean res = impl.isAppInstalled(id);
 
-                messages.add(new PluginResult(Status.OK, res[0]));
-                messages.add(new PluginResult(Status.OK, res[1]));
+                sendResult(new PluginResult(Status.OK, res));
+            }
+        });
+    }
 
-                sendResult(new PluginResult(Status.OK, messages));
+    /**
+     * Tries to figure out if an email account is setup.
+     */
+    private void account() {
+        cordova.getThreadPool().execute(new Runnable() {
+            public void run() {
+                Impl impl   = new Impl(getContext());
+                boolean res = impl.isEmailAccountConfigured();
+
+                sendResult(new PluginResult(Status.OK, res));
             }
         });
     }
