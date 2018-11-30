@@ -58,7 +58,7 @@ public class EmailComposer extends CordovaPlugin {
     @Override
     public void initialize(CordovaInterface cordova, CordovaWebView webView) {
         super.initialize(cordova, webView);
-        new AssetUtil(getContext()).cleanupAttachmentFolder();
+        AssetUtil.cleanupAttachmentFolder(getContext());
     }
 
     /**
@@ -91,6 +91,8 @@ public class EmailComposer extends CordovaPlugin {
             check(args.optInt(0, 0));
         } else if ("request".equalsIgnoreCase(action)) {
             request(args.optInt(0, 0));
+        } else if ("clients".equalsIgnoreCase(action)) {
+            clients();
         } else if ("account".equalsIgnoreCase(action)) {
             account();
         } else {
@@ -117,6 +119,25 @@ public class EmailComposer extends CordovaPlugin {
             public void run() {
                 Impl impl   = new Impl(getContext());
                 boolean res = impl.isAppInstalled(id);
+
+                sendResult(new PluginResult(Status.OK, res));
+            }
+        });
+    }
+
+    /**
+     * List of the package IDs from all available email clients.
+     */
+    private void clients() {
+        cordova.getThreadPool().execute(new Runnable() {
+            public void run() {
+                Impl impl              = new Impl(getContext());
+                List<String> ids       = impl.getEmailClientIds();
+                List<PluginResult> res = new ArrayList<PluginResult>();
+
+                for (String id:ids) {
+                    res.add(new PluginResult(Status.OK, id));
+                }
 
                 sendResult(new PluginResult(Status.OK, res));
             }

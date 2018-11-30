@@ -53,9 +53,11 @@ final class AssetUtil {
 
     /**
      * Cleans the attachment folder.
+     *
+     * @param ctx The application context.
      */
     @SuppressWarnings("ResultOfMethodCallIgnored")
-    void cleanupAttachmentFolder() {
+    static void cleanupAttachmentFolder(Context ctx) {
         try {
             String path = ctx.getExternalCacheDir() + ATTACHMENT_FOLDER;
             File dir    = new File(path);

@@ -53,7 +53,8 @@ exports.getDefaults = function () {
         cc:            [],
         bcc:           [],
         attachments:   [],
-        isHtml:        false
+        isHtml:        false,
+        chooserHeader: 'Open with'
     };
 };
 
@@ -140,6 +141,25 @@ exports.hasClient = function (app, callback, scope) {
 };
 
 /**
+ * List of package IDs for all available email clients (Android only).
+ *
+ * @param [ Function ] callback The callback function.
+ * @param [ Object ]   scope    The scope of the callback.
+ *
+ * @return [ Void ]
+ */
+exports.getClients = function (callback, scope) {
+    var fn = this.createCallbackFn(callback, scope);
+
+    if (!isAndroid) {
+        if (fn) fn();
+        return;
+    }
+
+    exec(fn, null, 'EmailComposer', 'clients', []);
+};
+
+/**
  * Displays the email composer pre-filled with data.
  *
  * @param [ Object ]   options  The email properties like the body,...
@@ -208,6 +228,7 @@ exports.mergeWithDefaults = function (options) {
     options.app           = String(options.app || defaults.app);
     options.subject       = String(options.subject || defaults.subject);
     options.body          = String(options.body || defaults.body);
+    options.chooserHeader = String(options.chooserHeader || defaults.chooserHeader);
     options.to            = options.to || defaults.to;
     options.cc            = options.cc || defaults.cc;
     options.bcc           = options.bcc || defaults.bcc;

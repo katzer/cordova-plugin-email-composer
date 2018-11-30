@@ -2,6 +2,7 @@
 ## ChangeLog
 
 #### Version 0.9.0 (not yet released)
+- [feature:] Added `getClients` that returns a list of available email clients (Android)
 - [__change__]: Replace `isAvailable` through `hasClient` and `hasAccount`.
 - [__change__]: Plugin does not add any permissions by itself like `GET_ACCOUNTS` or `READ_EXTERNAL_STORAGE`.
 - [__change__]: `isAvailable` does not request for missing permission (`GET_ACCOUNTS`).
@@ -12,6 +13,7 @@
 - [__change__]: Remove deprecated support for `isHTML`.
 - [__change__]: Change default value for `isHtml` to `false`.
 - [enhancement]: Skip chooser if there's only the default app (#302)
+- [enhancement]: Improve chooser to only display email clients
 - [bugfix:] Do not open old email draft [fixes #303]
 
 #### Version 0.8.15 (08.02.2018)
