@@ -27,7 +27,8 @@ var exec      = require('cordova/exec'),
  */
 exports.aliases = {
     gmail:   isAndroid ? 'com.google.android.gm' : 'googlegmail://co',
-    outlook: isAndroid ? 'com.microsoft.office.outlook' : 'ms-outlook://compose'
+    outlook: isAndroid ? 'com.microsoft.office.outlook' : 'ms-outlook://compose',
+    hub:     isAndroid ? 'com.blackberry.hub' : undefined
 };
 
 /**
