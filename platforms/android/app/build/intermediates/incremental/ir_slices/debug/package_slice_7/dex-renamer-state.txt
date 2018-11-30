@@ -1,0 +1,4 @@
+#Wed Nov 28 14:32:36 CET 2018
+base.0=/Users/sebastian/Documents/github/cordova-example-email-composer/platforms/android/app/build/intermediates/transforms/dexMerger/debug/7
+path.0=classes.dex
+renamed.0=classes.dex

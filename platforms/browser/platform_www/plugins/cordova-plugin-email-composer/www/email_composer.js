@@ -27,7 +27,8 @@ var exec      = require('cordova/exec'),
  */
 exports.aliases = {
     gmail:   isAndroid ? 'com.google.android.gm' : 'googlegmail://co',
-    outlook: isAndroid ? 'com.microsoft.office.outlook' : 'ms-outlook://compose'
+    outlook: isAndroid ? 'com.microsoft.office.outlook' : 'ms-outlook://compose',
+    hub:     isAndroid ? 'com.blackberry.hub' : undefined
 };
 
 /**
@@ -52,7 +53,7 @@ exports.getDefaults = function () {
         cc:            [],
         bcc:           [],
         attachments:   [],
-        isHtml:        true,
+        isHtml:        false,
         chooserHeader: 'Open with'
     };
 };
@@ -67,13 +68,6 @@ exports.getDefaults = function () {
  * @return [ Void ]
  */
 exports.hasPermission = function(permission, callback, scope) {
-
-    if (typeof permission != 'number') {
-        permission = 0;
-        scope      = callback;
-        callback   = permission;
-    }
-
     var fn = this.createCallbackFn(callback, scope);
 
     if (!isAndroid) {
@@ -94,13 +88,6 @@ exports.hasPermission = function(permission, callback, scope) {
  * @return [ Void ]
  */
 exports.requestPermission = function(permission, callback, scope) {
-
-    if (typeof permission != 'number') {
-        permission = 0;
-        scope      = callback;
-        callback   = permission;
-    }
-
     var fn = this.createCallbackFn(callback, scope);
 
     if (!isAndroid) {
@@ -112,35 +99,21 @@ exports.requestPermission = function(permission, callback, scope) {
 };
 
 /**
- * Verifies if sending emails is supported on the device.
+ * Tries to find out if the device has an configured email account.
  *
- * @param [ String ]   app      An optional app id or uri scheme.
- *                              Defaults to mailto.
  * @param [ Function ] callback The callback function.
  * @param [ Object ]   scope    The scope of the callback.
  *
  * @return [ Void ]
  */
-exports.isAvailable = function (app, callback, scope) {
-
-    if (typeof callback != 'function') {
-        scope    = null;
-        callback = app;
-        app      = mailto;
-    }
-
+exports.hasAccount = function (callback, scope) {
     var fn  = this.createCallbackFn(callback, scope);
-        app = app || mailto;
 
-    if (this.aliases.hasOwnProperty(app)) {
-        app = this.aliases[app];
-    }
-
-    exec(fn, null, 'EmailComposer', 'scan', [app]);
+    exec(fn, null, 'EmailComposer', 'account', []);
 };
 
 /**
- * Verifies if sending emails is supported on the device.
+ * Tries to find out if the device has an installed email client.
  *
  * @param [ String ]   app      An optional app id or uri scheme.
  *                              Defaults to mailto.
@@ -149,7 +122,7 @@ exports.isAvailable = function (app, callback, scope) {
  *
  * @return [ Void ]
  */
-exports.isAvailable2 = function (app, callback, scope) {
+exports.hasClient = function (app, callback, scope) {
 
     if (typeof callback != 'function') {
         scope    = null;
@@ -157,18 +130,33 @@ exports.isAvailable2 = function (app, callback, scope) {
         app      = mailto;
     }
 
-    var fn  = this.createCallbackFn(callback, scope), fn2;
+    var fn  = this.createCallbackFn(callback, scope),
         app = app || mailto;
 
     if (this.aliases.hasOwnProperty(app)) {
         app = this.aliases[app];
     }
 
-    if (fn) {
-        fn2 = function (a, b) { fn(b, a); };
+    exec(fn, null, 'EmailComposer', 'client', [app]);
+};
+
+/**
+ * List of package IDs for all available email clients (Android only).
+ *
+ * @param [ Function ] callback The callback function.
+ * @param [ Object ]   scope    The scope of the callback.
+ *
+ * @return [ Void ]
+ */
+exports.getClients = function (callback, scope) {
+    var fn = this.createCallbackFn(callback, scope);
+
+    if (!isAndroid) {
+        if (fn) fn();
+        return;
     }
 
-    exec(fn2, null, 'EmailComposer', 'scan', [app]);
+    exec(fn, null, 'EmailComposer', 'clients', []);
 };
 
 /**
@@ -188,7 +176,7 @@ exports.open = function (options, callback, scope) {
         options  = {};
     }
 
-    var fn      = this.createCallbackFn(callback, scope);
+    var fn      = this.createCallbackFn(callback, scope),
         options = this.mergeWithDefaults(options || {});
 
     if (!isAndroid && options.app != mailto && fn) {
@@ -228,10 +216,6 @@ exports.openDraft = function () {
  */
 exports.mergeWithDefaults = function (options) {
     var defaults = this.getDefaults();
-
-    if (options.hasOwnProperty('isHTML')) {
-        options.isHtml = options.isHTML;
-    }
 
     if (!options.hasOwnProperty('isHtml')) {
         options.isHtml = defaults.isHtml;
@@ -308,5 +292,4 @@ exports.registerCallbackForScheme = function (fn) {
 
     document.addEventListener('resume', callback, false);
 };
-
 });

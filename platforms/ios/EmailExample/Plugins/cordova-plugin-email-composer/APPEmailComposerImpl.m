@@ -28,16 +28,22 @@
 #pragma mark Public
 
 /**
- * Checks if the mail composer is able to send mails and if an app is available
- * to handle the specified scheme.
+ * Checks if the mail composer is able to send mails.
+ */
+- (bool) canSendMail
+{
+    return [MFMailComposeViewController canSendMail];
+}
+
+/**
+ * Checks if an app is available to handle the specified scheme.
  *
  * @param scheme An URL scheme, that defaults to 'mailto:
  */
-- (NSArray*) canSendMail:(NSString*)scheme
+- (bool) canOpenScheme:(NSString *)scheme
 {
-    bool canSendMail         = [MFMailComposeViewController canSendMail];
-    __block bool withScheme  = false;
-    NSCharacterSet *set      = [NSCharacterSet URLFragmentAllowedCharacterSet];
+    __block bool canOpen = false;
+    NSCharacterSet *set  = [NSCharacterSet URLFragmentAllowedCharacterSet];
 
     if (!scheme) {
         scheme = @"mailto:";
@@ -45,21 +51,21 @@
         scheme = [scheme stringByAppendingString:@":"];
     }
 
-    scheme     = [[scheme stringByAppendingString:@"?test@test.de"]
-                  stringByAddingPercentEncodingWithAllowedCharacters:set];
+    scheme = [[scheme stringByAppendingString:@"?test@test.de"]
+              stringByAddingPercentEncodingWithAllowedCharacters:set];
 
     NSURL *url = [[NSURL URLWithString:scheme] absoluteURL];
 
     dispatch_semaphore_t sema = dispatch_semaphore_create(0);
 
     dispatch_async(dispatch_get_main_queue(), ^{
-        withScheme = [[UIApplication sharedApplication] canOpenURL:url];
+        canOpen = [[UIApplication sharedApplication] canOpenURL:url];
         dispatch_semaphore_signal(sema);
     });
 
     dispatch_semaphore_wait(sema, DISPATCH_TIME_FOREVER);
 
-    return @[@(canSendMail), @(withScheme)];
+    return canOpen;
 }
 
 /**

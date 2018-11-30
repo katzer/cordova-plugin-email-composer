@@ -18,7 +18,7 @@ cordova.define("cordova-plugin-email-composer.EmailComposerProxy", function(requ
  */
 
 /**
- * Verifies if sending emails is supported on the device.
+ * Tries to find out if the device has an configured email account.
  *
  * @param [ Function ] success Success callback
  * @param [ Function ] error   Error callback
@@ -26,8 +26,21 @@ cordova.define("cordova-plugin-email-composer.EmailComposerProxy", function(requ
  *
  * @return [ Void ]
  */
-exports.scan = function (success, error, args) {
-    success(true, false);
+exports.account = function (success, error, args) {
+    success();
+};
+
+/**
+ * Tries to find out if the device has an installed email client.
+ *
+ * @param [ Function ] success Success callback
+ * @param [ Function ] error   Error callback
+ * @param [ Array ]    args    Interface arguments
+ *
+ * @return [ Void ]
+ */
+exports.client = function (success, error, args) {
+    success();
 };
 
 /**

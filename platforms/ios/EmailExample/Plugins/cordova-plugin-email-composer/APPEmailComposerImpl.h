@@ -22,7 +22,9 @@
 @interface APPEmailComposerImpl : NSObject
 
 // Checks if the mail composer is able to send mails
-- (NSArray*) canSendMail:(NSString*)scheme;
+- (bool) canSendMail;
+// Checks if the mail composer is able to open the specified mail client
+- (bool) canOpenScheme:(NSString*)scheme;
 // Creates an mailto-url-sheme
 - (NSURL*) urlFromProperties:(NSDictionary*)props;
 // Instantiates an email composer view

@@ -10,9 +10,6 @@
     "cordova-plugin-camera": {
       "PACKAGE_NAME": "de.appplant.cordova.plugin.emailcomposer.example"
     },
-    "cordova-plugin-compat": {
-      "PACKAGE_NAME": "de.appplant.cordova.plugin.emailcomposer.example"
-    },
     "cordova-plugin-device": {
       "PACKAGE_NAME": "de.appplant.cordova.plugin.emailcomposer.example"
     },

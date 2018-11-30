@@ -22,15 +22,15 @@ INJECTED from /Users/sebastian/Documents/github/cordova-example-email-composer/p
 	android:name
 		ADDED from /Users/sebastian/Documents/github/cordova-example-email-composer/platforms/android/app/src/main/AndroidManifest.xml:15:127-184
 manifest
-ADDED from /Users/sebastian/Documents/github/cordova-example-email-composer/platforms/android/app/src/main/AndroidManifest.xml:2:1-21:12
-INJECTED from /Users/sebastian/Documents/github/cordova-example-email-composer/platforms/android/app/src/main/AndroidManifest.xml:2:1-21:12
-INJECTED from /Users/sebastian/Documents/github/cordova-example-email-composer/platforms/android/app/src/main/AndroidManifest.xml:2:1-21:12
-INJECTED from /Users/sebastian/Documents/github/cordova-example-email-composer/platforms/android/app/src/main/AndroidManifest.xml:2:1-21:12
+ADDED from /Users/sebastian/Documents/github/cordova-example-email-composer/platforms/android/app/src/main/AndroidManifest.xml:2:1-22:12
+INJECTED from /Users/sebastian/Documents/github/cordova-example-email-composer/platforms/android/app/src/main/AndroidManifest.xml:2:1-22:12
+INJECTED from /Users/sebastian/Documents/github/cordova-example-email-composer/platforms/android/app/src/main/AndroidManifest.xml:2:1-22:12
+INJECTED from /Users/sebastian/Documents/github/cordova-example-email-composer/platforms/android/app/src/main/AndroidManifest.xml:2:1-22:12
 MERGED from [com.android.support:support-v4:24.1.1] /Users/sebastian/.gradle/caches/transforms-1/files-1.1/support-v4-24.1.1.aar/06a5c25367045bef8ca9f2644f0eb5b7/AndroidManifest.xml:17:1-27:12
 MERGED from [:CordovaLib] /Users/sebastian/Documents/github/cordova-example-email-composer/platforms/android/CordovaLib/build/intermediates/merged_manifests/debug/processDebugManifest/merged/AndroidManifest.xml:20:1-27:12
-INJECTED from /Users/sebastian/Documents/github/cordova-example-email-composer/platforms/android/app/src/main/AndroidManifest.xml:2:1-21:12
-INJECTED from /Users/sebastian/Documents/github/cordova-example-email-composer/platforms/android/app/src/main/AndroidManifest.xml:2:1-21:12
-INJECTED from /Users/sebastian/Documents/github/cordova-example-email-composer/platforms/android/app/src/main/AndroidManifest.xml:2:1-21:12
+INJECTED from /Users/sebastian/Documents/github/cordova-example-email-composer/platforms/android/app/src/main/AndroidManifest.xml:2:1-22:12
+INJECTED from /Users/sebastian/Documents/github/cordova-example-email-composer/platforms/android/app/src/main/AndroidManifest.xml:2:1-22:12
+INJECTED from /Users/sebastian/Documents/github/cordova-example-email-composer/platforms/android/app/src/main/AndroidManifest.xml:2:1-22:12
 	package
 		ADDED from /Users/sebastian/Documents/github/cordova-example-email-composer/platforms/android/app/src/main/AndroidManifest.xml:2:100-158
 		INJECTED from /Users/sebastian/Documents/github/cordova-example-email-composer/platforms/android/app/src/main/AndroidManifest.xml
@@ -123,6 +123,10 @@ uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
 ADDED from /Users/sebastian/Documents/github/cordova-example-email-composer/platforms/android/app/src/main/AndroidManifest.xml:20:5-81
 	android:name
 		ADDED from /Users/sebastian/Documents/github/cordova-example-email-composer/platforms/android/app/src/main/AndroidManifest.xml:20:22-78
+uses-permission#android.permission.GET_ACCOUNTS
+ADDED from /Users/sebastian/Documents/github/cordova-example-email-composer/platforms/android/app/src/main/AndroidManifest.xml:21:5-71
+	android:name
+		ADDED from /Users/sebastian/Documents/github/cordova-example-email-composer/platforms/android/app/src/main/AndroidManifest.xml:21:22-68
 meta-data#android.support.FILE_PROVIDER_PATHS
 ADDED from /Users/sebastian/Documents/github/cordova-example-email-composer/platforms/android/app/src/main/AndroidManifest.xml:13:13-123
 	android:resource

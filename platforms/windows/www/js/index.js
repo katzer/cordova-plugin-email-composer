@@ -73,14 +73,12 @@ var app = {
     // Check if mail account exist
     hasMailAccount: function () {
         plugin().requestPermission(plugin().permission.READ_ACCOUNTS, function (granted) {
-            plugin().isAvailable(showToast);
+            plugin().hasAccount(showToast);
         });
     },
     // Check if mail client exist
     hasMailClient: function () {
-        cordova.plugins.email.isAvailable(function (hasAccount, hasClient) {
-            showToast(hasClient || 'unknown');
-        });
+        plugin().hasClient(showToast);
     },
     // Open mail client
     openMailClient: function () {
@@ -88,9 +86,7 @@ var app = {
     },
     // Check if gmail client exist
     hasGmailClient: function () {
-        plugin().isAvailable('gmail', function(hasAccount, hasClient) {
-            showToast(hasClient || 'unknown');
-        });
+        plugin().hasClient('gmail', showToast);
     },
     // Open gmail client
     openGmailClient: function () {
@@ -139,7 +135,6 @@ var app = {
             subject:       'Cordova Icons',
             body:          attachments.map(mapFn).join("\n\n"),
             attachments:   attachments,
-            chooserHeader: 'Öffnen mit',
             isHtml:        false
         }, showToast);
     },

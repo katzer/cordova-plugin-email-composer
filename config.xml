@@ -11,12 +11,11 @@
     <access origin="*" />
     <preference name="windows-target-version" value="10.0" />
     <plugin name="cordova-plugin-camera" spec="^4.0.3" />
-    <plugin name="cordova-plugin-compat" spec="^1.2.0" />
     <plugin name="cordova-plugin-device" spec="^2.0.2" />
     <plugin name="cordova-plugin-x-toast" spec="^2.7.0" />
-    <engine name="windows" spec="^5.0.0" />
-    <engine name="android" spec="^7.1.2" />
     <engine name="browser" spec="^5.0.4" />
     <engine name="ios" spec="^4.5.5" />
     <engine name="osx" spec="^4.0.2" />
+    <engine name="windows" spec="latest" />
+    <engine name="android" spec="latest" />
 </widget>
