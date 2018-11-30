@@ -52,7 +52,7 @@ exports.getDefaults = function () {
         cc:            [],
         bcc:           [],
         attachments:   [],
-        isHtml:        true
+        isHtml:        false
     };
 };
 
@@ -195,10 +195,6 @@ exports.openDraft = function () {
  */
 exports.mergeWithDefaults = function (options) {
     var defaults = this.getDefaults();
-
-    if (options.hasOwnProperty('isHTML')) {
-        options.isHtml = options.isHTML;
-    }
 
     if (!options.hasOwnProperty('isHtml')) {
         options.isHtml = defaults.isHtml;

@@ -9,6 +9,8 @@
 - [__change__]: `requestPermission` takes 3 arguments now. The first one has to be a value of `cordova.plugins.email.permission`.
 - [__change__]: Remove support lib from being installed (Android).
 - [__change__]: Remove deprecated namespace `plugin.email`.
+- [__change__]: Remove deprecated support for `isHTML`.
+- [__change__]: Change default value for `isHtml` to `false`.
 - [enhancement]: Skip chooser if there's only the default app (#302)
 - [bugfix:] Do not open old email draft [fixes #303]
 
