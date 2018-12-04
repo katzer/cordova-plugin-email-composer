@@ -94,12 +94,11 @@
     [self.commandDelegate runInBackground:^{
         NSString* scheme = [props objectForKey:@"app"];
 
-        if (![self canUseAppleMail:scheme]) {
+        if ([self canUseAppleMail:scheme]) {
+            [self presentMailComposerFromProperties:props];
+        } else {
             [self openURLFromProperties:props];
-            return;
         }
-
-        [self presentMailComposerFromProperties:props];
     }];
 }
 
@@ -151,7 +150,11 @@
     NSURL* url = [self.impl urlFromProperties:props];
 
     dispatch_async(dispatch_get_main_queue(), ^{
-        [[UIApplication sharedApplication] openURL:url];
+        [[UIApplication sharedApplication] openURL:url
+                                           options:@{}
+                                 completionHandler:^(BOOL success) {
+            [self execCallback];
+        }];
     });
 }
 
