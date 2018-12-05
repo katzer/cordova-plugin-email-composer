@@ -225,6 +225,10 @@ exports.mergeWithDefaults = function (options) {
         options.app = this.aliases[options.app];
     }
 
+    if (Array.isArray(options.body)) {
+        options.body = options.body.join("\n");
+    }
+
     options.app           = String(options.app || defaults.app);
     options.subject       = String(options.subject || defaults.subject);
     options.body          = String(options.body || defaults.body);
