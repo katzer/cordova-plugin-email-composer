@@ -85,6 +85,8 @@
 
     draft = [[MFMailComposeViewController alloc] init];
 
+    // Sender
+    [self setSendingEmailAddress:[props objectForKey:@"from"] ofDraft:draft];
     // Subject
     [self setSubject:[props objectForKey:@"subject"] ofDraft:draft];
     // Body (as HTML)
@@ -171,6 +173,20 @@
 
 #pragma mark -
 #pragma mark Private
+
+/**
+ * Sets the subject of the email draft.
+ *
+ * @param subject The subject
+ * @param draft   The email composer view
+ */
+- (void) setSendingEmailAddress:(NSString*)from
+                        ofDraft:(MFMailComposeViewController*)draft
+{
+    if (@available(iOS 11.0, *)) {
+        [draft setPreferredSendingEmailAddress:from];
+    }
+}
 
 /**
  * Sets the subject of the email draft.

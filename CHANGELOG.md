@@ -14,6 +14,7 @@
 - [__change__]: Change default value for `isHtml` to `false`.
 - [enhancement]: Skip chooser if there's only the default app (#302)
 - [enhancement]: Improve chooser to only display email clients
+- [enhancement]: Add `from` to specify the sending email account (iOS11+)
 - [bugfix:] Do not open old email draft [fixes #303]
 
 #### Version 0.8.15 (08.02.2018)

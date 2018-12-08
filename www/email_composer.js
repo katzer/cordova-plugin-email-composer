@@ -47,6 +47,7 @@ exports.permission = {
 exports.getDefaults = function () {
     return {
         app:           mailto,
+        from:          '',
         subject:       '',
         body:          '',
         to:            [],
@@ -230,6 +231,7 @@ exports.mergeWithDefaults = function (options) {
     }
 
     options.app           = String(options.app || defaults.app);
+    options.from          = String(options.from || defaults.from);
     options.subject       = String(options.subject || defaults.subject);
     options.body          = String(options.body || defaults.body);
     options.chooserHeader = String(options.chooserHeader || defaults.chooserHeader);
