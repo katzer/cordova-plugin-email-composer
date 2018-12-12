@@ -153,7 +153,7 @@ exports.getClients = function (callback, scope) {
     var fn = this.createCallbackFn(callback, scope);
 
     if (!isAndroid) {
-        if (fn) fn();
+        if (fn) fn(null);
         return;
     }
 

@@ -27,7 +27,7 @@
  * @return [ Void ]
  */
 exports.account = function (success, error, args) {
-    success();
+    success(null);
 };
 
 /**
@@ -40,7 +40,7 @@ exports.account = function (success, error, args) {
  * @return [ Void ]
  */
 exports.client = function (success, error, args) {
-    success();
+    success(null);
 };
 
 /**
