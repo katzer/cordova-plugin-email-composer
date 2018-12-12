@@ -12,6 +12,7 @@
 - [__change__]: Remove deprecated namespace `plugin.email`.
 - [__change__]: Remove deprecated support for `isHTML`.
 - [__change__]: Change default value for `isHtml` to `false`.
+- [__change__]: Remove Android specific `type` property.
 - [enhancement]: Skip chooser if there's only the default app (#302)
 - [enhancement]: Improve chooser to only display email clients.
 - [enhancement]: Add `from` to specify the sending email account.

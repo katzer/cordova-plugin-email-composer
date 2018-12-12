@@ -61,8 +61,7 @@ cordova.plugins.email.open({
     attachments: Array, // file paths or base64 data streams
     subject:    String, // subject of the email
     body:       String, // email body
-    isHtml:    Boolean, // indicats if the body is HTML or plain text (primarily iOS)
-    type:       String, // content type of the email (Android only)
+    isHtml:    Boolean  // indicats if the body is HTML or plain text (primarily iOS)
 }, callback, scope);
 ```
 
