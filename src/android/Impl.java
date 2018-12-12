@@ -25,6 +25,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
@@ -300,8 +301,9 @@ class Impl {
         }
 
         try {
-            ctx.getPackageManager().getPackageInfo(id, 0);
-            return true;
+            return ctx.getPackageManager()
+                    .getPackageInfo(id, 0)
+                    .applicationInfo.enabled;
         } catch (PackageManager.NameNotFoundException e) {
             return false;
         }
