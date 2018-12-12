@@ -45,7 +45,7 @@ exports.account = function (success, error, args) {
  * @return [ Void ]
  */
 exports.client = function (success, error, args) {
-    success(args[0] === 'mailto:' || ? true : undefined);
+    success(args[0] === 'mailto:' ? true : undefined);
 };
 
 /**
