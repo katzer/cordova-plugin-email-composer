@@ -118,9 +118,6 @@ class Impl {
         if (params.has("attachments"))
             setAttachments(params, draft);
 
-        if (params.has("type"))
-            setType(params, draft);
-
         return draft;
     }
 
@@ -220,7 +217,7 @@ class Impl {
             return;
 
         draft.setAction(Intent.ACTION_SEND_MULTIPLE)
-                .setType("message/rfc822")
+                .setType("*/*")
                 .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                 .putExtra(Intent.EXTRA_STREAM, uris);
 
@@ -229,17 +226,6 @@ class Impl {
 
         draft.setAction(Intent.ACTION_SEND)
                 .putExtra(Intent.EXTRA_STREAM, uris.get(0));
-    }
-
-    /**
-     * Setter for the email type.
-     *
-     * @param params    The email properties like subject or body.
-     * @param draft     The intent to send.
-     */
-    private void setType (JSONObject params, Intent draft) {
-        String type = params.optString("type", "message/rfc822");
-        draft.setType(type);
     }
 
     /**
@@ -314,8 +300,9 @@ class Impl {
         }
 
         try {
-            ctx.getPackageManager().getPackageInfo(id, 0);
-            return true;
+            return ctx.getPackageManager()
+                    .getPackageInfo(id, 0)
+                    .applicationInfo.enabled;
         } catch (PackageManager.NameNotFoundException e) {
             return false;
         }

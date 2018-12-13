@@ -47,6 +47,7 @@ exports.permission = {
 exports.getDefaults = function () {
     return {
         app:           mailto,
+        from:          '',
         subject:       '',
         body:          '',
         to:            [],
@@ -152,7 +153,7 @@ exports.getClients = function (callback, scope) {
     var fn = this.createCallbackFn(callback, scope);
 
     if (!isAndroid) {
-        if (fn) fn();
+        if (fn) fn(null);
         return;
     }
 
@@ -225,7 +226,12 @@ exports.mergeWithDefaults = function (options) {
         options.app = this.aliases[options.app];
     }
 
+    if (Array.isArray(options.body)) {
+        options.body = options.body.join("\n");
+    }
+
     options.app           = String(options.app || defaults.app);
+    options.from          = String(options.from || defaults.from);
     options.subject       = String(options.subject || defaults.subject);
     options.body          = String(options.body || defaults.body);
     options.chooserHeader = String(options.chooserHeader || defaults.chooserHeader);

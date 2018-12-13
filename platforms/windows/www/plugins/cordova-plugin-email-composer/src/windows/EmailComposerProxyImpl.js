@@ -35,9 +35,11 @@ impl.getDraftWithProperties = function (props) {
     return new WinJS.Promise(function (complete) {
         var mail = new WinMail.EmailMessage();
 
-        // subject
+        // From sender
+        me.setSendingEmailAddress(props.from, mail);
+        // Subject
         me.setSubject(props.subject, mail);
-        // body
+        // Body
         me.setBody(props.body, props.isHtml, mail);
         // To recipients
         me.setRecipients(props.to, mail.to);
@@ -62,31 +64,27 @@ impl.getDraftWithProperties = function (props) {
  * @return [ Windows.Foundation.Uri ]
  */
 impl.getMailTo = function (props) {
-    // The URI to launch
-    var uriToLaunch = "mailto:" + props.to;
+    var uri   = 'mailto:' + props.to,
+        query = '';
 
-    var options = '';
     if (props.subject !== '') {
-        options = options + '&subject=' + props.subject;
+        query = query + '&subject=' + props.subject;
     }
     if (props.body !== '') {
-        options = options + '&body=' + props.body;
+        query = query + '&body=' + props.body;
     }
     if (props.cc !== '') {
-        options = options + '&cc=' + props.cc;
+        query = query + '&cc=' + props.cc;
     }
     if (props.bcc !== '') {
-        options = options + '&bcc=' + props.bcc;
+        query = query + '&bcc=' + props.bcc;
     }
-    if (options !== '') {
-        options = '?' + options.substring(1);
-        uriToLaunch = uriToLaunch + options;
+    if (query !== '') {
+        query = '?' + query.substring(1);
+        uri   = uri + query;
     }
 
-    // Create a Uri object from a URI string
-    var uri = new Windows.Foundation.Uri(uriToLaunch);
-
-    return uri;
+    return new Windows.Foundation.Uri(uri);
 };
 
 /**
@@ -104,7 +102,7 @@ impl.setSubject = function (subject, draft) {
 /**
  * Setter for the body.
  *
- * @param [ String ]  body
+ * @param [ String ]  body   The email body.
  * @param [ Boolean ] isHTML Indicates the encoding (HTML or plain text)
  * @param [ Email.EmailMessage ] draft
  *
@@ -112,6 +110,18 @@ impl.setSubject = function (subject, draft) {
  */
 impl.setBody = function (body, isHTML, draft) {
     draft.body = body;
+};
+
+/**
+ * Setter for the sending email address.
+ *
+ * @param [ String ]             from  The sending email address.
+ * @param [ Email.EmailMessage ] draft
+ *
+ * @return [ Void ]
+ */
+impl.setSendingEmailAddress = function (from, draft) {
+    draft.sender = new WinMail.EmailRecipient(from);
 };
 
 /**

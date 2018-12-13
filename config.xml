@@ -14,8 +14,8 @@
     <plugin name="cordova-plugin-device" spec="^2.0.2" />
     <plugin name="cordova-plugin-x-toast" spec="^2.7.0" />
     <engine name="browser" spec="^5.0.4" />
-    <engine name="ios" spec="^4.5.5" />
     <engine name="osx" spec="^4.0.2" />
+    <engine name="android" spec="^7.1.4" />
+    <engine name="ios" spec="^4.5.5" />
     <engine name="windows" spec="latest" />
-    <engine name="android" spec="latest" />
 </widget>

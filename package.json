@@ -5,10 +5,10 @@
   "cordova": {
     "platforms": [
       "browser",
-      "ios",
       "osx",
-      "windows",
-      "android"
+      "android",
+      "ios",
+      "windows"
     ],
     "plugins": {
       "cordova-plugin-camera": {},

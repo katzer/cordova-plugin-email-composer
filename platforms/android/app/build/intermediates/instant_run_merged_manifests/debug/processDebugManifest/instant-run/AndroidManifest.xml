@@ -53,7 +53,7 @@
         </provider>
         <provider
             android:name="de.appplant.cordova.emailcomposer.Provider"
-            android:authorities="de.appplant.cordova.plugin.emailcomposer.example.provider"
+            android:authorities="de.appplant.cordova.plugin.emailcomposer.example.emailcomposer.provider"
             android:exported="false"
             android:grantUriPermissions="true" >
             <meta-data

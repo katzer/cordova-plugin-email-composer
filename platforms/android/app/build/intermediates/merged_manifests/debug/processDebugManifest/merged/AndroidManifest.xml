@@ -26,7 +26,8 @@
         android:hardwareAccelerated="true"
         android:icon="@mipmap/icon"
         android:label="@string/app_name"
-        android:supportsRtl="true" >
+        android:supportsRtl="true"
+        android:testOnly="true" >
         <activity
             android:name="de.appplant.cordova.plugin.emailcomposer.example.MainActivity"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale"
@@ -52,7 +53,7 @@
         </provider>
         <provider
             android:name="de.appplant.cordova.emailcomposer.Provider"
-            android:authorities="de.appplant.cordova.plugin.emailcomposer.example.provider"
+            android:authorities="de.appplant.cordova.plugin.emailcomposer.example.emailcomposer.provider"
             android:exported="false"
             android:grantUriPermissions="true" >
             <meta-data

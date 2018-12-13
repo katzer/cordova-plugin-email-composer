@@ -12,7 +12,7 @@
         <provider android:authorities="${applicationId}.provider" android:exported="false" android:grantUriPermissions="true" android:name="org.apache.cordova.camera.FileProvider">
             <meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/camera_provider_paths" />
         </provider>
-        <provider android:authorities="${applicationId}.provider" android:exported="false" android:grantUriPermissions="true" android:name="de.appplant.cordova.emailcomposer.Provider">
+        <provider android:authorities="${applicationId}.emailcomposer.provider" android:exported="false" android:grantUriPermissions="true" android:name="de.appplant.cordova.emailcomposer.Provider">
             <meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/emailcomposer_provider_paths" />
         </provider>
     </application>

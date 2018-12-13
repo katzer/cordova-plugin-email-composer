@@ -32,29 +32,23 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="EmailComposer.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/de/appplant/cordova/emailcomposer/EmailComposer.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="403">
-              <caret line="86" column="40" selection-end-line="279" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AssetUtil.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/de/appplant/cordova/emailcomposer/AssetUtil.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="179">
-              <caret line="47" column="21" selection-end-line="335" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Impl.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Impl.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/de/appplant/cordova/emailcomposer/Impl.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="215">
-              <caret line="62" column="7" lean-forward="true" selection-start-line="62" selection-start-column="7" selection-end-line="62" selection-end-column="7" />
+            <state relative-caret-position="104">
+              <caret line="24" column="9" selection-end-line="325" />
+              <folding>
+                <element signature="e#1807#1843#1" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="emailcomposer_provider_paths.xml" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/xml/emailcomposer_provider_paths.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="315">
+              <caret line="21" column="41" selection-start-line="21" selection-start-column="41" selection-end-line="21" selection-end-column="41" />
             </state>
           </provider>
         </entry>
@@ -3482,6 +3476,7 @@
         <option value="$PROJECT_DIR$/app/src/main/java/de/appplant/cordova/emailcomposer/AssetUtil.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/de/appplant/cordova/emailcomposer/EmailComposer.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/de/appplant/cordova/emailcomposer/Impl.java" />
+        <option value="$PROJECT_DIR$/app/src/main/res/xml/emailcomposer_provider_paths.xml" />
       </list>
     </option>
   </component>
@@ -3496,6 +3491,8 @@
     </navigator>
     <panes>
       <pane id="PackagesPane" />
+      <pane id="Scope" />
+      <pane id="ProjectPane" />
       <pane id="AndroidView">
         <subPane>
           <expand>
@@ -3526,12 +3523,21 @@
               <item name="cordova" type="cbb59c9e:AndroidPsiDirectoryNode" />
               <item name="emailcomposer" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="android" type="1abcf292:AndroidViewProjectNode" />
+              <item name="app" type="feadf853:AndroidModuleNode" />
+              <item name="res" type="d4f16f75:AndroidResFolderNode" />
+            </path>
+            <path>
+              <item name="android" type="1abcf292:AndroidViewProjectNode" />
+              <item name="app" type="feadf853:AndroidModuleNode" />
+              <item name="res" type="d4f16f75:AndroidResFolderNode" />
+              <item name="xml" type="ddeffd01:AndroidResFolderTypeNode" />
+            </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
-      <pane id="ProjectPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -3646,10 +3652,10 @@
       <window_info id="Captures" order="2" weight="0.24969475" />
       <window_info id="Capture Tool" order="2" />
       <window_info id="Designer" order="2" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49944875" visible="true" weight="0.21855922" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49614114" visible="true" weight="0.21855922" />
       <window_info anchor="bottom" id="Build" order="7" weight="0.3296582" />
       <window_info anchor="right" id="Gradle" order="3" />
-      <window_info id="Structure" order="1" sideWeight="0.5005513" side_tool="true" visible="true" weight="0.21855922" />
+      <window_info id="Structure" order="1" sideWeight="0.50385886" side_tool="true" visible="true" weight="0.21855922" />
       <window_info anchor="right" id="Device File Explorer" order="3" side_tool="true" />
       <window_info anchor="right" id="Theme Preview" order="3" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39911798" />
@@ -3668,70 +3674,98 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="28" />
+      <option name="time" value="31" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/de/appplant/cordova/emailcomposer/EmailComposer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1725">
-          <caret line="115" column="25" selection-start-line="115" selection-start-column="25" selection-end-line="115" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/de/appplant/cordova/emailcomposer/Impl.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2685">
-          <caret line="219" column="35" lean-forward="true" selection-end-line="281" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
-      <provider editor-type-id="android-manifest">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="13" column="19" selection-start-line="13" selection-start-column="19" selection-end-line="13" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.android/sdk/platforms/android-27/android.jar!/android/content/pm/ComponentInfo.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="172">
-          <caret line="35" column="19" selection-start-line="35" selection-start-column="19" selection-end-line="35" selection-end-column="19" />
+        <state relative-caret-position="720">
+          <caret line="94" column="7" lean-forward="true" selection-start-line="94" selection-start-column="7" selection-end-line="94" selection-end-column="7" />
           <folding>
-            <element signature="e#888#889#0" expanded="true" />
-            <element signature="e#939#940#0" expanded="true" />
+            <element signature="e#1807#1843#1" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/de/appplant/cordova/emailcomposer/EmailComposer.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/de/appplant/cordova/emailcomposer/EmailComposer.java" />
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/de/appplant/cordova/emailcomposer/AssetUtil.java" />
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/de/appplant/cordova/emailcomposer/Impl.java" />
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/de/appplant/cordova/emailcomposer/EmailComposer.java" />
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/de/appplant/cordova/emailcomposer/Impl.java" />
+    <entry file="jar://$USER_HOME$/.android/sdk/platforms/android-27/android.jar!/android/content/pm/ComponentInfo.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="403">
-          <caret line="86" column="40" selection-end-line="279" />
+        <state relative-caret-position="172">
+          <caret line="35" column="19" selection-start-line="35" selection-start-column="19" selection-end-line="35" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.android/sdk/platforms/android-27/android.jar!/android/accounts/AccountManager.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="293">
+          <caret line="90" column="38" selection-start-line="90" selection-start-column="21" selection-end-line="90" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.android/sdk/platforms/android-27/android.jar!/android/content/Intent.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="293">
+          <caret line="280" column="45" lean-forward="true" selection-start-line="280" selection-start-column="45" selection-end-line="280" selection-end-column="70" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/de/appplant/cordova/emailcomposer/AssetUtil.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="179">
-          <caret line="47" column="21" selection-end-line="335" />
+        <state relative-caret-position="345">
+          <caret line="55" column="6" selection-start-line="55" selection-start-column="6" selection-end-line="55" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/de/appplant/cordova/emailcomposer/EmailComposer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="53" column="6" lean-forward="true" selection-end-line="279" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/de/appplant/cordova/emailcomposer/Provider.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="25" column="1" lean-forward="true" selection-start-line="25" selection-start-column="1" selection-end-line="25" selection-end-column="1" />
+        <state relative-caret-position="90">
+          <caret line="23" column="13" selection-end-line="25" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="10" column="19" lean-forward="true" selection-start-line="10" selection-start-column="19" selection-end-line="10" selection-end-column="19" />
+        </state>
+      </provider>
+      <provider editor-type-id="android-manifest">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/xml/camera_provider_paths.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="195">
+          <caret line="13" column="21" selection-start-line="13" selection-start-column="21" selection-end-line="13" selection-end-column="21" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/de/appplant/cordova/emailcomposer/Impl.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="215">
-          <caret line="62" column="7" lean-forward="true" selection-start-line="62" selection-start-column="7" selection-end-line="62" selection-end-column="7" />
+        <state relative-caret-position="104">
+          <caret line="24" column="9" selection-end-line="325" />
+          <folding>
+            <element signature="e#1807#1843#1" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/xml/emailcomposer_provider_paths.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="315">
+          <caret line="21" column="41" selection-start-line="21" selection-start-column="41" selection-end-line="21" selection-end-column="41" />
         </state>
       </provider>
     </entry>

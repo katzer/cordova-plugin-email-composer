@@ -13,14 +13,14 @@ INJECTED from /Users/sebastian/Documents/github/cordova-example-email-composer/p
 provider#de.appplant.cordova.emailcomposer.Provider
 INJECTED from /Users/sebastian/Documents/github/cordova-example-email-composer/platforms/android/app/src/main/AndroidManifest.xml:15:9-17:20
 	android:grantUriPermissions
-		ADDED from /Users/sebastian/Documents/github/cordova-example-email-composer/platforms/android/app/src/main/AndroidManifest.xml:15:92-126
+		ADDED from /Users/sebastian/Documents/github/cordova-example-email-composer/platforms/android/app/src/main/AndroidManifest.xml:15:106-140
 	android:authorities
 		INJECTED from /Users/sebastian/Documents/github/cordova-example-email-composer/platforms/android/app/src/main/AndroidManifest.xml
-		ADDED from /Users/sebastian/Documents/github/cordova-example-email-composer/platforms/android/app/src/main/AndroidManifest.xml:15:19-66
+		ADDED from /Users/sebastian/Documents/github/cordova-example-email-composer/platforms/android/app/src/main/AndroidManifest.xml:15:19-80
 	android:exported
-		ADDED from /Users/sebastian/Documents/github/cordova-example-email-composer/platforms/android/app/src/main/AndroidManifest.xml:15:67-91
+		ADDED from /Users/sebastian/Documents/github/cordova-example-email-composer/platforms/android/app/src/main/AndroidManifest.xml:15:81-105
 	android:name
-		ADDED from /Users/sebastian/Documents/github/cordova-example-email-composer/platforms/android/app/src/main/AndroidManifest.xml:15:127-184
+		ADDED from /Users/sebastian/Documents/github/cordova-example-email-composer/platforms/android/app/src/main/AndroidManifest.xml:15:141-198
 manifest
 ADDED from /Users/sebastian/Documents/github/cordova-example-email-composer/platforms/android/app/src/main/AndroidManifest.xml:2:1-22:12
 INJECTED from /Users/sebastian/Documents/github/cordova-example-email-composer/platforms/android/app/src/main/AndroidManifest.xml:2:1-22:12
