@@ -45,9 +45,10 @@
     }
   ],
   "author": "Sebastián Katzer",
-  "license": "Apache 2.0",
+  "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/katzer/cordova-plugin-email-composer/issues"
   },
-  "homepage": "https://github.com/katzer/cordova-plugin-email-composer#readme"
+  "homepage": "https://github.com/katzer/cordova-plugin-email-composer#readme",
+  "dependencies": {}
 }
