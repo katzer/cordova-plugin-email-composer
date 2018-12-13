@@ -1,7 +1,7 @@
 
 ## ChangeLog
 
-#### Version 0.9.0 (not yet released)
+#### Version 0.9.0 (13.12.2018)
 - [feature:] Added `getClients` that returns a list of available email clients (Android)
 - [__change__]: Replace `isAvailable` through `hasClient` and `hasAccount`.
 - [__change__]: Plugin does not add any permissions by itself like `GET_ACCOUNTS` or `READ_EXTERNAL_STORAGE`.
