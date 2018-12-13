@@ -19,6 +19,7 @@
 
 package de.appplant.cordova.emailcomposer;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 
@@ -27,6 +28,7 @@ import org.apache.cordova.CordovaInterface;
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CordovaWebView;
 import org.apache.cordova.PluginResult;
+import org.apache.cordova.PluginResult.Status;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -35,22 +37,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static android.Manifest.permission.GET_ACCOUNTS;
+import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
+import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
-@SuppressWarnings("Convert2Diamond")
+@SuppressWarnings({"Convert2Diamond", "Convert2Lambda"})
 public class EmailComposer extends CordovaPlugin {
 
     // The log tag for this plugin
     static final String LOG_TAG = "EmailComposer";
-
-    // Required permissions to work properly
-    private static final String PERMISSION = GET_ACCOUNTS;
-
-    private JSONArray args;
-
-    // Request codes used to determine what to do after they have been
-    // granted or denied by the user.
-    private static final int EXEC_AVAIL_AFTER = 0;
-    private static final int EXEC_CHECK_AFTER = 1;
 
     // The callback context used when calling back into JavaScript
     private CallbackContext command;
@@ -64,49 +58,44 @@ public class EmailComposer extends CordovaPlugin {
     @Override
     public void initialize(CordovaInterface cordova, CordovaWebView webView) {
         super.initialize(cordova, webView);
-        new AssetUtil(getContext()).cleanupAttachmentFolder();
+        AssetUtil.cleanupAttachmentFolder(getContext());
     }
 
     /**
      * Executes the request.
-     *
+     * <p>
      * This method is called from the WebView thread.
      * To do a non-trivial amount of work, use:
-     *     cordova.getThreadPool().execute(runnable);
-     *
+     * cordova.getThreadPool().execute(runnable);
+     * <p>
      * To run on the UI thread, use:
-     *     cordova.getActivity().runOnUiThread(runnable);
+     * cordova.getActivity().runOnUiThread(runnable);
      *
      * @param action   The action to execute.
      * @param args     The exec() arguments in JSON form.
      * @param callback The callback context used when calling
      *                 back into JavaScript.
-     * @return         Whether the action was valid.
+     * @return Whether the action was valid.
      */
     @Override
-    public boolean execute (String action, JSONArray args,
-                            CallbackContext callback) throws JSONException {
+    public boolean execute(String action, JSONArray args,
+                           CallbackContext callback) throws JSONException {
 
-        this.args    = args;
         this.command = callback;
 
-        if ("open".equalsIgnoreCase(action)) {
+        if        ("open".equalsIgnoreCase(action)) {
             open(args.getJSONObject(0));
-        }
-        else if ("isAvailable".equalsIgnoreCase(action)) {
-            if (cordova.hasPermission(PERMISSION)) {
-                isAvailable(args.getString(0));
-            } else {
-                requestPermissions(EXEC_AVAIL_AFTER);
-            }
-        }
-        else if ("hasPermission".equalsIgnoreCase(action)) {
-            hasPermission();
-        }
-        else if ("requestPermission".equalsIgnoreCase(action)) {
-            requestPermissions(EXEC_CHECK_AFTER);
-        }
-        else {
+        } else if ("client".equalsIgnoreCase(action)) {
+            client(args.getString(0));
+        } else if ("check".equalsIgnoreCase(action)) {
+            check(args.optInt(0, 0));
+        } else if ("request".equalsIgnoreCase(action)) {
+            request(args.optInt(0, 0));
+        } else if ("clients".equalsIgnoreCase(action)) {
+            clients();
+        } else if ("account".equalsIgnoreCase(action)) {
+            account();
+        } else {
             return false;
         }
 
@@ -116,27 +105,55 @@ public class EmailComposer extends CordovaPlugin {
     /**
      * Returns the application context.
      */
-    private Context getContext() { return cordova.getActivity(); }
+    private Context getContext() {
+        return cordova.getActivity();
+    }
 
     /**
-     * Tells if the device has the capability to send emails.
+     * Finds out if the given mail client is installed.
      *
      * @param id The app id.
      */
-    private void isAvailable (final String id) {
+    private void client(String id) {
         cordova.getThreadPool().execute(new Runnable() {
             public void run() {
-                Impl impl     = new Impl(getContext());
-                boolean[] res = impl.canSendMail(id);
-                List<PluginResult> messages = new ArrayList<PluginResult>();
+                Impl impl   = new Impl(getContext());
+                boolean res = impl.isAppInstalled(id);
 
-                messages.add(new PluginResult(PluginResult.Status.OK, res[0]));
-                messages.add(new PluginResult(PluginResult.Status.OK, res[1]));
+                sendResult(new PluginResult(Status.OK, res));
+            }
+        });
+    }
 
-                PluginResult result = new PluginResult(
-                        PluginResult.Status.OK, messages);
+    /**
+     * List of the package IDs from all available email clients.
+     */
+    private void clients() {
+        cordova.getThreadPool().execute(new Runnable() {
+            public void run() {
+                Impl impl              = new Impl(getContext());
+                List<String> ids       = impl.getEmailClientIds();
+                List<PluginResult> res = new ArrayList<PluginResult>();
 
-                command.sendPluginResult(result);
+                for (String id:ids) {
+                    res.add(new PluginResult(Status.OK, id));
+                }
+
+                sendResult(new PluginResult(Status.OK, res));
+            }
+        });
+    }
+
+    /**
+     * Tries to figure out if an email account is setup.
+     */
+    private void account() {
+        cordova.getThreadPool().execute(new Runnable() {
+            public void run() {
+                Impl impl   = new Impl(getContext());
+                boolean res = impl.isEmailAccountConfigured();
+
+                sendResult(new PluginResult(Status.OK, res));
             }
         });
     }
@@ -146,84 +163,117 @@ public class EmailComposer extends CordovaPlugin {
      *
      * @param props The email properties like subject or body
      */
-    private void open (JSONObject props) throws JSONException {
-        Impl impl     = new Impl(getContext());
-        Intent draft  = impl.getDraft(props);
-        String header = props.optString("chooserHeader", "Open with");
-
-        final Intent chooser       = Intent.createChooser(draft, header);
-        final EmailComposer plugin = this;
+    private void open(JSONObject props) {
+        final EmailComposer me = this;
 
         cordova.getThreadPool().execute(new Runnable() {
             public void run() {
-                cordova.startActivityForResult(plugin, chooser, 0);
+                try {
+                    Impl impl    = new Impl(getContext());
+                    Intent draft = impl.getDraft(props);
+
+                    cordova.startActivityForResult(me, draft, 0);
+                } catch (ActivityNotFoundException e) {
+                    onActivityResult(0, 0, null);
+                }
             }
         });
     }
 
     /**
-     * Check if the required permissions are granted.
+     * Check if the given permissions has been granted.
+     *
+     * @param code The code number of the permission to check for.
      */
-    private void hasPermission() {
-        Boolean hasPermission = cordova.hasPermission(PERMISSION);
-
-        PluginResult result = new PluginResult(
-                PluginResult.Status.OK, hasPermission);
-
-        command.sendPluginResult(result);
+    private void check(int code) {
+        check(getPermission(code));
     }
 
     /**
-     * Request permission to read account details.
+     * Check if the given permission has been granted.
      *
-     * @param requestCode The code to attach to the request.
+     * @param permission The permission to check for.
      */
-    @Override
-    public void requestPermissions (int requestCode) {
-        cordova.requestPermission(this, requestCode, PERMISSION);
+    private void check(String permission) {
+        Boolean granted = cordova.hasPermission(permission);
+        sendResult(new PluginResult(Status.OK, granted));
+    }
+
+    /**
+     * Request given permission.
+     *
+     * @param code The code number of the permission to request for.
+     */
+    private void request(int code) {
+        cordova.requestPermission(this, code, getPermission(code));
+    }
+
+    /**
+     * Returns the corresponding permission for the internal code.
+     *
+     * @param code The internal code number.
+     *
+     * @return The Android permission string or "".
+     */
+    private String getPermission(int code) {
+        switch (code) {
+            case 1:  return READ_EXTERNAL_STORAGE;
+            case 2:  return GET_ACCOUNTS;
+            default: return "";
+        }
+    }
+
+    /**
+     * Send plugin result and reset plugin state.
+     *
+     * @param result The result to send to the webview.
+     */
+    private void sendResult(PluginResult result) {
+        if (command != null) {
+            command.sendPluginResult(result);
+        }
+
+        command = null;
     }
 
     /**
      * Called when an activity you launched exits, giving you the reqCode you
      * started it with, the resCode it returned, and any additional data from it.
      *
-     * @param reqCode     The request code originally supplied to startActivityForResult(),
-     *                    allowing you to identify who this result came from.
-     * @param resCode     The integer result code returned by the child activity
-     *                    through its setResult().
-     * @param intent      An Intent, which can return result data to the caller
-     *                    (various data can be attached to Intent "extras").
+     * @param reqCode The request code originally supplied to startActivityForResult(),
+     *                allowing you to identify who this result came from.
+     * @param resCode The integer result code returned by the child activity
+     *                through its setResult().
+     * @param intent  An Intent, which can return result data to the caller
+     *                (various data can be attached to Intent "extras").
      */
     @Override
-    public void onActivityResult (int reqCode, int resCode, Intent intent) {
-        if (command != null) {
-            command.success();
-        }
+    public void onActivityResult(int reqCode, int resCode, Intent intent) {
+        sendResult(new PluginResult(Status.OK));
     }
 
     /**
      * Called by the system when the user grants permissions.
      *
-     * @param code The requested code.
-     * @param permissions The requested permissions.
+     * @param code         The requested code.
+     * @param permissions  The requested permissions.
      * @param grantResults The grant result for the requested permissions.
      */
     @Override
-    public void onRequestPermissionResult (int code, String[] permissions,
-                                           int[] grantResults) {
-        try {
-            switch (code) {
-                case EXEC_CHECK_AFTER:
-                    hasPermission();
-                    break;
+    public void onRequestPermissionResult(int code, String[] permissions,
+                                          int[] grantResults) {
 
-                case EXEC_AVAIL_AFTER:
-                    isAvailable(this.args.getString(0));
-                    break;
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
+        List<PluginResult> messages = new ArrayList<PluginResult>();
+        Boolean granted             = false;
+
+        if (grantResults.length > 0) {
+            granted = grantResults[0] == PERMISSION_GRANTED;
         }
+
+        messages.add(new PluginResult(Status.OK, granted));
+        messages.add(new PluginResult(Status.OK, code));
+
+        sendResult(new PluginResult(Status.OK, messages));
     }
 
 }

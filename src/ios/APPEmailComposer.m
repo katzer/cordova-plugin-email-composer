@@ -48,17 +48,34 @@
 #pragma mark Public
 
 /**
- * Check if the mail composer is able to send mails.
+ * Checks if an email account is configured.
  */
-- (void) isAvailable:(CDVInvokedUrlCommand*)cmd
+- (void) account:(CDVInvokedUrlCommand*)cmd
 {
     [self.commandDelegate runInBackground:^{
-        NSString* scheme = cmd.arguments[0];
-        NSArray* boolArray = [self.impl canSendMail:scheme];
+        bool res = [self.impl canSendMail];
         CDVPluginResult* result;
 
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
-                                     messageAsMultipart:boolArray];
+                                     messageAsBool:res];
+
+        [self.commandDelegate sendPluginResult:result
+                                    callbackId:cmd.callbackId];
+    }];
+}
+
+/**
+ * Checks if an email client is available which responds to the scheme.
+ */
+- (void) client:(CDVInvokedUrlCommand*)cmd
+{
+    [self.commandDelegate runInBackground:^{
+        NSString* scheme = [cmd argumentAtIndex:0];
+        bool res         = [self.impl canOpenScheme:scheme];
+        CDVPluginResult* result;
+
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
+                                     messageAsBool:res];
 
         [self.commandDelegate sendPluginResult:result
                                     callbackId:cmd.callbackId];
@@ -77,12 +94,11 @@
     [self.commandDelegate runInBackground:^{
         NSString* scheme = [props objectForKey:@"app"];
 
-        if (![self canUseAppleMail:scheme]) {
+        if ([self canUseAppleMail:scheme]) {
+            [self presentMailComposerFromProperties:props];
+        } else {
             [self openURLFromProperties:props];
-            return;
         }
-
-        [self presentMailComposerFromProperties:props];
     }];
 }
 
@@ -134,7 +150,11 @@
     NSURL* url = [self.impl urlFromProperties:props];
 
     dispatch_async(dispatch_get_main_queue(), ^{
-        [[UIApplication sharedApplication] openURL:url];
+        [[UIApplication sharedApplication] openURL:url
+                                           options:@{}
+                                 completionHandler:^(BOOL success) {
+            [self execCallback];
+        }];
     });
 }
 

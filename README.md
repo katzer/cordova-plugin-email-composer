@@ -12,7 +12,7 @@ Using this interface does not guarantee immediate delivery of the corresponding 
 
 ## Supported Platforms
 
-- __Android / Amazon FireOS__
+- __Android__
 - __Browser__
 - __iOS__
 - __OSX__
@@ -37,7 +37,7 @@ Or install the latest head version:
 
 Or install from local source:
 
-    $ cordova plugin add cordova-plugin-email-composer --searchpath <path>
+    $ cordova plugin add <path> --nofetch --nosave
 
 
 ## Usage
@@ -50,32 +50,18 @@ document.addEventListener('deviceready', function () {
 }, false);
 ```
 
-### Determine email capability
-
-The Email service is only available on devices which have configured an email account:
-
-```javascript
-cordova.plugins.email.isAvailable(function (hasAccount) {});
-```
-
-To check for a specific mail client, just pass its uri scheme on iOS, or its name on Android as first parameter:
-
-```javascript
-cordova.plugins.email.isAvailable('gmail', function (hasAccount, hasGmail) {});
-```
-
-### Open an email draft
-All properties are optional. After opening the draft the user may have the possibilities to edit the draft.
+All properties are optional. After opening the draft the user may have the possibilities to edit the draft from the UI.
 
 ```javascript
 cordova.plugins.email.open({
+    from:       String, // sending email account (iOS only)
     to:          Array, // email addresses for TO field
     cc:          Array, // email addresses for CC field
     bcc:         Array, // email addresses for BCC field
     attachments: Array, // file paths or base64 data streams
     subject:    String, // subject of the email
-    body:       String, // email body (for HTML, set isHtml to true)
-    isHtml:    Boolean, // indicats if the body is HTML or plain text
+    body:       String, // email body
+    isHtml:    Boolean, // indicats if the body is HTML or plain text (primarily iOS)
     type:       String, // content type of the email (Android only)
 }, callback, scope);
 ```
@@ -104,7 +90,7 @@ Its possible to specify the email client. If the phone isn´t able to handle the
 cordova.plugins.email.open({ app: 'mailto', subject: 'Sent with mailto' });
 ```
 
-On _Android_ the app can be specified by either an alias or its package name. The alias _gmail_ is available by default.
+On Android the app can be specified by either an alias or its package name. The alias _gmail_ is available by default.
 
 ```javascript
 // Add app alias
@@ -114,9 +100,11 @@ cordova.plugins.email.addAlias('gmail', 'com.google.android.gm');
 cordova.plugins.email.open({ app: 'gmail', subject: 'Sent from Gmail' });
 ```
 
-### Attachments
+#### HTML and CSS
 
-Attachments can be either base64 encoded datas, files from the the device storage or assets from within the *www* folder.
+Only the built-in email app for iOS does support HTML and CSS. Some Android clients support rich formatted text.
+
+Use `isHtml` with caution! It's disabled by default.
 
 #### Attach Base64 encoded content
 The code below shows how to attach an base64 encoded image which will be added as a image with the name *icon.png*.
@@ -129,7 +117,7 @@ cordova.plugins.email.open({
 ```
 
 #### Attach files from the device storage
-The path to the files must be defined absolute from the root of the file system.
+The path to the files must be defined absolute from the root of the file system. On Android the user has to allow the app first to read from external storage!
 
 ```javascript
 cordova.plugins.email.open({
@@ -171,81 +159,53 @@ cordova.plugins.email.open({
 });
 ```
 
+### Device Configuration
+
+The email service is only available on devices which have configured an email account. On Android the user has to allow the app first to access account informations.
+
+```javascript
+cordova.plugins.email.hasAccount(callbackFn);
+```
+
+To check for a specific mail client, just pass its uri scheme on iOS, or the package name on Android as first parameter:
+
+```javascript
+cordova.plugins.email.hasClient('gmail', callbackFn);
+```
+
+For Android, it's possible to get a list of all installed email clients:
+
+```javascript
+cordova.plugins.email.getClients(function (apps) {
+    cordova.plugins.email.open({ app: apps[0] });    
+});
+```
+
+__Note:__ Please keep in mind that these functions might return false results and the support is not fully given for all platforms. Its wise to consider these functions as optional.
+
 
 ## Permissions
 
-The plugin might ask for granting permissions like reading email account informations. That's done automatically.
+Some functions require permissions on __Android__. The plugin itself does not add them to the manifest nor does it ask for by itself at runtime.
 
-Its possible to request them manually:
+| Permission | Description |
+| ---------- | ----------- |
+| `cordova.plugins.email.permission.READ_EXTERNAL_STORAGE` | Is needed to attach external files `file:///` located outside of the app's own file system. |
+| `cordova.plugins.email.permission.GET_ACCOUNTS` | Without the permission the `hasAccount()` function wont be able to look for email accounts. |
+
+To check if a permission has been granted:
 
 ```javascript
-cordova.plugins.email.requestPermission(function (granted) {...});
+cordova.plugins.email.hasPermission(permission, callbackFn);
 ```
 
-Or check if they have been granted already:
+To request a permission:
 
 ```javascript
-cordova.plugins.email.hasPermission(function (granted) {...});
+cordova.plugins.email.requestPermission(permission, callbackFn);
 ```
 
-In case of missing permissions the result of `isAvailable` might be wrong.
-
-
-## Quirks
-
-### HTML and CSS on Android
-Even Android is capable to render HTML formatted mails, most native Mail clients like the standard app or Gmail only support rich formatted text while writing mails. That means that __CSS cannot be used__ (no _class_ and _style_ support).
-
-__Update:__ Seems it stopped working with gmail at version 6.x and Android Mail, see [#264](https://github.com/katzer/cordova-plugin-email-composer/issues/264).
-
-The following table gives an overview which tags and attributes can be used:
-
-<table>
-<td width="60%">
-    <ul>
-        <li><code>&lt;a href="..."&gt;</code></li>
-        <li><code>&lt;b&gt;</code></li>
-        <li><code>&lt;big&gt;</code></li>
-        <li><code>&lt;blockquote&gt;</code></li>
-        <li><code>&lt;br&gt;</code></li>
-        <li><code>&lt;cite&gt;</code></li>
-        <li><code>&lt;dfn&gt;</code></li>
-        <li><code>&lt;div align="..."&gt;</code></li>
-        <li><code>&lt;em&gt;</code></li>
-        <li><code>&lt;font size="..." color="..." face="..."&gt;</code></li>
-        <li><code>&lt;h1&gt;</code></li>
-        <li><code>&lt;h2&gt;</code></li>
-        <li><code>&lt;h3&gt;</code></li>
-    </ul>
-</td>
-<td width="40%">
-    <ul>
-        <li><code>&lt;h4&gt;</code></li>
-        <li><code>&lt;h5&gt;</code></li>
-        <li><code>&lt;h6&gt;</code></li>
-        <li><code>&lt;i&gt;</code></li>
-        <li><code>&lt;img src="..."&gt;</code></li>
-        <li><code>&lt;p&gt;</code></li>
-        <li><code>&lt;small&gt;</code></li>
-        <li><code>&lt;strike&gt;</code></li>
-        <li><code>&lt;strong&gt;</code></li>
-        <li><code>&lt;sub&gt;</code></li>
-        <li><code>&lt;sup&gt;</code></li>
-        <li><code>&lt;tt&gt;</code></li>
-        <li><code>&lt;u&gt;</code></li>
-    </ul>
-</td>
-</table>
-
-### HTML and CSS on Windows
-
-HTML+CSS formatted body are not supported through the native API for Windows.
-
-### Other limitations
-
-- _\<img\>_ tags do not work properly on Android.
-- Callbacks for windows and osx platform are called immediately.
-- _isAvailable_ does always return _true_ for windows platform.
+__Note:__ The author of the app has to make sure that the permission is listed in the manifest.
 
 
 ## Contributing

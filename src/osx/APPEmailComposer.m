@@ -48,17 +48,34 @@
 #pragma mark Public
 
 /**
- * Check if the mail composer is able to send mails.
+ * Checks if an email account is configured.
  */
-- (void) isAvailable:(CDVInvokedUrlCommand*)cmd
+- (void) account:(CDVInvokedUrlCommand*)cmd
 {
     [self.commandDelegate runInBackground:^{
-        NSString* scheme   = [cmd argumentAtIndex:0];
-        NSArray* boolArray = [self.impl canSendMail:scheme];
+        bool res = [self.impl canSendMail];
         CDVPluginResult* result;
 
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
-                                     messageAsMultipart:boolArray];
+                                     messageAsBool:res];
+
+        [self.commandDelegate sendPluginResult:result
+                                    callbackId:cmd.callbackId];
+    }];
+}
+
+/**
+ * Checks if an email client is available which responds to the scheme.
+ */
+- (void) client:(CDVInvokedUrlCommand*)cmd
+{
+    [self.commandDelegate runInBackground:^{
+        NSString* scheme = [cmd argumentAtIndex:0];
+        bool res         = [self.impl canOpenScheme:scheme];
+        CDVPluginResult* result;
+
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
+                                     messageAsBool:res];
 
         [self.commandDelegate sendPluginResult:result
                                     callbackId:cmd.callbackId];
