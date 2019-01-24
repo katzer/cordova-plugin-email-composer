@@ -1,6 +1,9 @@
 
 ## ChangeLog
 
+#### Version 0.9.2 (24.01.2019)
+- Fix package android.support.v4.content does not exist
+
 #### Version 0.9.1 (13.12.2018)
 - Fix line breaks (\r\n) on Android
 
