@@ -1,9 +1,9 @@
 {
-  "name": "cordova-plugin-email-composer",
-  "version": "0.9.2",
+  "name": "crane-cordova-plugin-email-composer",
+  "version": "0.9.3",
   "description": "Provides access to the standard interface that manages the editing and sending an email message",
   "cordova": {
-    "id": "cordova-plugin-email-composer",
+    "id": "crane-cordova-plugin-email-composer",
     "platforms": [
       "ios",
       "osx",
@@ -14,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/katzer/cordova-plugin-email-composer.git"
+    "url": "git+https://github.com/MajinRaph/cordova-plugin-email-composer.git"
   },
   "keywords": [
     "appplant",
@@ -47,8 +47,8 @@
   "author": "Sebastián Katzer",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/katzer/cordova-plugin-email-composer/issues"
+    "url": "https://github.com/MajinRaph/cordova-plugin-email-composer.git"
   },
-  "homepage": "https://github.com/katzer/cordova-plugin-email-composer#readme",
+  "homepage": "https://github.com/MajinRaph/cordova-plugin-email-composer.git#readme",
   "dependencies": {}
 }
