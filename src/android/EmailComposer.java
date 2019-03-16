@@ -114,7 +114,7 @@ public class EmailComposer extends CordovaPlugin {
      *
      * @param id The app id.
      */
-    private void client(String id) {
+    private void client(final String id) {
         cordova.getThreadPool().execute(new Runnable() {
             public void run() {
                 Impl impl   = new Impl(getContext());
@@ -163,7 +163,7 @@ public class EmailComposer extends CordovaPlugin {
      *
      * @param props The email properties like subject or body
      */
-    private void open(JSONObject props) {
+    private void open(final JSONObject props) {
         final EmailComposer me = this;
 
         cordova.getThreadPool().execute(new Runnable() {
