@@ -90,8 +90,7 @@
 
     <!-- android -->
     <platform name="android">
-        <preference name="ANDROID_SUPPORT_V4_VERSION" default="27.+"/>
-
+        <preference name="ANDROID_SUPPORT_V4_VERSION" default="28.+"/>
         <framework src="com.android.support:support-v4:$ANDROID_SUPPORT_V4_VERSION"/>
 
         <config-file target="config.xml" parent="/*">
@@ -158,5 +157,4 @@
             <runs />
         </js-module>
     </platform>
-
 </plugin>
