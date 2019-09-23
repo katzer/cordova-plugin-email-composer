@@ -50,7 +50,7 @@ document.addEventListener('deviceready', function () {
 }, false);
 ```
 
-All properties are optional. After opening the draft the user may have the possibilities to edit the draft from the UI.
+All properties are optional. After opening the draft the user may have the possibilities to edit the draft from the UI. The callback comes without arguments.
 
 ```javascript
 cordova.plugins.email.open({
@@ -172,16 +172,13 @@ To check for a specific mail client, just pass its uri scheme on iOS, or the pac
 cordova.plugins.email.hasClient('gmail', callbackFn);
 ```
 
-For Android, it's possible to get a list of all installed email clients:
+For Android only, it's possible to get a list of all installed email clients:
 
 ```javascript
 cordova.plugins.email.getClients(function (apps) {
     cordova.plugins.email.open({ app: apps[0] });    
 });
 ```
-
-__Note:__ Please keep in mind that these functions might return false results and the support is not fully given for all platforms. Its wise to consider these functions as optional.
-
 
 ## Permissions
 
