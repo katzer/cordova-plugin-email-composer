@@ -228,7 +228,7 @@ var app = {
         ];
 
         if (!isHtml) {
-            return "Hello,\n\nthis is just a plain text email body!";
+            return ['Hello', 'this is just a plain text email body!'];
         }
 
         return css.concat(html);

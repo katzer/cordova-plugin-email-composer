@@ -19,6 +19,9 @@
         <param name="ios-package" value="CDVGestureHandler" />
         <param name="onload" value="true" />
     </feature>
+    <feature name="EmailComposer">
+        <param name="ios-package" value="APPEmailComposer" />
+    </feature>
     <feature name="Camera">
         <param name="ios-package" value="CDVCamera" />
     </feature>
@@ -27,9 +30,6 @@
     </feature>
     <feature name="Toast">
         <param name="ios-package" value="Toast" />
-    </feature>
-    <feature name="EmailComposer">
-        <param name="ios-package" value="APPEmailComposer" />
     </feature>
     <name>EmailExample</name>
     <description>

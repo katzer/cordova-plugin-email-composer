@@ -1,64 +1,66 @@
 cordova.define('cordova/plugin_list', function(require, exports, module) {
-module.exports = [
+  module.exports = [
     {
-        "file": "plugins/cordova-plugin-camera/www/CameraConstants.js",
-        "id": "cordova-plugin-camera.Camera",
-        "pluginId": "cordova-plugin-camera",
-        "clobbers": [
-            "Camera"
-        ]
+      "id": "cordova-plugin-camera.Camera",
+      "file": "plugins/cordova-plugin-camera/www/CameraConstants.js",
+      "pluginId": "cordova-plugin-camera",
+      "clobbers": [
+        "Camera"
+      ]
     },
     {
-        "file": "plugins/cordova-plugin-camera/www/CameraPopoverOptions.js",
-        "id": "cordova-plugin-camera.CameraPopoverOptions",
-        "pluginId": "cordova-plugin-camera",
-        "clobbers": [
-            "CameraPopoverOptions"
-        ]
+      "id": "cordova-plugin-camera.CameraPopoverOptions",
+      "file": "plugins/cordova-plugin-camera/www/CameraPopoverOptions.js",
+      "pluginId": "cordova-plugin-camera",
+      "clobbers": [
+        "CameraPopoverOptions"
+      ]
     },
     {
-        "file": "plugins/cordova-plugin-camera/www/Camera.js",
-        "id": "cordova-plugin-camera.camera",
-        "pluginId": "cordova-plugin-camera",
-        "clobbers": [
-            "navigator.camera"
-        ]
+      "id": "cordova-plugin-camera.camera",
+      "file": "plugins/cordova-plugin-camera/www/Camera.js",
+      "pluginId": "cordova-plugin-camera",
+      "clobbers": [
+        "navigator.camera"
+      ]
     },
     {
-        "file": "plugins/cordova-plugin-camera/www/CameraPopoverHandle.js",
-        "id": "cordova-plugin-camera.CameraPopoverHandle",
-        "pluginId": "cordova-plugin-camera",
-        "clobbers": [
-            "CameraPopoverHandle"
-        ]
+      "id": "cordova-plugin-camera.CameraPopoverHandle",
+      "file": "plugins/cordova-plugin-camera/www/CameraPopoverHandle.js",
+      "pluginId": "cordova-plugin-camera",
+      "clobbers": [
+        "CameraPopoverHandle"
+      ]
     },
     {
-        "file": "plugins/cordova-plugin-device/www/device.js",
-        "id": "cordova-plugin-device.device",
-        "pluginId": "cordova-plugin-device",
-        "clobbers": [
-            "device"
-        ]
+      "id": "cordova-plugin-device.device",
+      "file": "plugins/cordova-plugin-device/www/device.js",
+      "pluginId": "cordova-plugin-device",
+      "clobbers": [
+        "device"
+      ]
     },
     {
-        "file": "plugins/cordova-plugin-x-toast/www/Toast.js",
-        "id": "cordova-plugin-x-toast.Toast",
-        "pluginId": "cordova-plugin-x-toast",
-        "clobbers": [
-            "window.plugins.toast"
-        ]
+      "id": "cordova-plugin-email-composer.EmailComposer",
+      "file": "plugins/cordova-plugin-email-composer/www/email_composer.js",
+      "pluginId": "cordova-plugin-email-composer",
+      "clobbers": [
+        "cordova.plugins.email"
+      ]
     },
     {
-        "file": "plugins/cordova-plugin-email-composer/www/email_composer.js",
-        "id": "cordova-plugin-email-composer.EmailComposer",
-        "pluginId": "cordova-plugin-email-composer",
-        "clobbers": [
-            "cordova.plugins.email"
-        ]
+      "id": "cordova-plugin-x-toast.Toast",
+      "file": "plugins/cordova-plugin-x-toast/www/Toast.js",
+      "pluginId": "cordova-plugin-x-toast",
+      "clobbers": [
+        "window.plugins.toast"
+      ]
     }
-];
-module.exports.metadata = 
-// TOP OF METADATA
-{}
-// BOTTOM OF METADATA
+  ];
+  module.exports.metadata = {
+    "cordova-plugin-camera": "4.1.0",
+    "cordova-plugin-device": "2.0.3",
+    "cordova-plugin-email-composer": "0.9.2",
+    "cordova-plugin-x-toast": "2.7.2"
+  };
 });

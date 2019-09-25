@@ -4,26 +4,33 @@
   "displayName": "EmailExample",
   "cordova": {
     "platforms": [
-      "browser",
-      "osx",
+      "windows",
       "android",
       "ios",
-      "windows"
+      "browser",
+      "osx"
     ],
     "plugins": {
-      "cordova-plugin-camera": {},
-      "cordova-plugin-device": {},
-      "cordova-plugin-x-toast": {}
+      "cordova-plugin-camera": {
+        "ANDROID_SUPPORT_V4_VERSION": "27.+"
+      },
+      "cordova-plugin-device": {
+        "ANDROID_SUPPORT_V4_VERSION": "27.+"
+      },
+      "cordova-plugin-x-toast": {
+        "ANDROID_SUPPORT_V4_VERSION": "27.+"
+      }
     }
   },
   "dependencies": {
-    "cordova-android": "^7.1.4",
-    "cordova-browser": "^5.0.4",
-    "cordova-ios": "^4.5.5",
-    "cordova-osx": "^4.0.2",
-    "cordova-plugin-camera": "^4.0.3",
-    "cordova-plugin-device": "^2.0.2",
-    "cordova-plugin-x-toast": "^2.7.0",
+    "cordova-android": "^8.1.0",
+    "cordova-browser": "^6.0.0",
+    "cordova-ios": "^5.0.1",
+    "cordova-osx": "^5.0.0",
+    "cordova-plugin-camera": "^4.1.0",
+    "cordova-plugin-device": "^2.0.3",
+    "cordova-plugin-email-composer": "^0.9.2",
+    "cordova-plugin-x-toast": "^2.7.2",
     "cordova-windows": "^6.0.1"
   }
 }

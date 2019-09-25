@@ -1,26 +1,27 @@
 {
-  "_from": "cordova-plugin-email-composer@0.9.0",
-  "_id": "cordova-plugin-email-composer@0.9.0",
+  "_from": "cordova-plugin-email-composer",
+  "_id": "cordova-plugin-email-composer@0.9.2",
   "_inBundle": false,
-  "_integrity": "sha512-gKuuhnwKtkOutsaXtJFUvZYeodtQKbOhRvtmkXxau1vfH1Dtp0suz4+fkxW4Apnxc6XXzsN0izadiZNuq113fA==",
+  "_integrity": "sha512-w8eQZ6lbYWut13o/Cprixmacfyq5hds7DAjuTL34eQhyWWd/DA/o6ziiyY3So2ZOozeQ4DxQpyPN4BiqUKcyew==",
   "_location": "/cordova-plugin-email-composer",
   "_phantomChildren": {},
   "_requested": {
-    "type": "version",
+    "type": "tag",
     "registry": true,
-    "raw": "cordova-plugin-email-composer@0.9.0",
+    "raw": "cordova-plugin-email-composer",
     "name": "cordova-plugin-email-composer",
     "escapedName": "cordova-plugin-email-composer",
-    "rawSpec": "0.9.0",
+    "rawSpec": "",
     "saveSpec": null,
-    "fetchSpec": "0.9.0"
+    "fetchSpec": "latest"
   },
   "_requiredBy": [
-    "#USER"
+    "#USER",
+    "/"
   ],
-  "_resolved": "https://registry.npmjs.org/cordova-plugin-email-composer/-/cordova-plugin-email-composer-0.9.0.tgz",
-  "_shasum": "9e3751910145a2854a31497bd3c4a56d513390f7",
-  "_spec": "cordova-plugin-email-composer@0.9.0",
+  "_resolved": "https://registry.npmjs.org/cordova-plugin-email-composer/-/cordova-plugin-email-composer-0.9.2.tgz",
+  "_shasum": "264c66d45679acf2781c2cec54e32b2c1facfdb8",
+  "_spec": "cordova-plugin-email-composer",
   "_where": "/Users/sebastian/Documents/github/cordova-example-email-composer",
   "author": {
     "name": "Sebastián Katzer"
@@ -39,6 +40,7 @@
       "browser"
     ]
   },
+  "dependencies": {},
   "deprecated": false,
   "description": "Provides access to the standard interface that manages the editing and sending an email message",
   "engines": [
@@ -70,11 +72,11 @@
     "cordova-windows",
     "cordova-browser"
   ],
-  "license": "Apache 2.0",
+  "license": "Apache-2.0",
   "name": "cordova-plugin-email-composer",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/katzer/cordova-plugin-email-composer.git"
   },
-  "version": "0.9.0"
+  "version": "0.9.2"
 }

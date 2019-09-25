@@ -1,11 +1,21 @@
 {
-  "cordova-plugin-camera": {
+  "cordova-plugin-email-composer": {
     "source": {
       "type": "registry",
-      "id": "cordova-plugin-camera@4.0.3"
+      "id": "cordova-plugin-email-composer"
     },
     "is_top_level": true,
     "variables": {}
+  },
+  "cordova-plugin-camera": {
+    "source": {
+      "type": "registry",
+      "id": "cordova-plugin-camera@4.1.0"
+    },
+    "is_top_level": true,
+    "variables": {
+      "ANDROID_SUPPORT_V4_VERSION": "27.+"
+    }
   },
   "cordova-plugin-device": {
     "source": {
@@ -13,7 +23,9 @@
       "id": "cordova-plugin-device"
     },
     "is_top_level": true,
-    "variables": {}
+    "variables": {
+      "ANDROID_SUPPORT_V4_VERSION": "27.+"
+    }
   },
   "cordova-plugin-x-toast": {
     "source": {
@@ -21,14 +33,8 @@
       "id": "cordova-plugin-x-toast"
     },
     "is_top_level": true,
-    "variables": {}
-  },
-  "cordova-plugin-email-composer": {
-    "source": {
-      "type": "registry",
-      "id": "cordova-plugin-email-composer@0.9.0"
-    },
-    "is_top_level": true,
-    "variables": {}
+    "variables": {
+      "ANDROID_SUPPORT_V4_VERSION": "27.+"
+    }
   }
 }

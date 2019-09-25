@@ -7,6 +7,9 @@
     "files": {}
   },
   "installed_plugins": {
+    "cordova-plugin-email-composer": {
+      "PACKAGE_NAME": "de.appplant.cordova.plugin.emailcomposer.example"
+    },
     "cordova-plugin-camera": {
       "PACKAGE_NAME": "de.appplant.cordova.plugin.emailcomposer.example"
     },
@@ -14,9 +17,6 @@
       "PACKAGE_NAME": "de.appplant.cordova.plugin.emailcomposer.example"
     },
     "cordova-plugin-x-toast": {
-      "PACKAGE_NAME": "de.appplant.cordova.plugin.emailcomposer.example"
-    },
-    "cordova-plugin-email-composer": {
       "PACKAGE_NAME": "de.appplant.cordova.plugin.emailcomposer.example"
     }
   },

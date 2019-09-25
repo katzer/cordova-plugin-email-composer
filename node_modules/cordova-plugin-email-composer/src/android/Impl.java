@@ -139,7 +139,7 @@ class Impl {
      * @param draft     The intent to send.
      */
     private void setBody (JSONObject params, Intent draft) {
-        String body       = params.optString("body");
+        String body       = fixLineBreaks(params.optString("body"));
         boolean isHTML    = params.optBoolean("isHtml");
         CharSequence text = isHTML ? Html.fromHtml(body) : body;
 
@@ -287,7 +287,8 @@ class Impl {
      * Ask the package manager if the app is installed on the device.
      *
      * @param id    The app id.
-     * @return      true if yes otherwise false.
+     *
+     * @return true if yes otherwise false.
      */
     boolean isAppInstalled (String id) {
 
@@ -320,6 +321,17 @@ class Impl {
         intent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
 
         return intent;
+    }
+
+    /**
+     * Fix line breaks within the provided text.
+     *
+     * @param text The text where to fix the line breaks.
+     *
+     * @return The fixed text.
+     */
+    private static String fixLineBreaks (String text) {
+        return text.replaceAll("\r\n", "\n");
     }
 
 }

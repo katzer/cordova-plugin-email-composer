@@ -1,8 +1,8 @@
 {
   "_from": "cordova-plugin-x-toast",
-  "_id": "cordova-plugin-x-toast@2.7.0",
+  "_id": "cordova-plugin-x-toast@2.7.2",
   "_inBundle": false,
-  "_integrity": "sha512-snd4KTWXvku9BHgwRFiz75fGZCtr1K/Z6KRLWmtmqKWT/6lKlMZHbPOQfXavOyV9iqotJHgzbv2BMJtLuXlRVg==",
+  "_integrity": "sha512-nx4LaBkJyEk1MknkLC0/U904A42WX/1/OZUeUyXkKRtChShsoTdbWlvEqHKzPbELzf2bEMnXd1CI70WRv+a4hA==",
   "_location": "/cordova-plugin-x-toast",
   "_phantomChildren": {},
   "_requested": {
@@ -19,8 +19,8 @@
     "#USER",
     "/"
   ],
-  "_resolved": "https://registry.npmjs.org/cordova-plugin-x-toast/-/cordova-plugin-x-toast-2.7.0.tgz",
-  "_shasum": "dcc3263cc33fdda956a4f872f63d12ad932f8fa5",
+  "_resolved": "https://registry.npmjs.org/cordova-plugin-x-toast/-/cordova-plugin-x-toast-2.7.2.tgz",
+  "_shasum": "2f8ca705bc2664832298b348cb17204cda79c17f",
   "_spec": "cordova-plugin-x-toast",
   "_where": "/Users/sebastian/Documents/github/cordova-example-email-composer",
   "author": {
@@ -69,5 +69,5 @@
     "type": "git",
     "url": "git+https://github.com/EddyVerbruggen/Toast-PhoneGap-Plugin.git"
   },
-  "version": "2.7.0"
+  "version": "2.7.2"
 }

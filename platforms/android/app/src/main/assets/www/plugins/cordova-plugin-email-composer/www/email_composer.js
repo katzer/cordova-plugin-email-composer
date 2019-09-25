@@ -192,12 +192,12 @@ exports.open = function (options, callback, scope) {
  * Adds a new mail app alias.
  *
  * @param [ String ] alias   The alias name.
- * @param [ String ] package The package name.
+ * @param [ String ] packageName The package name.
  *
  * @return [ Void ]
  */
-exports.addAlias = function (alias, package) {
-    this.aliases[alias] = package;
+exports.addAlias = function (alias, packageName) {
+    this.aliases[alias] = packageName;
 };
 
 /**
@@ -299,4 +299,5 @@ exports.registerCallbackForScheme = function (fn) {
 
     document.addEventListener('resume', callback, false);
 };
+
 });

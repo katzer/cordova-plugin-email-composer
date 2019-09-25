@@ -136,6 +136,12 @@ interface CameraPopoverOptions {
      *      ARROW_ANY : 15
      */
     arrowDir : number;
+    popoverWidth: number;
+    popoverHeight: number;
+}
+
+declare class CameraPopoverOptions implements CameraPopoverOptions {
+    constructor(x?: number, y?: number, width?: number, height?: number, arrowDir?: number);
 }
 
 declare var Camera: {

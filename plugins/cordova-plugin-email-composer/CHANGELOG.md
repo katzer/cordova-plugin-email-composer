@@ -1,6 +1,12 @@
 
 ## ChangeLog
 
+#### Version 0.9.2 (24.01.2019)
+- Fix package android.support.v4.content does not exist
+
+#### Version 0.9.1 (13.12.2018)
+- Fix line breaks (\r\n) on Android
+
 #### Version 0.9.0 (13.12.2018)
 - [feature:] Added `getClients` that returns a list of available email clients (Android)
 - [__change__]: Replace `isAvailable` through `hasClient` and `hasAccount`.

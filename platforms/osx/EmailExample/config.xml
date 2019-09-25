@@ -3,15 +3,6 @@
     <feature name="LocalStorage">
         <param name="osx-package" value="CDVLocalStorage" />
     </feature>
-    <feature name="Camera">
-        <param name="osx-package" value="CDVCamera" />
-    </feature>
-    <feature name="Device">
-        <param name="ios-package" value="CDVDevice" />
-    </feature>
-    <feature name="EmailComposer">
-        <param name="osx-package" value="APPEmailComposer" />
-    </feature>
     <name>EmailExample</name>
     <description>
         A sample Apache Cordova application that responds to the deviceready event.
@@ -22,6 +13,7 @@
     <content src="index.html" />
     <access origin="*" />
     <preference name="AllowInlineMediaPlayback" value="true" />
+    <preference name="AllowWebViewNavigation" value="true" />
     <preference name="BackupWebStorage" value="cloud" />
     <preference name="DisallowOverscroll" value="false" />
     <preference name="EnableViewportScale" value="false" />
