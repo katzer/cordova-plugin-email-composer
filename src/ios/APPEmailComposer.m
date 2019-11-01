@@ -153,7 +153,7 @@
         [[UIApplication sharedApplication] openURL:url
                                            options:@{}
                                  completionHandler:^(BOOL success) {
-            [self execCallback];
+            [self execCallback: success];
         }];
     });
 }
@@ -169,10 +169,15 @@
 /**
  * Invokes the callback without any parameter.
  */
-- (void) execCallback
+- (void) execCallback {
+    [self execCallback:true];
+}
+
+- (void) execCallback:(BOOL)success
 {
+    
     CDVPluginResult *result = [CDVPluginResult
-                               resultWithStatus:CDVCommandStatus_OK];
+                               resultWithStatus:CDVCommandStatus_OK messageAsBool:success];
 
     [self.commandDelegate sendPluginResult:result
                                 callbackId:self.command.callbackId];
