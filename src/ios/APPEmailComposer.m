@@ -115,7 +115,14 @@
 {
     [controller dismissViewControllerAnimated:YES completion:NULL];
 
-    [self execCallback];
+    switch(result) {
+        case MFMailComposeResultSent:
+            [self execCallback:YES];
+        case MFMailComposeResultSaved:
+            [self execCallback:YES];
+        default:
+            [self execCallback:NO];
+    }
 }
 
 #pragma mark -
@@ -170,7 +177,7 @@
  * Invokes the callback without any parameter.
  */
 - (void) execCallback {
-    [self execCallback:true];
+    [self execCallback:NO];
 }
 
 - (void) execCallback:(BOOL)success
