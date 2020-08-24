@@ -36,8 +36,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.Manifest.permission.GET_ACCOUNTS;
-import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
+import static android.Manifest.permission.*;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
 @SuppressWarnings({"Convert2Diamond", "Convert2Lambda"})
@@ -185,18 +184,25 @@ public class EmailComposer extends CordovaPlugin {
      *
      * @param code The code number of the permission to check for.
      */
-    private void check(int code) {
-        check(getPermission(code));
+    private void check(int code){
+        check(getPermissions(code));
     }
 
     /**
-     * Check if the given permission has been granted.
+     * Check if the given permissions have been granted.
      *
-     * @param permission The permission to check for.
+     * @param permissions The permissions to check for.
      */
-    private void check(String permission) {
-        Boolean granted = cordova.hasPermission(permission);
-        sendResult(new PluginResult(Status.OK, granted));
+    private void check(String... permissions){
+        for (int i = 0; i < permissions.length; i++)
+        {
+            if (!cordova.hasPermission(permissions[i]))
+            {
+                sendResult(new PluginResult(Status.OK, false));
+                return;
+            }
+        }
+        sendResult(new PluginResult(Status.OK, true));
     }
 
     /**
@@ -204,22 +210,25 @@ public class EmailComposer extends CordovaPlugin {
      *
      * @param code The code number of the permission to request for.
      */
-    private void request(int code) {
-        cordova.requestPermission(this, code, getPermission(code));
+    private void request(int code){
+       cordova.requestPermissions(this, code, getPermissions(code));
     }
 
     /**
-     * Returns the corresponding permission for the internal code.
+     * Returns the corresponding permissions for the internal code.
      *
      * @param code The internal code number.
-     *
-     * @return The Android permission string or "".
+     * @return Array of the the Android permission strings or [].
      */
-    private String getPermission(int code) {
-        switch (code) {
-            case 1:  return READ_EXTERNAL_STORAGE;
-            case 2:  return GET_ACCOUNTS;
-            default: return "";
+    private String[] getPermissions(int code){
+        switch (code)
+        {
+            case 1:
+                return new String[]{READ_EXTERNAL_STORAGE};
+            case 2:
+                return new String[]{GET_ACCOUNTS, READ_CONTACTS}; // see https://stackoverflow.com/a/54941079/4094951
+            default:
+                return new String[0];
         }
     }
 
@@ -261,14 +270,11 @@ public class EmailComposer extends CordovaPlugin {
      */
     @Override
     public void onRequestPermissionResult(int code, String[] permissions,
-                                          int[] grantResults) {
-
+                                          int[] grantResults){
         List<PluginResult> messages = new ArrayList<PluginResult>();
-        Boolean granted             = false;
-
-        if (grantResults.length > 0) {
-            granted = grantResults[0] == PERMISSION_GRANTED;
-        }
+        boolean granted = true;
+        for (int i = 0; i < grantResults.length; i++)
+            granted = granted && (grantResults[i] == PERMISSION_GRANTED);
 
         messages.add(new PluginResult(Status.OK, granted));
         messages.add(new PluginResult(Status.OK, code));

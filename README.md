@@ -188,6 +188,7 @@ Some functions require permissions on __Android__. The plugin itself does not ad
 | ---------- | ----------- |
 | `cordova.plugins.email.permission.READ_EXTERNAL_STORAGE` | Is needed to attach external files `file:///` located outside of the app's own file system. |
 | `cordova.plugins.email.permission.GET_ACCOUNTS` | Without the permission the `hasAccount()` function wont be able to look for email accounts. |
+| `cordova.plugins.email.permission.READ_CONTACTS` | Without the permission the `hasAccount()` function wont be able to look for email accounts. |
 
 To check if a permission has been granted:
 
@@ -202,7 +203,16 @@ cordova.plugins.email.requestPermission(permission, callbackFn);
 ```
 
 __Note:__ The author of the app has to make sure that the permission is listed in the manifest.
-
+For __Android__ you may add the following lines to config.xml to achieve this: 
+```xml
+<platform name="android">
+    <config-file target="app/src/main/AndroidManifest.xml" parent="/manifest">
+        <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+        <uses-permission android:name="android.permission.READ_CONTACTS"/>
+        <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    </config-file>
+</platform>
+```
 
 ## Contributing
 
