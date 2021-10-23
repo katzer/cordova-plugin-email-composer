@@ -87,12 +87,6 @@ class Impl {
             targets.add(target.setPackage(clientId));
         }
 
-        if (targets.size() == 0) {
-            // Shouldn't happen
-            Log.w(LOG_TAG, "Device does not have any email client apps");
-            return draft;
-        }
-
         return Intent.createChooser(targets.remove(0), header)
                 .putExtra(EXTRA_INITIAL_INTENTS, targets.toArray(new Parcelable[0]));
     }
