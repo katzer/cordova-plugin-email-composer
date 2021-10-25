@@ -87,7 +87,7 @@ class Impl {
             targets.add(target.setPackage(clientId));
         }
 
-        return Intent.createChooser(draft, header)
+        return Intent.createChooser(targets.remove(0), header)
                 .putExtra(EXTRA_INITIAL_INTENTS, targets.toArray(new Parcelable[0]));
     }
 
