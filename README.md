@@ -99,6 +99,19 @@ cordova.plugins.email.addAlias('gmail', 'com.google.android.gm');
 cordova.plugins.email.open({ app: 'gmail', subject: 'Sent from Gmail' });
 ```
 
+#### Issue with Ionic/Capacitor and AndroidX
+
+'package android.support.v4.content does not exist'
+
+```bash
+npm install jetifier
+npx jetify
+npx cap sync android
+```
+
+https://capacitorjs.com/docs/android/troubleshooting#error-package-androidsupport-does-not-exist
+
+
 #### HTML and CSS
 
 Only the built-in email app for iOS does support HTML and CSS. Some Android clients support rich formatted text.
