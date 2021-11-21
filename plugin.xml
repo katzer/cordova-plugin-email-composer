@@ -90,9 +90,6 @@
 
     <!-- android -->
     <platform name="android">
-        <preference name="ANDROID_SUPPORT_V4_VERSION" default="28.+"/>
-        <framework src="com.android.support:support-v4:$ANDROID_SUPPORT_V4_VERSION"/>
-
         <config-file target="app/src/main/AndroidManifest.xml" parent="/manifest/queries">
             <intent>
                 <action android:name="android.intent.action.SENDTO" />
@@ -105,6 +102,10 @@
                 <param name="android-package"
                        value="de.appplant.cordova.emailcomposer.EmailComposer"/>
             </feature>
+        </config-file>
+
+        <config-file target="config.xml" parent="/*">
+            <preference name="AndroidXEnabled" value="true" />
         </config-file>
 
         <config-file target="AndroidManifest.xml" parent="application">
