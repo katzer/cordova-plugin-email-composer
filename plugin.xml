@@ -92,7 +92,7 @@
 
     <!-- android -->
     <platform name="android">
-        <config-file target="app/src/main/AndroidManifest.xml" parent="/manifest/queries">
+        <config-file target="AndroidManifest.xml" parent="/manifest/queries">
             <intent>
                 <action android:name="android.intent.action.SENDTO" />
                 <data android:scheme="mailto" />
