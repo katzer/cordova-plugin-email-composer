@@ -11,7 +11,7 @@ Cordova Email Plugin - Example
 
 Clone the _example_ branch:
 
-    git clone -b example https://github.com/katzer/cordova-plugin-email.git
+    git clone -b example https://github.com/katzer/cordova-plugin-email-composer.git
 
 And then execute:
 
