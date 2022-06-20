@@ -99,18 +99,13 @@ cordova.plugins.email.addAlias('gmail', 'com.google.android.gm');
 cordova.plugins.email.open({ app: 'gmail', subject: 'Sent from Gmail' });
 ```
 
-#### Issue with Ionic/Capacitor and AndroidX
+#### Issues with AndroidX
 
-`package android.support.v4.content does not exist`
+If you have issues with AndroidX, simply install the extra plugin
 
-```bash
-npm install jetifier
-npx jetify
-npx cap sync android
 ```
-
-[Source](https://capacitorjs.com/docs/android/troubleshooting#error-package-androidsupport-does-not-exist)
-
+cordova plugin add cordova-plugin-androidx-adapter
+```
 
 #### HTML and CSS
 
