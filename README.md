@@ -104,6 +104,14 @@ If you have issues with AndroidX, simply install the extra plugin
 cordova plugin add cordova-plugin-androidx-adapter
 ```
 
+For Ionic/Capacitor you can also try
+
+```bash
+npm install jetifier
+npx jetify
+npx cap sync android
+```
+
 #### HTML and CSS
 
 Only the built-in email app for iOS does support HTML and CSS. Some Android clients support rich formatted text.
