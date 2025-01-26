@@ -1,6 +1,3 @@
-
-<p align="left"><b><a href="https://github.com/katzer/cordova-plugin-email-composer/tree/example">SAMPLE APP</a> :point_right:</b></p>
-
 # Cordova Email Plugin <br> [![npm version](https://badge.fury.io/js/cordova-plugin-email-composer.svg)](http://badge.fury.io/js/cordova-plugin-email-composer) [![Code Climate](https://codeclimate.com/github/katzer/cordova-plugin-email-composer/badges/gpa.svg)](https://codeclimate.com/github/katzer/cordova-plugin-email-composer) [![PayPayl donate button](https://img.shields.io/badge/paypal-donate-yellow.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=L3HKQCD9UA35A "Donate once-off to this project using Paypal")
 
 <img width="260px" align="right" hspace="10" vspace="5" src="https://github.com/katzer/cordova-plugin-email-composer/blob/example/images/ios_iphone5s_spacegrey_portrait.png">
@@ -31,7 +28,7 @@ Or install a specific version:
 
     $ cordova plugin add cordova-plugin-email-composer@VERSION
 
-Or install the latest head version:
+Or install the latest master version:
 
     $ cordova plugin add https://github.com/katzer/cordova-plugin-email-composer.git
 
@@ -97,6 +94,22 @@ cordova.plugins.email.addAlias('gmail', 'com.google.android.gm');
 
 // Specify app by name or alias
 cordova.plugins.email.open({ app: 'gmail', subject: 'Sent from Gmail' });
+```
+
+#### Issues with AndroidX
+
+If you have issues with AndroidX, simply install the extra plugin
+
+```
+cordova plugin add cordova-plugin-androidx-adapter
+```
+
+For Ionic/Capacitor you can also try
+
+```bash
+npm install jetifier
+npx jetify
+npx cap sync android
 ```
 
 #### HTML and CSS

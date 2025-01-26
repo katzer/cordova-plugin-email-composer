@@ -1,6 +1,6 @@
 {
   "name": "cordova-plugin-email-composer",
-  "version": "0.9.2",
+  "version": "0.10.1",
   "description": "Provides access to the standard interface that manages the editing and sending an email message",
   "cordova": {
     "id": "cordova-plugin-email-composer",
